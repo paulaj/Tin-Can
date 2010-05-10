@@ -8,19 +8,19 @@
 
 #import "TinCanAppDelegate.h"
 #import "TinCanViewController.h"
+#import "ParticipantsContainerView.h"
 
 @implementation TinCanAppDelegate
 
 @synthesize window;
 @synthesize viewController;
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
-    // Override point for customization after app launch    
+
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
-
+    
 	return YES;
 }
 

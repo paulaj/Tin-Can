@@ -1,6 +1,6 @@
 //
 //  ParticipantView.h
-//  TodoDragTest
+//  TinCan
 //
 //  Created by Drew Harry on 4/15/10.
 //  Copyright 2010 MIT Media Lab. All rights reserved.

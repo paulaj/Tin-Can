@@ -11,29 +11,29 @@
 @implementation TinCanViewController
 
 
-/*
-// The designated initializer. Override to perform setup that is required before the view is loaded.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-/*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
+- (void)loadView {    
+    // TODO I don't like having to hardcode the frame here - worried about rotation and 
+    // portability / scalability if resolutions change in the future.
+    self.view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)] retain];
+    
+    // Create the participants view.
+    participantsContainer = [[UIView alloc] initWithFrame:self.view.frame];
+    [participantsContainer retain];
+    [self.view addSubview:participantsContainer];
+    [self.view setBackgroundColor:[UIColor blackColor]];
+    
+    
+    NSLog(@"Done loading view.");
 }
-*/
 
 
-/*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad];    
+    NSLog(@"viewDidLoad");
 }
-*/
+
 
 
 // Override to allow orientations other than the default portrait orientation.

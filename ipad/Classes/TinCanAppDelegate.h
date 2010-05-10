@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ParticipantsContainerView.h"
 
 @class TinCanViewController;
 
@@ -17,6 +18,8 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet TinCanViewController *viewController;
+
+
 
 @end
 

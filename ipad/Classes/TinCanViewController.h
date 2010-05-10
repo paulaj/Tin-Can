@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TinCanViewController : UIViewController {
-
+    UIView* participantsContainer;
 }
 
 @end
