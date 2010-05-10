@@ -16,15 +16,17 @@
 @synthesize assignedTodos;
 
 - (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot {
-	self = [super initWithFrame:CGRectMake(0,0, 200, 200)];
+	self = [super initWithFrame:CGRectMake(0,0, 260, 260)];
 	
 	NSLog(@"initing participant view.");
 	hover = false;
-	self.bounds = CGRectMake(-200, -200, 400, 400);
+	self.bounds = CGRectMake(-130, -130, 260, 260);
 	
 	self.name = participantName;
 	self.center = pos;
 	rotation = rot;
+    
+    [self setBackgroundColor:[UIColor clearColor]];
 	
 	assignedTodos = [[NSMutableSet set] retain];
 	return self;
