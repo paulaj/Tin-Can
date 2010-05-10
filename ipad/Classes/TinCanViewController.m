@@ -79,19 +79,19 @@
     // We'll also want to the layout quite a bit more - right now we're having to
     // hardcode both the rotation and the actual positions. That's a post
     // sponsor week TODO, though.
-    [participants addObject:[[ParticipantView alloc] initWithName:@"MATT" withPosition:CGPointMake(256, 1060) withRotation:0.0]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"ANDREA" withPosition:CGPointMake(512, 1060) withRotation:0.0]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"MATT" withPosition:CGPointMake(256, 1060) withRotation:0.0 withColor:[UIColor redColor]]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"ANDREA" withPosition:CGPointMake(512, 1060) withRotation:0.0 withColor:[UIColor redColor]]];
     
-    [participants addObject:[[ParticipantView alloc] initWithName:@"JAEWOO" withPosition:CGPointMake(-30, 256) withRotation:M_PI/2]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"CHARLIE" withPosition:CGPointMake(-30, 512) withRotation:M_PI/2]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"TREVOR" withPosition:CGPointMake(-30, 768) withRotation:M_PI/2]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"JAEWOO" withPosition:CGPointMake(-30, 256) withRotation:M_PI/2 withColor:[UIColor redColor]]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"CHARLIE" withPosition:CGPointMake(-30, 512) withRotation:M_PI/2 withColor:[UIColor redColor]]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"TREVOR" withPosition:CGPointMake(-30, 768) withRotation:M_PI/2 withColor:[UIColor yellowColor]]];
 
-    [participants addObject:[[ParticipantView alloc] initWithName:@"CHRIS" withPosition:CGPointMake(798, 256) withRotation:-M_PI/2]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"DREW" withPosition:CGPointMake(798, 512) withRotation:-M_PI/2]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"IG-JAE" withPosition:CGPointMake(798, 768) withRotation:-M_PI/2]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"CHRIS" withPosition:CGPointMake(798, 256) withRotation:-M_PI/2 withColor:[UIColor yellowColor]]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"DREW" withPosition:CGPointMake(798, 512) withRotation:-M_PI/2 withColor:[UIColor greenColor]]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"IG-JAE" withPosition:CGPointMake(798, 768) withRotation:-M_PI/2 withColor:[UIColor blueColor]]];
 
-    [participants addObject:[[ParticipantView alloc] initWithName:@"DORI" withPosition:CGPointMake(256, -20) withRotation:M_PI]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"PAULINA" withPosition:CGPointMake(512, -20) withRotation:M_PI]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"DORI" withPosition:CGPointMake(256, -20) withRotation:M_PI withColor:[UIColor blueColor]]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"PAULINA" withPosition:CGPointMake(512, -20) withRotation:M_PI withColor:[UIColor blueColor]]];
 
     
     for(ParticipantView *participant in participants) {

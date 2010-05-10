@@ -17,6 +17,7 @@
 		28D7ACF80DDB3853001CB0EB /* TinCanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* TinCanViewController.m */; };
 		3AC2B9191198715A0071F912 /* ParticipantView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B9181198715A0071F912 /* ParticipantView.m */; };
 		3AC2B91C119871670071F912 /* Todo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B91B119871670071F912 /* Todo.m */; };
+		3AC2B9D41198BB120071F912 /* UIColor+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B9D31198BB120071F912 /* UIColor+Util.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,8 @@
 		3AC2B9181198715A0071F912 /* ParticipantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParticipantView.m; sourceTree = "<group>"; };
 		3AC2B91A119871670071F912 /* Todo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Todo.h; sourceTree = "<group>"; };
 		3AC2B91B119871670071F912 /* Todo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Todo.m; sourceTree = "<group>"; };
+		3AC2B9D21198BB120071F912 /* UIColor+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Util.h"; sourceTree = "<group>"; };
+		3AC2B9D31198BB120071F912 /* UIColor+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Util.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TinCan-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TinCan-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,6 +67,8 @@
 				3AC2B9181198715A0071F912 /* ParticipantView.m */,
 				3AC2B91A119871670071F912 /* Todo.h */,
 				3AC2B91B119871670071F912 /* Todo.m */,
+				3AC2B9D21198BB120071F912 /* UIColor+Util.h */,
+				3AC2B9D31198BB120071F912 /* UIColor+Util.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 				28D7ACF80DDB3853001CB0EB /* TinCanViewController.m in Sources */,
 				3AC2B9191198715A0071F912 /* ParticipantView.m in Sources */,
 				3AC2B91C119871670071F912 /* Todo.m in Sources */,
+				3AC2B9D41198BB120071F912 /* UIColor+Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

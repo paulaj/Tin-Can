@@ -8,14 +8,16 @@
 
 #import "ParticipantView.h"
 #import "Todo.h"
+#import "UIColor+Util.h"
 #import <math.h>
 
 @implementation ParticipantView
 
 @synthesize name;
 @synthesize assignedTodos;
+@synthesize color;
 
-- (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot {
+- (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c {
 	self = [super initWithFrame:CGRectMake(0,0, 260, 260)];
 	
 	NSLog(@"initing participant view.");
@@ -24,6 +26,12 @@
 	
 	self.name = participantName;
 	self.center = pos;
+    
+    // TODO figure out how to write the setter for self.color so
+    // we can update hoverColor when self.color gets updated.
+    self.color = [c colorDarkenedByPercent:0.3];
+    hoverColor = [self.color colorDarkenedByPercent:0.3];
+    
 	rotation = rot;
     
     [self setBackgroundColor:[UIColor clearColor]];
@@ -39,11 +47,11 @@
 	CGContextRotateCTM(ctx, rotation);
 	
 	if(ctx != nil) {
-		 
+		         
 		if(hover)
-			CGContextSetRGBFillColor(ctx, 0.0, 0.2, 0.6, 1.0);
+            CGContextSetFillColorWithColor(ctx, hoverColor.CGColor);
 		else
-			CGContextSetRGBFillColor(ctx, 0.6, 0.2, 0.0, 1.0);
+			CGContextSetFillColorWithColor(ctx, self.color.CGColor);
 
 		CGContextAddEllipseInRect(ctx, CGRectMake(-100, -100, 200, 200));
 		CGContextFillPath(ctx);

@@ -14,12 +14,15 @@
 	float rotation;
 	NSMutableSet *assignedTodos;
 	bool hover;
+    UIColor *color;
+    UIColor *hoverColor;
 }
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSMutableSet *assignedTodos;
+@property (nonatomic, retain) UIColor *color;
 
-- (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot;
+- (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c;
 - (void) setHoverState:(bool)hoverState;
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event;
