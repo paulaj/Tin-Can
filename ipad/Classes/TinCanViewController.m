@@ -7,9 +7,14 @@
 //
 
 #import "TinCanViewController.h"
+#import "ParticipantView.h"
 
 @implementation TinCanViewController
 
+
+
+
+#pragma mark Application Events
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {    
@@ -23,6 +28,7 @@
     [self.view addSubview:participantsContainer];
     [self.view setBackgroundColor:[UIColor blackColor]];
     
+    [self initParticipantsView];
     
     NSLog(@"Done loading view.");
 }
@@ -33,7 +39,6 @@
     [super viewDidLoad];    
     NSLog(@"viewDidLoad");
 }
-
 
 
 // Override to allow orientations other than the default portrait orientation.
@@ -56,6 +61,33 @@
 
 - (void)dealloc {
     [super dealloc];
+    [self.view release];
+    [participants release];
+    
 }
+
+
+
+
+#pragma mark Internal Methods
+
+- (void)initParticipantsView {
+    
+    participants = [[NSMutableSet set] retain];
+    // For now, hard code these. 
+    [participants addObject:[[ParticipantView alloc] initWithName:@"MATT" withPosition:CGPointMake(400, 1050) withRotation:0.0]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"DREW" withPosition:CGPointMake(-30, 512) withRotation:M_PI/2]];
+    [participants addObject:[[ParticipantView alloc] initWithName:@"CHRIS" withPosition:CGPointMake(798, 512) withRotation:-M_PI/2]];
+    
+    for(ParticipantView *participant in participants) {
+        
+        [participantsContainer addSubview:participant];
+        [participantsContainer bringSubviewToFront:participant];
+        [participant setNeedsDisplay];
+    }
+}
+
+
+
 
 @end

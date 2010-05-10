@@ -10,7 +10,11 @@
 
 @interface TinCanViewController : UIViewController {
     UIView* participantsContainer;
+    NSMutableSet* participants;
 }
+
+
+- (void)initParticipantsView;
 
 @end
 

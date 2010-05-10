@@ -8,7 +8,7 @@
 
 #import "TinCanAppDelegate.h"
 #import "TinCanViewController.h"
-#import "ParticipantsContainerView.h"
+#import "ParticipantView.h"
 
 @implementation TinCanAppDelegate
 
