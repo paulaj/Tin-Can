@@ -103,11 +103,11 @@
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 	// We want to do our hit test a little differently - just return true
 	// if it's inside the circle part of the participant rendering.
-	CGFloat distance = pow(point.x, 2) + pow(point.y, 2);
+	CGFloat distance = sqrt(pow(point.x, 2) + pow(point.y, 2));
 	
-	NSLog(@"distance=%f, radius=%f", distance, 40000.0);
+//	NSLog(@"distance=%f, radius=%f", distance, 40000.0);
 	
-	if (distance <= 40000.0f) {
+	if (distance <= 100.0f) {
 		return self;	
 	}
 	else {
