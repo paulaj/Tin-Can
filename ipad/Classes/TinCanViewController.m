@@ -30,6 +30,13 @@
     
     [self initParticipantsView];
     
+    
+    // Now, drop the MeetingTimer in the middle of the screen.
+    meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 75, 600)];
+    [meetingTimerView retain];
+    
+    [self.view addSubview:meetingTimerView];
+    
     NSLog(@"Done loading view.");
 }
 
@@ -63,7 +70,8 @@
     [super dealloc];
     [self.view release];
     [participants release];
-    
+    [participantsContainer release];
+    [meetingTimerView release];
 }
 
 

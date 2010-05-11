@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MeetingTimerView.h"
 
 @interface TinCanViewController : UIViewController {
     UIView* participantsContainer;
     NSMutableSet* participants;
+    MeetingTimerView *meetingTimerView;
 }
 
 
