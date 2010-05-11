@@ -13,10 +13,13 @@
     UIView* participantsContainer;
     NSMutableSet* participants;
     MeetingTimerView *meetingTimerView;
+    NSTimer *clock; 
 }
 
 
 - (void)initParticipantsView;
+- (void)clk;
+
 
 @end
 

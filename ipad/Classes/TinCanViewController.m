@@ -44,13 +44,18 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];    
+    
+    // Kick off the timer.
+    clock = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clk) userInfo:nil repeats:YES];
+    [clock retain];
+    
     NSLog(@"viewDidLoad");
 }
 
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,6 +68,11 @@
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+    [participantsContainer release];
+    participantsContainer = nil;
+    
+    [meetingTimerView release];
+    meetingTimerView = nil;
 }
 
 
@@ -70,14 +80,19 @@
     [super dealloc];
     [self.view release];
     [participants release];
-    [participantsContainer release];
-    [meetingTimerView release];
+    
+    [clock invalidate];
+    [clock release];
 }
 
 
 
 
 #pragma mark Internal Methods
+
+- (void)clk {
+    [meetingTimerView setNeedsDisplay];
+}   
 
 - (void)initParticipantsView {
     
