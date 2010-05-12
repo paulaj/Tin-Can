@@ -17,15 +17,19 @@
 
 - (id) initWithTodoText:(NSString *)todoText{
 	
-	if(self = [super initWithFrame:CGRectMake(100, 100, 200, 75)]) {
+    // Decide how big to be by looking at the text itself.
+    f = [UIFont systemFontOfSize:18];
+    CGSize fontSize = [todoText sizeWithFont:f];
+    CGSize totalSize = CGSizeMake(fontSize.width + 80, fontSize.height+40);
+    
+    
+	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.width, totalSize.height)]) {
 		touched = false;
 
-		f = [UIFont systemFontOfSize:12];
 
 		// figure out how big this is going to need to be.
-		CGSize fontSize = [todoText sizeWithFont:f];
 		
-		self.bounds = CGRectMake(-20, -20, fontSize.width+40, fontSize.height+40);
+		self.bounds = CGRectMake(-20, -20, totalSize.width, totalSize.height);
 
 		[self setBackgroundColor:[UIColor clearColor]];
         
@@ -56,7 +60,7 @@
 		CGContextSetRGBFillColor(ctx, 1.0, 1.0, 1.0, 1.0);
 		CGContextSetRGBStrokeColor(ctx, 1.0, 0.0, 0.0, 1.0);
 
-		[self.todo.text drawAtPoint:CGPointMake(40, 0) withFont:f];		
+		[self.todo.text drawAtPoint:CGPointMake(20, -10) withFont:f];		
 		
 	}
 	
