@@ -19,7 +19,9 @@
     NSMutableSet *todoViews;
     
     MeetingTimerView *meetingTimerView;
-    NSTimer *clock; 
+    NSTimer *clock;
+    
+    NSMutableDictionary *lastTodoDropTargets;
     
     // This is going to have to turn into a dictionary in a sec, but
     // for the one-touch-case, this will work.

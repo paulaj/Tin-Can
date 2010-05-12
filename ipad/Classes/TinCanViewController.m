@@ -11,9 +11,6 @@
 
 @implementation TinCanViewController
 
-
-
-
 #pragma mark Application Events
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -38,11 +35,8 @@
     [todosContainer retain];
     [self.view addSubview:todosContainer];
     
-    
     [self initParticipantsView];
     [self initTodoViews];
-    
-    
     
     NSLog(@"Done loading view.");
 }
@@ -55,6 +49,8 @@
     // Kick off the timer.
     clock = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clk) userInfo:nil repeats:YES];
     [clock retain];
+
+    lastTodoDropTargets = [[NSMutableDictionary dictionary] retain];
     
     NSLog(@"viewDidLoad");
 }
@@ -92,6 +88,8 @@
     [participants release];
     [todoViews release];
     
+    [lastTodoDropTargets release];
+    
     [clock invalidate];
     [clock release];
 }
@@ -100,8 +98,12 @@
 #pragma mark TodoDragDelegate
 
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo{
+    
+    // Get the last target
+    ParticipantView *lastDropTarget = [lastTodoDropTargets objectForKey:todo];
+    
     // Now check and see if we're over a participant right now.
-	ParticipantView *curTargetParticipant = [self participantAtTouch:touch withEvent:event];
+	ParticipantView *curDropTarget = [self participantAtTouch:touch withEvent:event];
         
 	// rethinking this...
 	// if cur and last are the same, do nothing.
@@ -109,48 +111,46 @@
 	// if cur is nothing and last is something, release and set false
 	// if cur is something and last is nothing, retain and set true
 	
-	if(curTargetParticipant != nil) {
-		if (lastTargetParticipant == nil) {
-			[curTargetParticipant setHoverState:true];
-			[curTargetParticipant retain];
-			lastTargetParticipant = curTargetParticipant;			
-		} else if(curTargetParticipant != lastTargetParticipant) {
+	if(curDropTarget != nil) {
+		if (lastDropTarget == nil) {
+			[curDropTarget setHoverState:true];
+			[curDropTarget retain];
+			lastDropTarget = curDropTarget;			
+		} else if(curDropTarget != lastDropTarget) {
 			// transition.
-			[lastTargetParticipant setHoverState:false];
-			[lastTargetParticipant release];
+			[lastDropTarget setHoverState:false];
+			[lastDropTarget release];
             
 			// No matter what, we want to set the current one true
-			[curTargetParticipant setHoverState:true];
-			[curTargetParticipant retain];
-			lastTargetParticipant = curTargetParticipant;
+			[curDropTarget setHoverState:true];
+			[curDropTarget retain];
+			lastDropTarget = curDropTarget;
 		}
 		
 		// If they're the same, do nothing - don't want to be sending the
 		// retain count through the roof.
 	} else {
 		// curTargetView IS nul.
-		if(lastTargetParticipant != nil) {
-			[lastTargetParticipant setHoverState:false];
-			[lastTargetParticipant release];		
-			lastTargetParticipant = nil;
+		if(lastDropTarget != nil) {
+			[lastDropTarget setHoverState:false];
+			[lastDropTarget release];		
+			lastDropTarget = nil;
 		}
 		
 		// If they're both nil, do nothing.
 	}
 	
 	
-	[lastTargetParticipant setHoverState:false];
-	[lastTargetParticipant release];
-	if(curTargetParticipant !=nil) {
-		[curTargetParticipant setHoverState:true];
-		lastTargetParticipant = curTargetParticipant;
-		[lastTargetParticipant retain];
+	[lastDropTarget setHoverState:false];
+	[lastDropTarget release];
+	if(curDropTarget !=nil) {
+		[curDropTarget setHoverState:true];
+		lastDropTarget = curDropTarget;
+		[lastDropTarget retain];
 	}
-	
-	// Trigger a call the parent asking for a pull-to-forward? Not sure what the etiquette
-	// is for that.
-    
-    
+        
+    // Now push the current last into the dictionary.
+    [lastTodoDropTargets setValue:lastDropTarget forKey:todo];
 }
 
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo {

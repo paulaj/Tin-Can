@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface Todo : NSObject {
+@interface Todo : NSObject  <NSCopying> {
 	NSString *text;
 	NSDate *created;
 	NSString *createdBy;
@@ -19,6 +19,8 @@
 }
 
 - (id) initWithText:(NSString *)todoText withCreator:(NSString *)creator;
+
+- (id) copyWithZone:(NSZone *)zone;
 
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSDate *created;

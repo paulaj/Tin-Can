@@ -26,4 +26,8 @@
 	return self;
 }
 
+- (id) copyWithZone:(NSZone *)zone {
+    return [self retain];
+}
+
 @end
