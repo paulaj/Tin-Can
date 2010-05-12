@@ -22,14 +22,15 @@
     CGSize fontSize = [todoText sizeWithFont:f];
     CGSize totalSize = CGSizeMake(fontSize.width + 80, fontSize.height+40);
     
-    
-	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.width, totalSize.height)]) {
+    // .height and .width are intentionally flipped here, to adjust the orientation
+    // to the standard horizontal one. 
+	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.height, totalSize.width)]) {
 		touched = false;
 
 
 		// figure out how big this is going to need to be.
 		
-		self.bounds = CGRectMake(-20, -20, totalSize.width, totalSize.height);
+		self.bounds = CGRectMake(-20, -20, totalSize.height, totalSize.width);
 
 		[self setBackgroundColor:[UIColor clearColor]];
         
@@ -46,7 +47,9 @@
 - (void) drawRect:(CGRect)rect {
 	
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	
+    
+	CGContextRotateCTM(ctx, M_PI/2);
+    
 	if(ctx != nil) {
 
  		// at 0,0, draw a circle to represent this todo object.
@@ -58,14 +61,11 @@
 		
 		CGContextFillEllipseInRect(ctx, CGRectMake(-15, -15, 30, 30));
 		
-		
 		CGContextSetRGBFillColor(ctx, 1.0, 1.0, 1.0, 1.0);
 		CGContextSetRGBStrokeColor(ctx, 1.0, 0.0, 0.0, 1.0);
 
 		[self.todo.text drawAtPoint:CGPointMake(20, -10) withFont:f];		
-		
 	}
-	
 }
 
 
