@@ -102,6 +102,8 @@
 }
 
 - (void)dealloc {
+    // This causes a warning because "release" isn't in the protocol - can't we assume
+    // everything inherits from NSObject? 
     [delegate release];
 	[todo release];
 	[super dealloc];

@@ -98,10 +98,9 @@
 #pragma mark TodoDragDelegate
 
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
     // Now check and see if we're over a participant right now.
 	ParticipantView *curTargetParticipant = [self participantAtTouch:touch withEvent:event];
-    
+        
 	// rethinking this...
 	// if cur and last are the same, do nothing.
 	// if they're different, release the old and retain the new and manage states.
@@ -160,15 +159,15 @@
 #pragma mark Internal Methods
 
 - (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
     CGPoint point = [touch locationInView:self.view];
     UIView *returnedView = [participantsContainer hitTest:point withEvent:event];
-    
-    if(returnedView==nil)
+    if(returnedView==nil) {
         return nil;
+    }
     
-    if([returnedView isKindOfClass:[ParticipantView class]])
+    if([returnedView isKindOfClass:[ParticipantView class]]) {
         return ((ParticipantView *) returnedView);
+    }
     else {
         return nil;
     }

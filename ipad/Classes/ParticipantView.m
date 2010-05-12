@@ -30,8 +30,7 @@
     // TODO figure out how to write the setter for self.color so
     // we can update hoverColor when self.color gets updated.
     self.color = [c colorDarkenedByPercent:0.3];
-    hoverColor = [self.color colorDarkenedByPercent:0.3];
-    
+        
 	rotation = rot;
     
     [self setBackgroundColor:[UIColor clearColor]];
@@ -47,9 +46,12 @@
 	CGContextRotateCTM(ctx, rotation);
 	
 	if(ctx != nil) {
-		         
+
+        //CGContextSetFillColorWithColor(ctx, hoverColor.CGColor);
+
+        
 		if(hover)
-            CGContextSetFillColorWithColor(ctx, hoverColor.CGColor);
+            CGContextSetFillColorWithColor(ctx, [self.color colorDarkenedByPercent:0.3].CGColor);
 		else
 			CGContextSetFillColorWithColor(ctx, self.color.CGColor);
 
@@ -96,6 +98,7 @@
 }
 
 - (void) setHoverState:(bool)hoverState {
+    NSLog(@"setting hover state!");
 	hover = hoverState;
 	[self setNeedsDisplay];
 }
@@ -105,7 +108,7 @@
 	// if it's inside the circle part of the participant rendering.
 	CGFloat distance = sqrt(pow(point.x, 2) + pow(point.y, 2));
 	
-//	NSLog(@"distance=%f, radius=%f", distance, 40000.0);
+	// NSLog(@"distance=%f, radius=%f", distance, 40000.0);
 	
 	if (distance <= 100.0f) {
 		return self;	

@@ -14,8 +14,8 @@
 	float rotation;
 	NSMutableSet *assignedTodos;
 	bool hover;
+    
     UIColor *color;
-    UIColor *hoverColor;
 }
 
 @property (nonatomic, retain) NSString *name;
