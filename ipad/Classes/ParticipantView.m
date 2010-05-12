@@ -85,17 +85,18 @@
 			CGContextAddEllipseInRect(ctx, CGRectMake(-140, 0, 30, 30));
 			CGContextFillPath(ctx);
 		}
-		
-		
 	}
 }
 
 - (void) assignTodo:(Todo *)todo {
+    
 	[assignedTodos addObject:todo];
+    todo.parentView = self;
 	
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
 	[self setNeedsDisplay];
 }
+
 
 - (void) setHoverState:(bool)hoverState {
     NSLog(@"setting hover state!");

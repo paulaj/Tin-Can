@@ -35,6 +35,8 @@
         
 		self.todo = [[Todo alloc] initWithText:todoText withCreator:@"Drew"];
 		[self.todo retain];
+        
+        self.todo.parentView = self;
 		
 		[self setNeedsDisplay];
 	}
@@ -87,7 +89,7 @@
 	self.center = CGPointMake(self.center.x + dX, self.center.y + dY);
 
     
-    [self.delegate todoDragMovedWithTouch:touch withEvent:event];
+    [self.delegate todoDragMovedWithTouch:touch withEvent:event withTodo:self.todo];
 	
 	[self setNeedsDisplay];
 	[self bringSubviewToFront:self];
@@ -98,11 +100,16 @@
 	
     UITouch *touch = [touches anyObject];
     
-    
     touched = false;
     
     [self.delegate todoDragEndedWithTouch:touch withEvent:event withTodo:self.todo];
 	[self setNeedsDisplay];
+}
+
+- (void) deassign {
+    [self.todo release];
+    self.todo = nil;
+    [self removeFromSuperview];
 }
 
 - (void)dealloc {

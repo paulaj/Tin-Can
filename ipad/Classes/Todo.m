@@ -14,6 +14,7 @@
 @synthesize text;
 @synthesize created;
 @synthesize createdBy;
+@synthesize parentView;
 
 - (id) initWithText:(NSString *)todoText withCreator:(NSString *)creator {
 	self = [super init];

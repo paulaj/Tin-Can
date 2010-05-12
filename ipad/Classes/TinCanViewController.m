@@ -97,7 +97,7 @@
 
 #pragma mark TodoDragDelegate
 
-- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo{
     // Now check and see if we're over a participant right now.
 	ParticipantView *curTargetParticipant = [self participantAtTouch:touch withEvent:event];
         
@@ -152,7 +152,25 @@
 }
 
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo {
-    NSLog(@"todo drag ended!");
+    // Get the current target
+    ParticipantView *curTargetView = [self participantAtTouch:touch withEvent:event];	
+
+    // Assign the todo.
+    if(curTargetView != nil) {
+        
+        // remove the current view containing the todo
+        // from view. This is making me a bit unsettled - why
+        // are views containing data objects like this? Should
+        // I be segmenting this design further, so each of these
+        // views has its own controller, too, that contains
+        // this stuff?
+        [todo.parentView deassign];
+        
+        [curTargetView assignTodo:todo];
+        [curTargetView setHoverState:false];
+    }
+    
+    
 }
 
 

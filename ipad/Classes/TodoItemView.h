@@ -13,7 +13,7 @@
 @class TodoDragTestAppDelegate;
 
 @protocol TodoDragDelegate
-- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event;
+- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 @end
 
@@ -26,6 +26,8 @@
 }
 
 - (id) initWithTodoText:(NSString *)todoText;
+- (void) deassign;
+
 
 @property (nonatomic, retain) Todo *todo;
 @property (nonatomic, assign) id <TodoDragDelegate> delegate;

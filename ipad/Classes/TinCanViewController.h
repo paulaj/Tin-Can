@@ -37,7 +37,7 @@
 
 
 
-- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event;
+- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 
 

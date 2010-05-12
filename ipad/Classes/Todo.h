@@ -14,6 +14,7 @@
 	NSDate *created;
 	NSString *createdBy;
 	
+    UIView *parentView;
 	// Some sort of history thing here?
 }
 
@@ -22,6 +23,6 @@
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSDate *created;
 @property (nonatomic, retain) NSString *createdBy;
-
+@property (nonatomic, retain) UIView *parentView;
 
 @end
