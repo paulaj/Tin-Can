@@ -21,7 +21,12 @@
     self = [super initWithFrame:frame];
     
     startDate = [[NSDate date] retain];
-    
+
+    dateFormatter = [[[NSDateFormatter alloc] init] retain];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+
+    dateFont = [[UIFont boldSystemFontOfSize:24] retain];
+
     // Rotate it!
     [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
     
@@ -63,11 +68,24 @@
     CGContextFillRect(ctx, progressRect);
     
     
+    // Now lets draw the current time.
+    NSDate *today = [[NSDate date] autorelease];
+
+    // display in 12HR/24HR (i.e. 11:25PM or 23:25) format according to User Settings
+    NSString *currentTime = [[dateFormatter stringFromDate:today] autorelease];
+
+    CGContextSetRGBFillColor(ctx, 1.0, 1.0, 1.0, 1.0);
+    [currentTime drawAtPoint:CGPointMake(0, 20) withFont:dateFont];
+
 }
 
 - (void) dealloc {
     [super dealloc];
     [startDate release];
+    
+    [dateFont release];
+    [dateFormatter release];
+    
 }
 
 @end

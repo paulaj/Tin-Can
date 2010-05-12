@@ -11,6 +11,9 @@
 
 @interface MeetingTimerView : UIView {
     NSDate *startDate;    
+    
+    UIFont *dateFont;
+    NSDateFormatter *dateFormatter;
 }
 
 - (id) init;
