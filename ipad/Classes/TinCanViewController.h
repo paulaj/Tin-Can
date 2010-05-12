@@ -8,17 +8,30 @@
 
 #import <UIKit/UIKit.h>
 #import "MeetingTimerView.h"
+#import "TodoItemView.h"
+#import "ParticipantView.h"
 
-@interface TinCanViewController : UIViewController {
+@interface TinCanViewController : UIViewController <TodoDragDelegate> {
     UIView* participantsContainer;
     NSMutableSet* participants;
     MeetingTimerView *meetingTimerView;
     NSTimer *clock; 
+    
+    // This is going to have to turn into a dictionary in a sec, but
+    // for the one-touch-case, this will work.
+    ParticipantView *lastTargetParticipant;
 }
 
 
 - (void)initParticipantsView;
 - (void)clk;
+- (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event;
+
+
+
+- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event;
+- (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
+
 
 
 @end

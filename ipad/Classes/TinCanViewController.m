@@ -86,9 +86,86 @@
 }
 
 
+#pragma mark TodoDragDelegate
+
+- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+    // Now check and see if we're over a participant right now.
+	ParticipantView *curTargetParticipant = [self participantAtTouch:touch withEvent:event];
+    
+	// rethinking this...
+	// if cur and last are the same, do nothing.
+	// if they're different, release the old and retain the new and manage states.
+	// if cur is nothing and last is something, release and set false
+	// if cur is something and last is nothing, retain and set true
+	
+	if(curTargetParticipant != nil) {
+		if (lastTargetParticipant == nil) {
+			[curTargetParticipant setHoverState:true];
+			[curTargetParticipant retain];
+			lastTargetParticipant = curTargetParticipant;			
+		} else if(curTargetParticipant != lastTargetParticipant) {
+			// transition.
+			[lastTargetParticipant setHoverState:false];
+			[lastTargetParticipant release];
+            
+			// No matter what, we want to set the current one true
+			[curTargetParticipant setHoverState:true];
+			[curTargetParticipant retain];
+			lastTargetParticipant = curTargetParticipant;
+		}
+		
+		// If they're the same, do nothing - don't want to be sending the
+		// retain count through the roof.
+	} else {
+		// curTargetView IS nul.
+		if(lastTargetParticipant != nil) {
+			[lastTargetParticipant setHoverState:false];
+			[lastTargetParticipant release];		
+			lastTargetParticipant = nil;
+		}
+		
+		// If they're both nil, do nothing.
+	}
+	
+	
+	[lastTargetParticipant setHoverState:false];
+	[lastTargetParticipant release];
+	if(curTargetParticipant !=nil) {
+		[curTargetParticipant setHoverState:true];
+		lastTargetParticipant = curTargetParticipant;
+		[lastTargetParticipant retain];
+	}
+	
+	// Trigger a call the parent asking for a pull-to-forward? Not sure what the etiquette
+	// is for that.
+    
+    
+}
+
+- (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo {
+    NSLog(@"todo drag ended!");
+}
 
 
 #pragma mark Internal Methods
+
+- (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+    CGPoint point = [touch locationInView:self.view];
+    UIView *returnedView = [participantsContainer hitTest:point withEvent:event];
+    
+    if(returnedView==nil)
+        return nil;
+    
+    if([returnedView isKindOfClass:[ParticipantView class]])
+        return ((ParticipantView *) returnedView);
+    else {
+        return nil;
+    }
+    
+}
+
 
 - (void)clk {
     [meetingTimerView setNeedsDisplay];

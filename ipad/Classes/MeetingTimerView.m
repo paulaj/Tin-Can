@@ -50,7 +50,6 @@
     // the current time is more recent than the date it's called on. Feels backwards to me, but
     // what can you do.
     CGFloat timeFraction = -1 * [startDate timeIntervalSinceNow] / (meetingDurationSeconds);
-    NSLog(@"timeFraction: %f", timeFraction);
     
     CGRect progressRect = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height*timeFraction);
     CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
