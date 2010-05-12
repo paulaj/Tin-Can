@@ -24,13 +24,12 @@
     
     // .height and .width are intentionally flipped here, to adjust the orientation
     // to the standard horizontal one. 
-	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.height, totalSize.width)]) {
+	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.width, totalSize.height)]) {
 		touched = false;
-
 
 		// figure out how big this is going to need to be.
 		
-		self.bounds = CGRectMake(-20, -20, totalSize.height, totalSize.width);
+		self.bounds = CGRectMake(-20, -20, totalSize.width, totalSize.height);
 
 		[self setBackgroundColor:[UIColor clearColor]];
         
@@ -38,7 +37,9 @@
 		[self.todo retain];
         
         self.todo.parentView = self;
-		
+
+        [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
+
 		[self setNeedsDisplay];
 	}
 	return self;
@@ -46,10 +47,9 @@
 
 - (void) drawRect:(CGRect)rect {
 	
+
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
-	CGContextRotateCTM(ctx, M_PI/2);
-    
+        
 	if(ctx != nil) {
 
  		// at 0,0, draw a circle to represent this todo object.
@@ -83,12 +83,19 @@
 	
 	UITouch *touch = [touches anyObject];
 		
-	float dX = [touch locationInView:self].x - [touch previousLocationInView:self].x;
-	float dY = [touch locationInView:self].y - [touch previousLocationInView:self].y;
+    // Getting the points relative to self.superview instead of self fixes my rotation problem.
+    // This is a little bit cheating. It works because the superview isn't rotated, and since
+    // all we care about is the delta positions dX and dY not their absolute values,
+    // we can calculate that in any non-rotated coordinate system. The alternate way to do this,
+    // (I think) is to apply the current view transform to the resulting points. Not sure
+    // which way is better, so going with this for now because it's less code. But be aware
+    // in the future of what's going on with this as I shift more drawing code to sensible
+    // coordinate systems and then rotate them into place.
+	float dX = [touch locationInView:self.superview].x - [touch previousLocationInView:self.superview].x;
+	float dY = [touch locationInView:self.superview].y - [touch previousLocationInView:self.superview].y;
 		
 	self.center = CGPointMake(self.center.x + dX, self.center.y + dY);
 
-    
     [self.delegate todoDragMovedWithTouch:touch withEvent:event withTodo:self.todo];
 	
 	[self setNeedsDisplay];

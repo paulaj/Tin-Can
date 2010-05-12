@@ -13,6 +13,6 @@
     NSDate *startDate;    
 }
 
-- (id) initWithFrame:(CGRect)frame;
+- (id) init;
 
 @end

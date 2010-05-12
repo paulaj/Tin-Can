@@ -12,7 +12,9 @@
 @implementation MeetingTimerView
 
 
-- (id) initWithFrame:(CGRect)frame {
+- (id) init {    
+    CGRect frame = CGRectMake(200, 200, 150, 600);
+    
     self = [super initWithFrame:frame];
     
     startDate = [[NSDate date] retain];
@@ -24,6 +26,7 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
+//    CGRect progressBarFrame = CGRectMake(75, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
     
     // Draw the background of the progress bar.
     CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
@@ -32,14 +35,12 @@
     CGContextFillRect(ctx, self.bounds);
     CGContextStrokeRect(ctx, self.bounds);
     
-    
     // Fill it in based on how long it's been since it was created.
     // (use timeIntervalSinceNow).
     
     // For now, lets assume a 10 minute meeting so it's possible to see
     // what's actually going on over the course of a demo.
     // TODO Make this an actual constant.
-    
     
     // We're going to assume the aspect ratio here is thin and tall. At some point,
     // this will probably get abstracted to be a different coordinate system that
@@ -55,7 +56,6 @@
     CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
     CGContextFillRect(ctx, progressRect);
     
-    // Draw a nice bright line at the current time.
     
 }
 

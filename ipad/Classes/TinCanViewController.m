@@ -22,7 +22,7 @@
     // Now, drop the MeetingTimer in the middle of the screen.
     
     // Add the timer first, so it's underneath everything.
-    meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 75, 600)];
+    meetingTimerView = [[MeetingTimerView alloc] init];
     [meetingTimerView retain];
     [self.view addSubview:meetingTimerView];
 
