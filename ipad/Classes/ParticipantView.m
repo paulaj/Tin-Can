@@ -72,9 +72,7 @@
 		
 		[name drawAtPoint:CGPointMake(-nameSize.width/2, -nameSize.height/2-55) withFont:f];
 
-		CGContextSetRGBFillColor(ctx, 0.6, 0.2, 0.0, 1.0);
-		NSLog(@"About to draw circles: %d", [assignedTodos count]);
-
+		CGContextSetFillColorWithColor(ctx, self.color.CGColor);
 		
 		CGContextRotateCTM(ctx, M_PI/10);
 
@@ -99,7 +97,6 @@
 
 
 - (void) setHoverState:(bool)hoverState {
-    NSLog(@"setting hover state!");
 	hover = hoverState;
 	[self setNeedsDisplay];
 }
@@ -124,6 +121,4 @@
 	[assignedTodos release];
 	[name release];
 }
-
-
 @end
