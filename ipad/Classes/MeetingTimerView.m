@@ -13,11 +13,17 @@
 
 
 - (id) init {    
-    CGRect frame = CGRectMake(200, 200, 150, 600);
+    
+    // I'm not sure why (0, 350) puts there where it's supposed to be.
+    // Rotating seems to cause some weird issues.
+    CGRect frame = CGRectMake(0, 425, 600, 150);
     
     self = [super initWithFrame:frame];
     
     startDate = [[NSDate date] retain];
+    
+    // Rotate it!
+    [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
     
     return self;
 }
@@ -26,14 +32,14 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-//    CGRect progressBarFrame = CGRectMake(75, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
+    CGRect progressBarFrame = CGRectMake(0, self.bounds.size.height/2, self.bounds.size.width, self.bounds.size.height/2);
     
     // Draw the background of the progress bar.
     CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
     CGContextSetRGBFillColor(ctx, 0.1, 0.1, 0.1, 1.0);
         
-    CGContextFillRect(ctx, self.bounds);
-    CGContextStrokeRect(ctx, self.bounds);
+    CGContextFillRect(ctx, progressBarFrame);
+    CGContextStrokeRect(ctx, progressBarFrame);
     
     // Fill it in based on how long it's been since it was created.
     // (use timeIntervalSinceNow).
@@ -52,7 +58,7 @@
     // what can you do.
     CGFloat timeFraction = -1 * [startDate timeIntervalSinceNow] / (meetingDurationSeconds);
     
-    CGRect progressRect = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height*timeFraction);
+    CGRect progressRect = CGRectMake(progressBarFrame.origin.x, progressBarFrame.origin.y, self.bounds.size.width*timeFraction, self.bounds.size.height);
     CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
     CGContextFillRect(ctx, progressRect);
     
