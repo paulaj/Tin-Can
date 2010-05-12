@@ -21,15 +21,20 @@
     // TODO I don't like having to hardcode the frame here - worried about rotation and 
     // portability / scalability if resolutions change in the future.
     self.view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)] retain];
+    [self.view setBackgroundColor:[UIColor blackColor]];
     
     // Create the participants view.
     participantsContainer = [[UIView alloc] initWithFrame:self.view.frame];
     [participantsContainer retain];
     [self.view addSubview:participantsContainer];
-    [self.view setBackgroundColor:[UIColor blackColor]];
+    
+    todosContainer = [[UIView alloc] initWithFrame:self.view.frame];
+    [todosContainer retain];
+    [self.view addSubview:todosContainer];
+    
     
     [self initParticipantsView];
-    
+    [self initTodoViews];
     
     // Now, drop the MeetingTimer in the middle of the screen.
     meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 75, 600)];
@@ -73,6 +78,9 @@
     
     [meetingTimerView release];
     meetingTimerView = nil;
+    
+    [todosContainer release];
+    todosContainer = nil;
 }
 
 
@@ -80,6 +88,7 @@
     [super dealloc];
     [self.view release];
     [participants release];
+    [todoViews release];
     
     [clock invalidate];
     [clock release];
@@ -202,6 +211,24 @@
     }
 }
 
+- (void)initTodoViews {
+    
+    // Add in some fake todos here so we can re-test the dragging/dropping code.
+    todoViews = [[NSMutableSet set] retain];
+    
+    [todoViews addObject:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
+    [todoViews addObject:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
+    [todoViews addObject:[[TodoItemView alloc] initWithTodoText:@"Set up a meeting with Debbie."]];
+
+     for(TodoItemView *todoItem in todoViews) {
+         [todoItem setDelegate:self];
+         [todosContainer addSubview:todoItem];
+         [todosContainer bringSubviewToFront:todoItem];
+         [todoItem setNeedsDisplay];
+     }
+     
+     
+}
 
 
 

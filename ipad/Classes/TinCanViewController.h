@@ -12,8 +12,12 @@
 #import "ParticipantView.h"
 
 @interface TinCanViewController : UIViewController <TodoDragDelegate> {
-    UIView* participantsContainer;
-    NSMutableSet* participants;
+    UIView *participantsContainer;
+    UIView *todosContainer;
+    
+    NSMutableSet *participants;
+    NSMutableSet *todoViews;
+    
     MeetingTimerView *meetingTimerView;
     NSTimer *clock; 
     
@@ -24,7 +28,11 @@
 
 
 - (void)initParticipantsView;
+- (void)initTodoViews;
+
 - (void)clk;
+
+
 - (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event;
 
 
