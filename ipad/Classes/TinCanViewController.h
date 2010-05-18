@@ -41,7 +41,7 @@
 
 - (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event;
 
-
+- (void)addTodoItemView:(TodoItemView *)view;
 
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;

@@ -39,7 +39,6 @@
     [self initParticipantsView];
     [self initTodoViews];
     
-    
     queue = [[[NSOperationQueue alloc] init] retain];
     
     NSLog(@"Done loading view.");
@@ -245,20 +244,21 @@
     // Add in some fake todos here so we can re-test the dragging/dropping code.
     todoViews = [[NSMutableSet set] retain];
     
-    [todoViews addObject:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
-    [todoViews addObject:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
-    [todoViews addObject:[[TodoItemView alloc] initWithTodoText:@"Set up a meeting with Debbie."]];
-
-     for(TodoItemView *todoItem in todoViews) {
-         [todoItem setDelegate:self];
-         [todosContainer addSubview:todoItem];
-         [todosContainer bringSubviewToFront:todoItem];
-         [todoItem setNeedsDisplay];
-     }
-     
-     
+    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
+    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
+    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Set up a meeting with Debbie."]];     
 }
 
+// Should this operate on the Todo level or TodoItemView? I like Todo better,
+// but since there's that initWithText sugar, they're equally easy to 
+// do right now. TODO refactor this later.
+- (void)addTodoItemView:(TodoItemView *)view {
+ 
+    [todoViews addObject:view];
+    [view setDelegate:self];
+    [todosContainer addSubview:view];
+    [view setNeedsDisplay];
+}
 
 - (void)handleTodoCommandString:(NSString *)operation {
     NSLog(@"handling Todo operation string: %@", operation);
@@ -266,7 +266,9 @@
     // Do a little dispatch / handling here where we look for the command
     // code and then parse the arguments appropriately.
     
-    
+    // This is a trivial implementation - this should really split the data
+    // field up and decide based on commands. But for now...
+    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:operation]];
     
     // Now kick off a new update operation. Since these are
     // long polling, we should only do this exactly as often

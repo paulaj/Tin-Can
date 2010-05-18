@@ -35,7 +35,7 @@
     SBJSON *parser = [[[SBJSON alloc] init] autorelease];
     
     // Request the latest event from toqbot.
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan"]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
     
     // Perform request and get JSON back as a NSData object
     NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
