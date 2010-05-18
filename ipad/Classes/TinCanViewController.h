@@ -47,6 +47,8 @@
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 
 
+- (void)handleTodoCommandString:(NSString *)operation;
+
 
 @end
 

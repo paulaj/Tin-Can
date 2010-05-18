@@ -12,6 +12,16 @@
 
 @implementation TodoUpdateOperation
 
+@synthesize viewController;
+
+- (id)initWithViewController:(TinCanViewController *)vC {
+    
+    if (![super init]) return nil;
+    
+    [self setViewController:vC];
+    
+    return self;
+}
 
 - (void)main {
  
@@ -39,12 +49,17 @@
     // Here we're using NSArray since we're parsing an array of JSON status objects
     NSArray *result = [parser objectWithString:json_string error:nil];
     
-
     // We're expecting an array with a single dictionary in it.
     // Dump the fields we're expecting.
     NSDictionary *entry = [result objectAtIndex:0];
     NSLog(@"dictionary: %@", entry);
     
+    [viewController handleTodoCommandString:[entry objectForKey:@"data"]];
+}
+
+- (void)dealloc {
+    [viewController release], viewController = nil;
+    [super dealloc];
 }
 
 @end

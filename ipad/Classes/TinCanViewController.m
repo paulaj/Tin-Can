@@ -58,7 +58,7 @@
     
     
     // Push an update into the queue.
-    [queue addOperation:[[TodoUpdateOperation alloc] init]];
+    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self]];
     
     NSLog(@"viewDidLoad");
 }
@@ -259,6 +259,21 @@
      
 }
 
+
+- (void)handleTodoCommandString:(NSString *)operation {
+    NSLog(@"handling Todo operation string: %@", operation);
+    
+    // Do a little dispatch / handling here where we look for the command
+    // code and then parse the arguments appropriately.
+    
+    
+    
+    // Now kick off a new update operation. Since these are
+    // long polling, we should only do this exactly as often
+    // as we're getting events from toqbot.
+    NSLog(@"Enqueing a new update operation...");
+    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self]];
+}
 
 
 @end
