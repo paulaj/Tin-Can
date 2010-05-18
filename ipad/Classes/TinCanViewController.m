@@ -8,6 +8,7 @@
 
 #import "TinCanViewController.h"
 #import "ParticipantView.h"
+#import "TodoUpdateOperation.h"
 
 @implementation TinCanViewController
 
@@ -38,6 +39,9 @@
     [self initParticipantsView];
     [self initTodoViews];
     
+    
+    queue = [[[NSOperationQueue alloc] init] retain];
+    
     NSLog(@"Done loading view.");
 }
 
@@ -51,6 +55,10 @@
     [clock retain];
 
     lastTodoDropTargets = [[NSMutableDictionary dictionary] retain];
+    
+    
+    // Push an update into the queue.
+    [queue addOperation:[[TodoUpdateOperation alloc] init]];
     
     NSLog(@"viewDidLoad");
 }
@@ -89,6 +97,8 @@
     [todoViews release];
     
     [lastTodoDropTargets release];
+    
+    [queue release];
     
     [clock invalidate];
     [clock release];
