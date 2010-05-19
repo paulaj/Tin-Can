@@ -23,9 +23,9 @@
     // Now, drop the MeetingTimer in the middle of the screen.
     
     // Add the timer first, so it's underneath everything.
-    meetingTimerView = [[MeetingTimerView alloc] init];
-    [meetingTimerView retain];
-    [self.view addSubview:meetingTimerView];
+//    meetingTimerView = [[MeetingTimerView alloc] init];
+//    [meetingTimerView retain];
+//    [self.view addSubview:meetingTimerView];
 
     // Create the participants view.
     participantsContainer = [[UIView alloc] initWithFrame:self.view.frame];
