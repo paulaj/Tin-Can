@@ -260,15 +260,71 @@
     [view setNeedsDisplay];
 }
 
-- (void)handleTodoCommandString:(NSString *)operation {
-    NSLog(@"handling Todo operation string: %@", operation);
+
+#pragma mark Communication Handling
+
+// NEW_TODO todo_id user_id todo_text
+- (void)handleNewTodoWithArguments:(NSArray *)args {
+
+    // Check for the right argument count first.
+    // TODO need some kind of error handling here. Not sure how to do
+    // that nicely in obj c yet.
+    if ([args count] < 4) {
+        NSLog(@"Tried to handle a new todo message, but it didn't have enough args: %@", args);
+        return;
+    }
+
+    NSLog(@"valid number of arguments: %@", args);
+    
+    // Split up the arguments.
+    int todoId = [[args objectAtIndex:1] intValue];
+    int userId = [[args objectAtIndex:2] intValue];
+    
+    // Need to construct an array that's just the back 3:end of the original.
+    // This should be easy, but it's not AFAICT.
+    NSRange textComponents = NSMakeRange(3, [args count]-3);
+    NSString *todoText = [[args subarrayWithRange:textComponents] componentsJoinedByString:@" "];
+    
+    NSLog(@"NEW_TODO: from %d, with id %d and text '%@'", todoId, userId, todoText);
+    
+    // This is a trivial implementation - this should really split the data
+    // field up and decide based on commands. But for now...
+    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:todoText]];    
+}
+
+// ASSIGN_TODO todo_id user_id
+// user_id=-1 means deassign the todo from everyone
+- (void)handleAssignTodoWithArguments:(NSArray *)args {
+    NSLog(@"Got assign todo message, but can't do anything useful with it yet. args: %@", args);
+}
+
+
+- (void)dispatchTodoCommandString:(NSString *)operation {
+    if (operation == nil) {
+        return;
+    }
     
     // Do a little dispatch / handling here where we look for the command
     // code and then parse the arguments appropriately.
     
-    // This is a trivial implementation - this should really split the data
-    // field up and decide based on commands. But for now...
-    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:operation]];
+    // TODO properly handle message with no spaces in them - they seem to 
+    // die in a terrible way right now.
+    NSArray *commandParts = [operation componentsSeparatedByString:@" "];
+    
+    // Ignore if it doesn't have at least three parts (the current
+    // minimum number of arguments for a command)
+    if([commandParts count] >= 3)  {        
+        NSString *opCode = [commandParts objectAtIndex:0];
+        NSLog(@"opCode: %@", opCode);
+        if([opCode isEqualToString:@"NEW_TODO"]) {
+            NSLog(@"about to drop into handleNewTodo");
+            [self handleNewTodoWithArguments:commandParts];
+        } else if ([opCode isEqualToString:@"ASSIGN_TODO"]) {
+            [self handleAssignTodoWithArguments:commandParts];        
+        } else {
+            NSLog(@"Received unknown opCode: %@", opCode);
+        }
+    }
     
     // Now kick off a new update operation. Since these are
     // long polling, we should only do this exactly as often

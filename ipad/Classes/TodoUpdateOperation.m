@@ -54,7 +54,14 @@
     NSDictionary *entry = [result objectAtIndex:0];
     NSLog(@"dictionary: %@", entry);
     
-    [viewController handleTodoCommandString:[entry objectForKey:@"data"]];
+    if(entry != nil)
+        // TODO change this to a callSelectorOnMainThread call.
+        [viewController dispatchTodoCommandString:[entry objectForKey:@"data"]];
+    else {
+        NSLog(@"got a null dictionary from the JSON parser - almost certainly a timeout.");
+        [viewController dispatchTodoCommandString:nil];        
+    }
+
 }
 
 - (void)dealloc {
