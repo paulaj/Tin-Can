@@ -27,6 +27,7 @@
 		3AC2BD8D11A33DDE0071F912 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BD8611A33DDE0071F912 /* SBJsonParser.m */; };
 		3AC2BD8E11A33DDE0071F912 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BD8811A33DDE0071F912 /* SBJsonWriter.m */; };
 		3AC2BD9411A340080071F912 /* TodoUpdateOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BD9311A340080071F912 /* TodoUpdateOperation.m */; };
+		3AC2BF0511A490720071F912 /* Participant.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BF0411A490720071F912 /* Participant.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,8 @@
 		3AC2BD8811A33DDE0071F912 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		3AC2BD9211A340080071F912 /* TodoUpdateOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodoUpdateOperation.h; sourceTree = "<group>"; };
 		3AC2BD9311A340080071F912 /* TodoUpdateOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodoUpdateOperation.m; sourceTree = "<group>"; };
+		3AC2BF0311A490720071F912 /* Participant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Participant.h; sourceTree = "<group>"; };
+		3AC2BF0411A490720071F912 /* Participant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Participant.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TinCan-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TinCan-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +107,8 @@
 				3AC2BA211198D2020071F912 /* MeetingTimerView.m */,
 				3AC2BD9211A340080071F912 /* TodoUpdateOperation.h */,
 				3AC2BD9311A340080071F912 /* TodoUpdateOperation.m */,
+				3AC2BF0311A490720071F912 /* Participant.h */,
+				3AC2BF0411A490720071F912 /* Participant.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 				3AC2BD8D11A33DDE0071F912 /* SBJsonParser.m in Sources */,
 				3AC2BD8E11A33DDE0071F912 /* SBJsonWriter.m in Sources */,
 				3AC2BD9411A340080071F912 /* TodoUpdateOperation.m in Sources */,
+				3AC2BF0511A490720071F912 /* Participant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

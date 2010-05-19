@@ -10,6 +10,7 @@
 
 
 @interface Todo : NSObject  <NSCopying> {
+    NSString *uuid;
 	NSString *text;
 	NSDate *created;
 	NSString *createdBy;
@@ -26,5 +27,6 @@
 @property (nonatomic, retain) NSDate *created;
 @property (nonatomic, retain) NSString *createdBy;
 @property (nonatomic, retain) UIView *parentView;
+@property (nonatomic, retain) NSString *uuid;
 
 @end

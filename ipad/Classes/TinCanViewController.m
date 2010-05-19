@@ -210,33 +210,100 @@
 
 - (void)initParticipantsView {
     
-    participants = [[NSMutableSet set] retain];
+    participants = [[NSMutableDictionary dictionary] retain];
     
-    // For now, hard code these. Eventually, these will get pulled from the server.
-    // We'll also want to the layout quite a bit more - right now we're having to
-    // hardcode both the rotation and the actual positions. That's a post
-    // sponsor week TODO, though.
-    [participants addObject:[[ParticipantView alloc] initWithName:@"MATT" withPosition:CGPointMake(256, 1060) withRotation:0.0 withColor:[UIColor redColor]]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"ANDREA" withPosition:CGPointMake(512, 1060) withRotation:0.0 withColor:[UIColor redColor]]];
+    // Make a set of names.
+    NSMutableSet *nameSet = [[NSMutableSet set] autorelease];
+    [nameSet addObject:@"Matt"];
+    [nameSet addObject:@"Andrea"];
+    [nameSet addObject:@"Jaewoo"];
+    [nameSet addObject:@"Charlie"];
+    [nameSet addObject:@"Chris"];
+    [nameSet addObject:@"Drew"];
+    [nameSet addObject:@"Ig-Jae"];
+    [nameSet addObject:@"Trevor"];
+    [nameSet addObject:@"Paulina"];
+    [nameSet addObject:@"Dori"];
     
-    [participants addObject:[[ParticipantView alloc] initWithName:@"JAEWOO" withPosition:CGPointMake(-30, 256) withRotation:M_PI/2 withColor:[UIColor redColor]]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"CHARLIE" withPosition:CGPointMake(-30, 512) withRotation:M_PI/2 withColor:[UIColor redColor]]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"TREVOR" withPosition:CGPointMake(-30, 768) withRotation:M_PI/2 withColor:[UIColor yellowColor]]];
-
-    [participants addObject:[[ParticipantView alloc] initWithName:@"CHRIS" withPosition:CGPointMake(798, 256) withRotation:-M_PI/2 withColor:[UIColor yellowColor]]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"DREW" withPosition:CGPointMake(798, 512) withRotation:-M_PI/2 withColor:[UIColor greenColor]]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"IG-JAE" withPosition:CGPointMake(798, 768) withRotation:-M_PI/2 withColor:[UIColor blueColor]]];
-
-    [participants addObject:[[ParticipantView alloc] initWithName:@"DORI" withPosition:CGPointMake(256, -20) withRotation:M_PI withColor:[UIColor blueColor]]];
-    [participants addObject:[[ParticipantView alloc] initWithName:@"PAULINA" withPosition:CGPointMake(512, -20) withRotation:M_PI withColor:[UIColor blueColor]]];
-
     
-    for(ParticipantView *participant in participants) {
+    
+    // Now loop through that set.
+    int i = 0;
+    for (NSString *name in [nameSet allObjects]) {
+        Participant *p = [[Participant alloc] initWithName:name];
         
-        [participantsContainer addSubview:participant];
-        [participantsContainer bringSubviewToFront:participant];
-        [participant setNeedsDisplay];
+        [participants setObject:p forKey:p.uuid];
+        // Now make the matching view.
+        // This is going to get really ugly for now, since we don't
+        // have a nice participant layout manager. Just hardcode
+        // positions.
+        
+        CGPoint point;
+        CGFloat rotation;
+        UIColor *color;
+        switch(i) {
+            case 0:
+                point = CGPointMake(256, 1060);
+                rotation = 0.0;
+                color = [UIColor redColor];
+                break;
+            case 1:
+                point = CGPointMake(512, 1060);
+                rotation = 0.0;
+                color = [UIColor redColor];
+                break;
+            case 2:
+                point = CGPointMake(-30, 256);
+                rotation = M_PI/2;
+                color = [UIColor redColor];
+                break;
+                
+            case 3:
+                point = CGPointMake(-30, 512);
+                rotation = M_PI/2;
+                color = [UIColor blueColor];
+                break;
+            case 4:
+                point = CGPointMake(-30, 768);
+                rotation = M_PI/2;
+                color = [UIColor blueColor];
+                break;
+            case 5:
+                point = CGPointMake(798, 256);
+                rotation = -M_PI/2;
+                color = [UIColor blueColor];
+                break;
+            case 6:
+                point = CGPointMake(798, 512);
+                rotation = -M_PI/2;
+                color = [UIColor yellowColor];
+                break;
+            case 7:
+                point = CGPointMake(798, 768);
+                rotation = -M_PI/2;
+                color = [UIColor yellowColor];
+                break;
+            case 8:
+                point = CGPointMake(256, -20);
+                rotation = M_PI;
+                color = [UIColor greenColor];
+                break;
+            case 9:        
+                point = CGPointMake(512, -20);
+                rotation = M_PI;
+                color = [UIColor purpleColor];
+                break;
+        }
+        
+        
+        ParticipantView *newParticipantView = [[ParticipantView alloc] initWithParticipant:p withPosition:point withRotation:rotation withColor:color];
+        [participantsContainer addSubview:newParticipantView];
+        [participantsContainer bringSubviewToFront:newParticipantView];
+        [newParticipantView setNeedsDisplay];
+        i++;
     }
+    
+    
 }
 
 - (void)initTodoViews {

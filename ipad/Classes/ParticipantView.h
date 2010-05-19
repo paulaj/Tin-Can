@@ -8,24 +8,26 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "Todo.h";
+#import "Todo.h"
+#import "Participant.h"
+
+@class Participant;
 
 @interface ParticipantView : UIView {
 	NSString *name;
 	float rotation;
-	NSMutableSet *assignedTodos;
 	bool hover;
     
     UIColor *color;
+    
+    Participant *participant;
 }
 
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSMutableSet *assignedTodos;
 @property (nonatomic, retain) UIColor *color;
+@property (nonatomic, retain) Participant *participant;
 
-- (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c;
+- (id) initWithParticipant:(Participant *)newParticipant withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c;
 - (void) setHoverState:(bool)hoverState;
-- (void) assignTodo:(Todo *)todo;
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event;
 

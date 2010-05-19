@@ -9,22 +9,20 @@
 #import "ParticipantView.h"
 #import "Todo.h"
 #import "UIColor+Util.h"
+#import "Participant.h"
 #import <math.h>
 
 @implementation ParticipantView
 
-@synthesize name;
-@synthesize assignedTodos;
 @synthesize color;
+@synthesize participant;
 
-- (id) initWithName:(NSString *)participantName withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c {
+- (id) initWithParticipant:(Participant *)newParticipant withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c {
 	self = [super initWithFrame:CGRectMake(0,0, 260, 260)];
 	
 	NSLog(@"initing participant view.");
 	hover = false;
 	self.bounds = CGRectMake(-130, -130, 260, 260);
-	
-	self.name = participantName;
 	self.center = pos;
     
     // TODO figure out how to write the setter for self.color so
@@ -35,8 +33,9 @@
     
     [self setBackgroundColor:[UIColor clearColor]];
 	
-	assignedTodos = [[NSMutableSet set] retain];
-	return self;
+	self.participant = newParticipant;
+    
+    return self;
 }
 
 
@@ -68,31 +67,22 @@
 		// rendered, but the straight CG approach doesn't have that info. 
 		
 		UIFont *f = [UIFont boldSystemFontOfSize:18];
-		CGSize nameSize = [name sizeWithFont:f];
+		CGSize nameSize = [[self.participant.name uppercaseString] sizeWithFont:f];
 		
-		[name drawAtPoint:CGPointMake(-nameSize.width/2, -nameSize.height/2-55) withFont:f];
+		[[self.participant.name uppercaseString] drawAtPoint:CGPointMake(-nameSize.width/2, -nameSize.height/2-55) withFont:f];
 
 		CGContextSetFillColorWithColor(ctx, self.color.CGColor);
 		
 		CGContextRotateCTM(ctx, M_PI/10);
 
 		// Now, draw a circle outside the radius for each todo object.
-		for(int i=0; i<[assignedTodos count]; i++) {
+		for(int i=0; i<[self.participant.assignedTodos count]; i++) {
 			// Draw a circle at zero e
 			CGContextRotateCTM(ctx, M_PI/10);
 			CGContextAddEllipseInRect(ctx, CGRectMake(-140, 0, 30, 30));
 			CGContextFillPath(ctx);
 		}
 	}
-}
-
-- (void) assignTodo:(Todo *)todo {
-    
-	[assignedTodos addObject:todo];
-    todo.parentView = self;
-	
-	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
-	[self setNeedsDisplay];
 }
 
 
@@ -118,7 +108,6 @@
 
 - (void) dealloc {
 	[super dealloc];
-	[assignedTodos release];
 	[name release];
 }
 @end

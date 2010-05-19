@@ -15,8 +15,11 @@
     UIView *participantsContainer;
     UIView *todosContainer;
     
-    NSMutableSet *participants;
     NSMutableSet *todoViews;
+
+    NSMutableDictionary *participants;
+    NSMutableDictionary *todos;
+    
     
     MeetingTimerView *meetingTimerView;
     NSTimer *clock;
@@ -33,24 +36,23 @@
 }
 
 
-- (void)initParticipantsView;
-- (void)initTodoViews;
+- (void) initParticipantsView;
+- (void) initTodoViews;
 
-- (void)clk;
+- (void) clk;
 
 
 - (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event;
 
-- (void)addTodoItemView:(TodoItemView *)view;
+- (void) addTodoItemView:(TodoItemView *)view;
 
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 
+- (void) dispatchTodoCommandString:(NSString *)operation;
 
-- (void)dispatchTodoCommandString:(NSString *)operation;
-
-- (void)handleNewTodoWithArguments:(NSArray *)args;
-- (void)handleAssignTodoWithArguments:(NSArray *)args;
+- (void) handleNewTodoWithArguments:(NSArray *)args;
+- (void) handleAssignTodoWithArguments:(NSArray *)args;
 
 @end
 

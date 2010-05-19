@@ -11,6 +11,7 @@
 
 @implementation Todo
 
+@synthesize uuid;
 @synthesize text;
 @synthesize created;
 @synthesize createdBy;
@@ -23,6 +24,9 @@
 	self.createdBy = creator;
 	self.created = [NSDate date];
 	
+    // Generate the uuid. 
+    self.uuid = [NSString stringWithFormat:@"%@%d%d",@"p",[NSDate timeIntervalSinceReferenceDate] * 1000, arc4random() %1000];
+
 	return self;
 }
 
