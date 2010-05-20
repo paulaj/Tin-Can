@@ -283,12 +283,12 @@
                 color = [UIColor yellowColor];
                 break;
             case 8:
-                point = CGPointMake(256, -20);
+                point = CGPointMake(256, -30);
                 rotation = M_PI;
                 color = [UIColor greenColor];
                 break;
             case 9:        
-                point = CGPointMake(512, -20);
+                point = CGPointMake(512, -30);
                 rotation = M_PI;
                 color = [UIColor purpleColor];
                 break;
