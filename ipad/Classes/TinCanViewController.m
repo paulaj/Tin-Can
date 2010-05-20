@@ -23,13 +23,13 @@
     // portability / scalability if resolutions change in the future.
     self.view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)] retain];
     [self.view setBackgroundColor:[UIColor blackColor]];
-    // Now, drop the MeetingTimer in the middle of the screen.
-    
-    // Add the timer first, so it's underneath everything.
-//    meetingTimerView = [[MeetingTimerView alloc] init];
-//    [meetingTimerView retain];
-//    [self.view addSubview:meetingTimerView];
 
+    // Now, drop the MeetingTimer in the middle of the screen.
+    // Add the timer first, so it's underneath everything.
+    meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 400, 400)];
+    [meetingTimerView retain];
+    [self.view addSubview:meetingTimerView];
+    
     // Create the participants view.
     participantsContainer = [[UIView alloc] initWithFrame:self.view.frame];
     [participantsContainer retain];
@@ -41,6 +41,7 @@
     
     [self initParticipantsView];
     [self initTodoViews];
+
     
     queue = [[[NSOperationQueue alloc] init] retain];
     

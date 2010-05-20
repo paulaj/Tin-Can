@@ -15,10 +15,10 @@
 		2899E5220DE3E06400AC0155 /* TinCanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* TinCanViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* TinCanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* TinCanViewController.m */; };
+		3AB0BC3811A5D73C003A91EB /* MeetingTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB0BC3711A5D73C003A91EB /* MeetingTimerView.m */; };
 		3AC2B9191198715A0071F912 /* ParticipantView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B9181198715A0071F912 /* ParticipantView.m */; };
 		3AC2B91C119871670071F912 /* Todo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B91B119871670071F912 /* Todo.m */; };
 		3AC2B9D41198BB120071F912 /* UIColor+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B9D31198BB120071F912 /* UIColor+Util.m */; };
-		3AC2BA221198D2020071F912 /* MeetingTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BA211198D2020071F912 /* MeetingTimerView.m */; };
 		3AC2BAA01199D89C0071F912 /* TodoItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BA9F1199D89C0071F912 /* TodoItemView.m */; };
 		3AC2BD8911A33DDE0071F912 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BD7E11A33DDE0071F912 /* NSObject+SBJSON.m */; };
 		3AC2BD8A11A33DDE0071F912 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2BD8011A33DDE0071F912 /* NSString+SBJSON.m */; };
@@ -54,14 +54,14 @@
 		28D7ACF70DDB3853001CB0EB /* TinCanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TinCanViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* TinCan_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TinCan_Prefix.pch; sourceTree = "<group>"; };
+		3AB0BC3611A5D73C003A91EB /* MeetingTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetingTimerView.h; sourceTree = "<group>"; };
+		3AB0BC3711A5D73C003A91EB /* MeetingTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetingTimerView.m; sourceTree = "<group>"; };
 		3AC2B9171198715A0071F912 /* ParticipantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticipantView.h; sourceTree = "<group>"; };
 		3AC2B9181198715A0071F912 /* ParticipantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParticipantView.m; sourceTree = "<group>"; };
 		3AC2B91A119871670071F912 /* Todo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Todo.h; sourceTree = "<group>"; };
 		3AC2B91B119871670071F912 /* Todo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Todo.m; sourceTree = "<group>"; };
 		3AC2B9D21198BB120071F912 /* UIColor+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Util.h"; sourceTree = "<group>"; };
 		3AC2B9D31198BB120071F912 /* UIColor+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Util.m"; sourceTree = "<group>"; };
-		3AC2BA201198D2020071F912 /* MeetingTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetingTimerView.h; sourceTree = "<group>"; };
-		3AC2BA211198D2020071F912 /* MeetingTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetingTimerView.m; sourceTree = "<group>"; };
 		3AC2BA9E1199D89C0071F912 /* TodoItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodoItemView.h; sourceTree = "<group>"; };
 		3AC2BA9F1199D89C0071F912 /* TodoItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodoItemView.m; sourceTree = "<group>"; };
 		3AC2BD7C11A33DDE0071F912 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -140,12 +140,12 @@
 				3AC2BA9F1199D89C0071F912 /* TodoItemView.m */,
 				3AC2B9D21198BB120071F912 /* UIColor+Util.h */,
 				3AC2B9D31198BB120071F912 /* UIColor+Util.m */,
-				3AC2BA201198D2020071F912 /* MeetingTimerView.h */,
-				3AC2BA211198D2020071F912 /* MeetingTimerView.m */,
 				3AC2BD9211A340080071F912 /* TodoUpdateOperation.h */,
 				3AC2BD9311A340080071F912 /* TodoUpdateOperation.m */,
 				3AC2BF0311A490720071F912 /* Participant.h */,
 				3AC2BF0411A490720071F912 /* Participant.m */,
+				3AB0BC3611A5D73C003A91EB /* MeetingTimerView.h */,
+				3AB0BC3711A5D73C003A91EB /* MeetingTimerView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -307,7 +307,6 @@
 				3AC2B9191198715A0071F912 /* ParticipantView.m in Sources */,
 				3AC2B91C119871670071F912 /* Todo.m in Sources */,
 				3AC2B9D41198BB120071F912 /* UIColor+Util.m in Sources */,
-				3AC2BA221198D2020071F912 /* MeetingTimerView.m in Sources */,
 				3AC2BAA01199D89C0071F912 /* TodoItemView.m in Sources */,
 				3AC2BD8911A33DDE0071F912 /* NSObject+SBJSON.m in Sources */,
 				3AC2BD8A11A33DDE0071F912 /* NSString+SBJSON.m in Sources */,
@@ -324,6 +323,7 @@
 				3AC2C21811A5B62C0071F912 /* ASINetworkQueue.m in Sources */,
 				3AC2C21911A5B62C0071F912 /* ASINSStringAdditions.m in Sources */,
 				3AC2C23911A5B9890071F912 /* Reachability.m in Sources */,
+				3AB0BC3811A5D73C003A91EB /* MeetingTimerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

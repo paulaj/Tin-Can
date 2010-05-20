@@ -2,90 +2,91 @@
 //  MeetingTimerView.m
 //  TinCan
 //
-//  Created by Drew Harry on 5/10/10.
+//  Created by Drew Harry on 5/20/10.
 //  Copyright 2010 MIT Media Lab. All rights reserved.
 //
 
 #import "MeetingTimerView.h"
-#import <math.h>
+
 
 @implementation MeetingTimerView
 
 
-- (id) init {    
-    
-    // I'm not sure why (0, 350) puts there where it's supposed to be.
-    // Rotating seems to cause some weird issues.
-    CGRect frame = CGRectMake(0, 425, 600, 150);
-    
-    self = [super initWithFrame:frame];
-    
-    startDate = [[NSDate date] retain];
-
-    dateFormatter = [[[NSDateFormatter alloc] init] retain];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-
-    dateFont = [[UIFont boldSystemFontOfSize:24] retain];
-
-    // Rotate it!
-    [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
-    
+- (id)initWithFrame:(CGRect)frame {
+    if ((self = [super initWithFrame:frame])) {
+        self.bounds = CGRectMake(-150, -150, 300, 300);
+        self.center = CGPointMake(384, 512);
+        
+        self.clearsContextBeforeDrawing = YES;
+    }
     return self;
 }
 
-- (void) drawRect:(CGRect)rect {
-    
+
+- (void)drawRect:(CGRect)rect {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-    CGRect progressBarFrame = CGRectMake(0, self.bounds.size.height/2, self.bounds.size.width, self.bounds.size.height/2);
+    //Wipe the layer manually because clearsContext doesn't work.
+    CGContextSetRGBFillColor(ctx, 0, 0, 0, 0.0);
+    CGContextFillRect(ctx, self.bounds);
+
+    // Puts it in landscape mode, basically - so the top of the clock is to the right in portrait mode
+    CGContextRotateCTM(ctx, M_PI/2);
+    // Draw the outline of the clock.
+    CGContextSetRGBStrokeColor(ctx, 0.2, 0.2, 0.2, 1.0);
+    CGContextSetLineWidth(ctx, 2.0);
     
-    // Draw the background of the progress bar.
-    CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
-    CGContextSetRGBFillColor(ctx, 0.1, 0.1, 0.1, 1.0);
+    CGContextSaveGState(ctx);
+
+    
+    CGContextStrokeEllipseInRect(ctx, CGRectMake(-140, -140, 280, 280));
+    
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
+    NSInteger hour = [dateComponents hour];
+    NSInteger minute = [dateComponents minute];
+    NSInteger second = [dateComponents second];
+    [gregorian release];
+    
+    NSLog(@"time: %d:%d", hour, minute);
         
-    CGContextFillRect(ctx, progressBarFrame);
-    CGContextStrokeRect(ctx, progressBarFrame);
-    
-    // Fill it in based on how long it's been since it was created.
-    // (use timeIntervalSinceNow).
-    
-    // For now, lets assume a 10 minute meeting so it's possible to see
-    // what's actually going on over the course of a demo.
-    // TODO Make this an actual constant.
-    
-    // We're going to assume the aspect ratio here is thin and tall. At some point,
-    // this will probably get abstracted to be a different coordinate system that
-    // gets rotated into place, but this will work for now.
-    CGFloat meetingDurationSeconds = 300;
-    
-    // Have to do negative one to flip the sign, since timeIntervalSinceNow goes negative when
-    // the current time is more recent than the date it's called on. Feels backwards to me, but
-    // what can you do.
-    CGFloat timeFraction = -1 * [startDate timeIntervalSinceNow] / (meetingDurationSeconds);
-    
-    CGRect progressRect = CGRectMake(progressBarFrame.origin.x, progressBarFrame.origin.y, self.bounds.size.width*timeFraction, self.bounds.size.height);
-    CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
-    CGContextFillRect(ctx, progressRect);
-    
-    
-    // Now lets draw the current time.
-    NSDate *today = [NSDate date];
+    // Draw the hour hand.
+    // Figure out what the rotation should be.
+    CGFloat hourRotation = ((hour%12)/12.0f) * (2*M_PI);
+    CGFloat minRotation = ((minute*60 + second)/3600.0f) * (2*M_PI);
 
-    // display in 12HR/24HR (i.e. 11:25PM or 23:25) format according to User Settings
-    NSString *currentTime = [dateFormatter stringFromDate:today];
+    NSLog(@"time rots: %f:%f", hourRotation, minRotation);
 
-    CGContextSetRGBFillColor(ctx, 1.0, 1.0, 1.0, 1.0);
-    [currentTime drawAtPoint:CGPointMake(0, 20) withFont:dateFont];
+    
+    CGContextRotateCTM(ctx, hourRotation);
+    CGContextMoveToPoint(ctx, 0, 0);
+    CGContextAddLineToPoint(ctx, 0, -90);
+    CGContextStrokePath(ctx);
+        
+    CGContextRestoreGState(ctx);
+    CGContextSaveGState(ctx);
+    
+    CGContextRotateCTM(ctx, minRotation);
+    CGContextMoveToPoint(ctx, 0, 0);
+    CGContextAddLineToPoint(ctx, 0, -130);
+    CGContextStrokePath(ctx);
 
+    CGContextRestoreGState(ctx);
+    
+    // Now put a 12 on top.
+    NSString *twelve = @"12";
+
+    CGContextSetRGBFillColor(ctx, 0.3, 0.3, 0.3, 1.0);
+    [twelve drawAtPoint:CGPointMake(-10, -140) withFont:[UIFont systemFontOfSize:18]];
+    
+    
+    
 }
 
-- (void) dealloc {
+- (void)dealloc {
     [super dealloc];
-    [startDate release];
-    
-    [dateFont release];
-    [dateFormatter release];
-    
 }
+
 
 @end

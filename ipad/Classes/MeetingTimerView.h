@@ -2,20 +2,15 @@
 //  MeetingTimerView.h
 //  TinCan
 //
-//  Created by Drew Harry on 5/10/10.
+//  Created by Drew Harry on 5/20/10.
 //  Copyright 2010 MIT Media Lab. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 @interface MeetingTimerView : UIView {
-    NSDate *startDate;    
-    
-    UIFont *dateFont;
-    NSDateFormatter *dateFormatter;
-}
 
-- (id) init;
+}
 
 @end
