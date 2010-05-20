@@ -25,7 +25,7 @@
     id <TodoDragDelegate> delegate;
 }
 
-- (id) initWithTodoText:(NSString *)todoText;
+- (id) initWithTodo:(Todo *)newTodo;
 - (void) deassign;
 
 

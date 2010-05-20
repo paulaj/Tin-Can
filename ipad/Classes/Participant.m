@@ -39,8 +39,14 @@
 - (void) assignTodo:(Todo *)todo {
     
 	[assignedTodos addObject:todo];
+    
+    [todo.parentView removeFromSuperview];
+    
+    // This is kind of pointless, but okay. It's not actually being
+    // rendered as a child of this this participant's view, so
+    // this is kind of vestigal. 
     todo.parentView = self.view;
-	
+    
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
 	[self.view setNeedsDisplay];
 }

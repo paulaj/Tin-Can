@@ -15,15 +15,13 @@
 @synthesize todo;
 @synthesize delegate;
 
-- (id) initWithTodoText:(NSString *)todoText{
+- (id) initWithTodo:(Todo *)newTodo{
 	
     // Decide how big to be by looking at the text itself.
     f = [UIFont systemFontOfSize:18];
-    CGSize fontSize = [todoText sizeWithFont:f];
+    CGSize fontSize = [newTodo.text sizeWithFont:f];
     CGSize totalSize = CGSizeMake(fontSize.width + 80, fontSize.height+40);
     
-    // .height and .width are intenaditionally flipped here, to adjust the orientation
-    // to the standard horizontal one. 
 	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.width, totalSize.height)]) {
 		touched = false;
 
@@ -33,11 +31,12 @@
 
 		[self setBackgroundColor:[UIColor clearColor]];
         
-		self.todo = [[Todo alloc] initWithText:todoText withCreator:@"Drew"];
+		self.todo = newTodo;
 		[self.todo retain];
         
         self.todo.parentView = self;
 
+        
         [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
 
 		[self setNeedsDisplay];
@@ -121,8 +120,11 @@
 
 - (void)dealloc {
     // This causes a warning because "release" isn't in the protocol - can't we assume
-    // everything inherits from NSObject? 
-    [delegate release];
+    // everything inherits from NSObject? (Ah, no - delegates aren't actually retained,
+    // so you're not supposed to release them.)
+    
+    //[delegate release];
+
 	[todo release];
 	[super dealloc];
 }

@@ -9,6 +9,8 @@
 #import "TinCanViewController.h"
 #import "ParticipantView.h"
 #import "TodoUpdateOperation.h"
+#import "Todo.h"
+#import "Participant.h"
 
 @implementation TinCanViewController
 
@@ -210,7 +212,7 @@
 - (void)initParticipantsView {
     
     participants = [[NSMutableDictionary dictionary] retain];
-    
+        
     // Make a set of names.
     NSMutableSet *nameSet = [NSMutableSet set];
     [nameSet addObject:@"Matt"];
@@ -318,16 +320,20 @@
     // Add in some fake todos here so we can re-test the dragging/dropping code.
     todoViews = [[NSMutableSet set] retain];
     
-    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
-    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
-    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Set up a meeting with Debbie."]];     
+//    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
+//    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
+//    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Set up a meeting with Debbie."]];     
 }
 
 // Should this operate on the Todo level or TodoItemView? I like Todo better,
 // but since there's that initWithText sugar, they're equally easy to 
 // do right now. TODO refactor this later.
-- (void)addTodoItemView:(TodoItemView *)view {
+- (void)addTodo:(Todo *)todo {
  
+    [todos setObject:todo forKey:todo.uuid];
+    
+    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo];
+    
     [todoViews addObject:view];
     [view setDelegate:self];
     [todosContainer addSubview:view];
@@ -351,25 +357,47 @@
     NSLog(@"valid number of arguments: %@", args);
     
     // Split up the arguments.
-    int todoId = [[args objectAtIndex:1] intValue];
-    int userId = [[args objectAtIndex:2] intValue];
+    NSString *todoId = [args objectAtIndex:1];
+    NSString *userId = [args objectAtIndex:2];
     
     // Need to construct an array that's just the back 3:end of the original.
     // This should be easy, but it's not AFAICT.
     NSRange textComponents = NSMakeRange(3, [args count]-3);
     NSString *todoText = [[args subarrayWithRange:textComponents] componentsJoinedByString:@" "];
     
-    NSLog(@"NEW_TODO: from %d, with id %d and text '%@'", todoId, userId, todoText);
+    NSLog(@"NEW_TODO: from %@, with id %@ and text '%@'", todoId, userId, todoText);
     
     // This is a trivial implementation - this should really split the data
     // field up and decide based on commands. But for now...
-    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:todoText]];    
+    Todo *newTodo = [[Todo alloc] initWithText:todoText withCreator:userId withUUID:todoId];
+    
+    // TODO move this all into a proper init sequence - there should be
+    // no way to create a todo and not register it with the todo store.
+    // Really, I need to make a singleton data manager and have
+    // everyone interact with that on init.    
+    [self addTodo:newTodo];    
 }
 
 // ASSIGN_TODO todo_id user_id
 // user_id=-1 means deassign the todo from everyone
 - (void)handleAssignTodoWithArguments:(NSArray *)args {
-    NSLog(@"Got assign todo message, but can't do anything useful with it yet. args: %@", args);
+    if ([args count] != 3) {
+        NSLog(@"Received ASSIGN_TODO with inappropriate number of arguments: %@", args);
+        return;        
+    }
+    
+    
+    NSLog(@"ASSIGN TODO participant retain count: %d", [participants retainCount]);
+
+    
+    NSString *todoId = [args objectAtIndex:1];
+    NSString *assignedUserId = [args objectAtIndex:2];
+    
+    // Now get the todo object and the assigned user object.
+    Todo *todo = [todos objectForKey:todoId];
+    Participant *participant = [participants objectForKey:assignedUserId];
+    
+    [participant assignTodo:todo];
 }
 
 
