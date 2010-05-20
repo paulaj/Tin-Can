@@ -229,10 +229,6 @@
     // Now loop through that set.
     int i = 0;
     for (NSString *name in [nameSet allObjects]) {
-        Participant *p = [[Participant alloc] initWithName:name];
-        
-        [participants setObject:p forKey:p.uuid];
-        // Now make the matching view.
         // This is going to get really ugly for now, since we don't
         // have a nice participant layout manager. Just hardcode
         // positions.
@@ -240,69 +236,81 @@
         CGPoint point;
         CGFloat rotation;
         UIColor *color;
+        NSString *uuid;
         switch(i) {
             case 0:
                 point = CGPointMake(256, 1060);
                 rotation = 0.0;
                 color = [UIColor redColor];
+                uuid = @"p1";
                 break;
             case 1:
                 point = CGPointMake(512, 1060);
                 rotation = 0.0;
                 color = [UIColor redColor];
+                uuid = @"p2";
                 break;
             case 2:
                 point = CGPointMake(-30, 256);
                 rotation = M_PI/2;
                 color = [UIColor redColor];
+                uuid = @"p3";
                 break;
-                
             case 3:
                 point = CGPointMake(-30, 512);
                 rotation = M_PI/2;
                 color = [UIColor blueColor];
+                uuid = @"p4";
                 break;
             case 4:
                 point = CGPointMake(-30, 768);
                 rotation = M_PI/2;
                 color = [UIColor blueColor];
+                uuid = @"p5";
                 break;
             case 5:
                 point = CGPointMake(798, 256);
                 rotation = -M_PI/2;
                 color = [UIColor blueColor];
+                uuid = @"p6";
                 break;
             case 6:
                 point = CGPointMake(798, 512);
                 rotation = -M_PI/2;
                 color = [UIColor yellowColor];
+                uuid = @"p7";
                 break;
             case 7:
                 point = CGPointMake(798, 768);
                 rotation = -M_PI/2;
                 color = [UIColor yellowColor];
+                uuid = @"p8";
                 break;
             case 8:
                 point = CGPointMake(256, -30);
                 rotation = M_PI;
                 color = [UIColor greenColor];
+                uuid = @"p9";
                 break;
             case 9:        
                 point = CGPointMake(512, -30);
                 rotation = M_PI;
                 color = [UIColor purpleColor];
+                uuid = @"p10";
                 break;
         }
         
+        Participant *p = [[Participant alloc] initWithName:name withUUID:uuid];
+
+        [participants setObject:p forKey:p.uuid];
         
+        // Now make the matching view.
         ParticipantView *newParticipantView = [[ParticipantView alloc] initWithParticipant:p withPosition:point withRotation:rotation withColor:color];
         [participantsContainer addSubview:newParticipantView];
         [participantsContainer bringSubviewToFront:newParticipantView];
         [newParticipantView setNeedsDisplay];
         i++;
     }
-    
-    
 }
 
 - (void)initTodoViews {
@@ -375,6 +383,9 @@
     
     // TODO properly handle message with no spaces in them - they seem to 
     // die in a terrible way right now.
+    
+    // TODO switch this over to a fully JSON structure, instead of this
+    // shitty space-delimited format I'm using now. 
     NSArray *commandParts = [operation componentsSeparatedByString:@" "];
     
     // Ignore if it doesn't have at least three parts (the current

@@ -26,6 +26,8 @@
 @property (nonatomic, retain) NSMutableSet *assignedTodos;
 @property (nonatomic, retain) ParticipantView *view;
 
+- (id) initWithName:(NSString *)participantName withUUID:(NSString *)pUUID;
+
 - (void) assignTodo:(Todo *)todo;
 
 

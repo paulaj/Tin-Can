@@ -13,19 +13,21 @@
     NSString *uuid;
 	NSString *text;
 	NSDate *created;
-	NSString *createdBy;
+    
+	NSString *creatorUUID;
 	
     UIView *parentView;
 	// Some sort of history thing here?
 }
 
-- (id) initWithText:(NSString *)todoText withCreator:(NSString *)creator;
+- (id) initWithText:(NSString *)todoText withCreator:(NSString *)pUUID withUUID:(NSString *)tUUID;
+- (id) initWithText:(NSString *)todoText withCreator:(NSString *)pUUID;
 
 - (id) copyWithZone:(NSZone *)zone;
 
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSDate *created;
-@property (nonatomic, retain) NSString *createdBy;
+@property (nonatomic, retain) NSString *creatorUUID;
 @property (nonatomic, retain) UIView *parentView;
 @property (nonatomic, retain) NSString *uuid;
 

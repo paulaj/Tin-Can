@@ -17,7 +17,7 @@
 @synthesize assignedTodos;
 @synthesize view;
 
-- (id) initWithName:(NSString *)participantName {
+- (id) initWithName:(NSString *)participantName withUUID:(NSString *)pUUID{
     
     self = [super init];
     
@@ -30,7 +30,8 @@
     
 
     // Generate the uuid. 
-    self.uuid = [NSString stringWithFormat:@"%@%d%d",@"p",[NSDate timeIntervalSinceReferenceDate] * 1000, arc4random() %1000];
+    self.uuid = pUUID;
+//    self.uuid = [NSString stringWithFormat:@"%@%d%d",@"p",[NSDate timeIntervalSinceReferenceDate] * 1000, arc4random() %1000];
     
     return self;
 }
