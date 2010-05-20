@@ -11,6 +11,7 @@
 #import "TodoUpdateOperation.h"
 #import "Todo.h"
 #import "Participant.h"
+#import "ASIFormDataRequest.h"
 
 @implementation TinCanViewController
 
@@ -172,20 +173,29 @@
 
     // Assign the todo.
     if(curTargetView != nil) {
+        // For now, disable this part - let it happen in the loopback through toqbot. 
+//        [curTargetView.participant assignTodo:todo];
+//        [curTargetView setHoverState:false];
         
-        // remove the current view containing the todo
-        // from view. This is making me a bit unsettled - why
-        // are views containing data objects like this? Should
-        // I be segmenting this design further, so each of these
-        // views has its own controller, too, that contains
-        // this stuff?
-        [todo.parentView deassign];
+        // Now, send a message back to toqbot about the assignment.
+        // TODO abstract this out into some nice communication singleton
         
-        [curTargetView assignTodo:todo];
-        [curTargetView setHoverState:false];
+        NSLog(@"about to try to post something.");
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/"]];
+        [request setPostValue:[NSString stringWithFormat:@"ASSIGN_TODO %@ %@", todo.uuid, curTargetView.participant.uuid] forKey:@"tincan"];
+        [request setDelegate:self];
+        [request startAsynchronous];
     }
     
     
+}
+
+- (void) requestFinished:(ASIHTTPRequest *)request {
+    NSLog(@"request finished! %@", [request responseString]);
+}
+
+- (void) requestFailed:(ASIHTTPRequest *)request {
+    NSLog(@"request failed: %@", [request error]);
 }
 
 
@@ -413,6 +423,11 @@
 
 
 - (void)dispatchTodoCommandString:(NSString *)operation {
+    // Trying to do this at the top - hopefuly this doesn't clog
+    // the queue or anything? But it needs to be before any exception
+    // handling, so exceptions don't break the update cycle like they
+    // were when I had it at the end.
+    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self]];
     if (operation == nil) {
         return;
     }
@@ -446,7 +461,6 @@
     // long polling, we should only do this exactly as often
     // as we're getting events from toqbot.
     NSLog(@"Enqueing a new update operation...");
-    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self]];
 }
 
 

@@ -9,6 +9,7 @@
 #import "TodoUpdateOperation.h"
 #import "TinCanAppDelegate.h"
 #import "JSON.h"
+#import "ASIHTTPRequest.h"
 
 @implementation TodoUpdateOperation
 
@@ -35,19 +36,22 @@
     SBJSON *parser = [[[SBJSON alloc] init] autorelease];
     
     // Request the latest event from toqbot.
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
+    // NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
+    [request startSynchronous];
+                                                              
     
     // Perform request and get JSON back as a NSData object
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString *response = [request responseString];
     
     // Get JSON as a NSString from NSData response
-    NSString *json_string = [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
     
-    NSLog(@"json response: %@",json_string);
+    NSLog(@"json response: %@",response);
     
     // parse the JSON response into an object
     // Here we're using NSArray since we're parsing an array of JSON status objects
-    NSArray *result = [parser objectWithString:json_string error:nil];
+    NSArray *result = [parser objectWithString:response error:nil];
     
     // We're expecting an array with a single dictionary in it.
     // Dump the fields we're expecting.
