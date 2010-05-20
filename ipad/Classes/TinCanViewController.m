@@ -94,7 +94,10 @@
 - (void)dealloc {
     [super dealloc];
     [self.view release];
+    
     [participants release];
+    [todos release];
+    
     [todoViews release];
     
     [lastTodoDropTargets release];
@@ -308,6 +311,7 @@
         
         // Now make the matching view.
         ParticipantView *newParticipantView = [[ParticipantView alloc] initWithParticipant:p withPosition:point withRotation:rotation withColor:color];
+        p.view = newParticipantView;
         [participantsContainer addSubview:newParticipantView];
         [participantsContainer bringSubviewToFront:newParticipantView];
         [newParticipantView setNeedsDisplay];
@@ -319,6 +323,7 @@
     
     // Add in some fake todos here so we can re-test the dragging/dropping code.
     todoViews = [[NSMutableSet set] retain];
+    todos = [[NSMutableDictionary dictionary] retain];
     
 //    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
 //    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
@@ -330,7 +335,11 @@
 // do right now. TODO refactor this later.
 - (void)addTodo:(Todo *)todo {
  
+    NSLog(@"todo: %@; dictionary: %@", todo.uuid, todos);
+    
     [todos setObject:todo forKey:todo.uuid];
+    
+    NSLog(@"Added todo to dictionary: %@ -> %@", todo, todos);
     
     TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo];
     
@@ -394,6 +403,8 @@
     NSString *assignedUserId = [args objectAtIndex:2];
     
     // Now get the todo object and the assigned user object.
+    NSLog(@"todoId %@", todoId);
+    
     Todo *todo = [todos objectForKey:todoId];
     Participant *participant = [participants objectForKey:assignedUserId];
     

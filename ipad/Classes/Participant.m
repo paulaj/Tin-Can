@@ -23,7 +23,7 @@
     
     self.name = participantName;
     
-    self.assignedTodos = [NSMutableSet set];
+    self.assignedTodos = [[NSMutableSet set] retain];
     
     // If I'm using synthesized properties like this, do I need
     // to have a custom dealloc method in here? Probably not, right?
@@ -37,8 +37,9 @@
 }
 
 - (void) assignTodo:(Todo *)todo {
+    NSLog(@"Assigning todo: %@ to %@", todo, self.uuid);
     
-	[assignedTodos addObject:todo];
+	[self.assignedTodos addObject:todo];
     
     [todo.parentView removeFromSuperview];
     
@@ -49,6 +50,11 @@
     
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
 	[self.view setNeedsDisplay];
+}
+
+- (void) dealloc {
+    [assignedTodos release];
+    [super dealloc];
 }
 
 @end

@@ -20,7 +20,6 @@
     NSMutableDictionary *participants;
     NSMutableDictionary *todos;
     
-    
     MeetingTimerView *meetingTimerView;
     NSTimer *clock;
     
@@ -44,7 +43,7 @@
 
 - (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event;
 
-- (void) addTodoItemView:(TodoItemView *)view;
+- (void) addTodo:(Todo *)todo;
 
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 - (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
