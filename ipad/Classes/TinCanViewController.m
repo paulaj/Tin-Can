@@ -100,7 +100,6 @@
     [queue release];
     
     [clock invalidate];
-    [clock release];
 }
 
 
@@ -213,7 +212,7 @@
     participants = [[NSMutableDictionary dictionary] retain];
     
     // Make a set of names.
-    NSMutableSet *nameSet = [[NSMutableSet set] autorelease];
+    NSMutableSet *nameSet = [NSMutableSet set];
     [nameSet addObject:@"Matt"];
     [nameSet addObject:@"Andrea"];
     [nameSet addObject:@"Jaewoo"];

@@ -22,7 +22,7 @@
     CGSize fontSize = [todoText sizeWithFont:f];
     CGSize totalSize = CGSizeMake(fontSize.width + 80, fontSize.height+40);
     
-    // .height and .width are intentionally flipped here, to adjust the orientation
+    // .height and .width are intenaditionally flipped here, to adjust the orientation
     // to the standard horizontal one. 
 	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.width, totalSize.height)]) {
 		touched = false;
