@@ -53,5 +53,7 @@
 - (void) handleNewTodoWithArguments:(NSArray *)args;
 - (void) handleAssignTodoWithArguments:(NSArray *)args;
 
+- (CGPoint) getNextTodoPosition;
+
 @end
 

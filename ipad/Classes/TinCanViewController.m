@@ -348,16 +348,24 @@
  
     NSLog(@"todo: %@; dictionary: %@", todo.uuid, todos);
     
-    [todos setObject:todo forKey:todo.uuid];
     
     NSLog(@"Added todo to dictionary: %@ -> %@", todo, todos);
     
-    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo];
-    
+    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition]];
+
+    [todos setObject:todo forKey:todo.uuid];
+
     [todoViews addObject:view];
     [view setDelegate:self];
     [todosContainer addSubview:view];
     [view setNeedsDisplay];
+}
+
+
+- (CGPoint) getNextTodoPosition {
+    // Place todos in a column on the left side of the display, and move down
+    // the list as todos are added. 
+    return CGPointMake(500 - 40*[todos count], 200);
 }
 
 

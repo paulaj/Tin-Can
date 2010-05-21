@@ -28,7 +28,7 @@
     
     //Wipe the layer manually because clearsContext doesn't work.
     CGContextSetRGBFillColor(ctx, 0, 0, 0, 0.0);
-    CGContextFillRect(ctx, self.bounds);
+    CGContextFillRect(ctx, CGRectMake(-200, -200, 500, 500));
 
     // Puts it in landscape mode, basically - so the top of the clock is to the right in portrait mode
     CGContextRotateCTM(ctx, M_PI/2);

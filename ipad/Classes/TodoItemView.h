@@ -25,7 +25,7 @@
     id <TodoDragDelegate> delegate;
 }
 
-- (id) initWithTodo:(Todo *)newTodo;
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point;
 - (void) deassign;
 
 

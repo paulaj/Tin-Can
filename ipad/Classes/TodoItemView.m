@@ -15,14 +15,14 @@
 @synthesize todo;
 @synthesize delegate;
 
-- (id) initWithTodo:(Todo *)newTodo{
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point{
 	
     // Decide how big to be by looking at the text itself.
     f = [UIFont systemFontOfSize:18];
     CGSize fontSize = [newTodo.text sizeWithFont:f];
     CGSize totalSize = CGSizeMake(fontSize.width + 80, fontSize.height+40);
     
-	if(self = [super initWithFrame:CGRectMake(100, 100, totalSize.width, totalSize.height)]) {
+	if(self = [super initWithFrame:CGRectMake(point.x,point.y, totalSize.width, totalSize.height)]) {
 		touched = false;
 
 		// figure out how big this is going to need to be.
