@@ -49,6 +49,7 @@
     todo.parentView = self.view;
     
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
+    [self.view setHoverState:false];
 	[self.view setNeedsDisplay];
 }
 
