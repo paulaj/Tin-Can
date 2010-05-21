@@ -10,7 +10,8 @@
 
 
 @interface MeetingTimerView : UIView {
-
+    CGFloat initialRot;
+    NSDate *startTime;
 }
 
 @end
