@@ -34,7 +34,7 @@
 		self.todo = newTodo;
 		[self.todo retain];
         
-        self.todo.parentView = self;
+        self.todo.view = self;
 
         // Save our initial position so we can animate back to it if we're dropped on a non-participant.
         initialCenter = self.center;
@@ -123,6 +123,28 @@
     }
         
 	[self setNeedsDisplay];
+}
+
+- (void) animateToAssignedParticipant:(Participant *)participant {
+    // Animate to the participant's view's location, and on
+    // delegated callback do the actual assignment.
+    [UIView beginAnimations:@"move_to_assigned_participant" context:participant];
+    
+    [UIView setAnimationDuration:1.0f];
+    self.center = participant.view.center;
+    
+    // Now set the callback. 
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(animateToAssignedParticipantDidStop:finished:context:)];
+    
+    [UIView commitAnimations];
+}
+
+- (void) animateToAssignedParticipantDidStop:(NSString *)animationId finished:(NSNumber *)finished context:(void *)context {
+    // When this triggers, finish the actual assignment.
+    Participant *participant = (Participant *)context;
+    
+    [participant assignTodo:self.todo];
 }
 
 - (void) deassign {

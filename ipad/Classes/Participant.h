@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "ParticipantView.h"
+#import "Todo.h"
 
 @class ParticipantView;
+@class Todo;
 
 @interface Participant : NSObject {
     NSString *uuid;

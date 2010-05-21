@@ -40,13 +40,15 @@
     NSLog(@"Assigning todo: %@ to %@", todo, self.uuid);
     
 	[self.assignedTodos addObject:todo];
+
+    NSLog(@"todo view? %@", todo.view);
     
-    [todo.parentView removeFromSuperview];
+    [todo.view removeFromSuperview];
     
     // This is kind of pointless, but okay. It's not actually being
     // rendered as a child of this this participant's view, so
     // this is kind of vestigal. 
-    todo.parentView = self.view;
+    todo.view = self.view;
     
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
     [self.view setHoverState:false];

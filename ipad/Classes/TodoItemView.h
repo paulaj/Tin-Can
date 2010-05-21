@@ -34,6 +34,9 @@
 - (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point;
 - (void) deassign;
 
+- (void) animateToAssignedParticipant:(Participant *)participant;
+- (void) animateToAssignedParticipantDidStop:(NSString *)animationId finished:(NSNumber *)finished context:(void *)context;
+
 
 @property (nonatomic, retain) Todo *todo;
 @property (nonatomic, assign) id <TodoDragDelegate> delegate;

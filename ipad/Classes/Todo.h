@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Participant.h"
 
+@class Participant;
 
 @interface Todo : NSObject  <NSCopying> {
     NSString *uuid;
@@ -16,7 +18,7 @@
     
 	NSString *creatorUUID;
 	
-    UIView *parentView;
+    UIView *view;
 	// Some sort of history thing here?
 }
 
@@ -25,10 +27,12 @@
 
 - (id) copyWithZone:(NSZone *)zone;
 
+- (void) startAssignment:(Participant *)participant;
+
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSDate *created;
 @property (nonatomic, retain) NSString *creatorUUID;
-@property (nonatomic, retain) UIView *parentView;
+@property (nonatomic, retain) UIView *view;
 @property (nonatomic, retain) NSString *uuid;
 
 @end

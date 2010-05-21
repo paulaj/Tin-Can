@@ -7,6 +7,8 @@
 //
 
 #import "Todo.h"
+#import "Participant.h"
+#import "TodoItemView.h"
 
 
 @implementation Todo
@@ -15,7 +17,7 @@
 @synthesize text;
 @synthesize created;
 @synthesize creatorUUID;
-@synthesize parentView;
+@synthesize view;
 
 
 
@@ -44,6 +46,14 @@
 
 - (id) copyWithZone:(NSZone *)zone {
     return [self retain];
+}
+
+- (void) startAssignment:(Participant *)participant {
+    if([self.view isKindOfClass:[TodoItemView class]]) {
+        [(TodoItemView *)self.view animateToAssignedParticipant:participant];
+    } else {
+        NSLog(@"Got message to start assignment, but todo's parent view is not a TodoItemView: %@", self.view);
+    }
 }
 
 @end

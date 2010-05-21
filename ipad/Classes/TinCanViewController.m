@@ -429,7 +429,7 @@
     Todo *todo = [todos objectForKey:todoId];
     Participant *participant = [participants objectForKey:assignedUserId];
     
-    [participant assignTodo:todo];
+    [todo startAssignment:participant];
 }
 
 
