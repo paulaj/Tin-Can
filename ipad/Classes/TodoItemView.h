@@ -28,10 +28,10 @@
     UIFont *f;
     id <TodoDragDelegate> delegate;
     
-    CGPoint initialCenter;
+    CGPoint initialOrigin;
 }
 
-- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point;
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point fromParticipant:(Participant *)participant;
 - (void) deassign;
 
 - (void) animateToAssignedParticipant:(Participant *)participant;

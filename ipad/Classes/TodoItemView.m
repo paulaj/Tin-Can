@@ -15,14 +15,25 @@
 @synthesize todo;
 @synthesize delegate;
 
-- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point{
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point fromParticipant:(Participant *)participant{
 	
     // Decide how big to be by looking at the text itself.
     f = [UIFont systemFontOfSize:18];
     CGSize fontSize = [newTodo.text sizeWithFont:f];
     CGSize totalSize = CGSizeMake(fontSize.width + 80, fontSize.height+40);
     
-	if(self = [super initWithFrame:CGRectMake(point.x,point.y, totalSize.width, totalSize.height)]) {
+    // If we have an appropriate participant object, use its 
+    // position as the starting point for our new TodoItemView and
+    // animate it into position from there. Otherwise, just start
+    // it in its final position and leave it there.
+    CGPoint startingPoint;
+    if(participant != nil) {
+        startingPoint = participant.view.frame.origin;
+    } else {
+        startingPoint = point;
+    }
+    
+	if(self = [super initWithFrame:CGRectMake(startingPoint.x, startingPoint.y, totalSize.width, totalSize.height)]) {
 		touched = false;
 
 		// figure out how big this is going to need to be.
@@ -37,11 +48,22 @@
         self.todo.view = self;
 
         // Save our initial position so we can animate back to it if we're dropped on a non-participant.
-        initialCenter = self.center;
+        initialOrigin = point;
 
         [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
 
 		[self setNeedsDisplay];
+        
+        // Animate to the destination point.
+        if(!CGPointEqualToPoint(startingPoint, point)) {
+            [UIView beginAnimations:@"initial_move_into_position" context:nil];
+            [UIView setAnimationDuration:2.0];
+            CGRect newFrame = self.frame;
+            newFrame.origin = point;
+            self.frame = newFrame;
+            [UIView commitAnimations];
+        }
+        
 	}
 	return self;
 }
@@ -117,7 +139,7 @@
         [UIView beginAnimations:@"snap_to_initial_position" context:nil];
         
         [UIView setAnimationDuration:1.0f];
-        self.center = initialCenter;
+        self.frame = CGRectMake(initialOrigin.x, initialOrigin.y, self.frame.size.width, self.frame.size.height);
         
         [UIView commitAnimations];
     }

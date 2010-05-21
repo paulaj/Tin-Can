@@ -332,15 +332,10 @@
     }
 }
 
+// TODO Nuke this function. Doesn't make much sense now that we're not hardcoding anymore.
 - (void)initTodoViews {
-    
-    // Add in some fake todos here so we can re-test the dragging/dropping code.
     todoViews = [[NSMutableSet set] retain];
-    todos = [[NSMutableDictionary dictionary] retain];
-    
-//    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Update the figures."]];
-//    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Write a new introduction."]];
-//    [self addTodoItemView:[[TodoItemView alloc] initWithTodoText:@"Set up a meeting with Debbie."]];     
+    todos = [[NSMutableDictionary dictionary] retain];    
 }
 
 // Should this operate on the Todo level or TodoItemView? I like Todo better,
@@ -353,7 +348,7 @@
     
     NSLog(@"Added todo to dictionary: %@ -> %@", todo, todos);
     
-    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition]];
+    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition] fromParticipant:[participants objectForKey:todo.creatorUUID]];
 
     [todos setObject:todo forKey:todo.uuid];
 
