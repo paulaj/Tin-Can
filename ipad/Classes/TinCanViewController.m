@@ -362,7 +362,7 @@
 - (CGPoint) getNextTodoPosition {
     // Place todos in a column on the left side of the display, and move down
     // the list as todos are added. 
-    return CGPointMake(500 - 40*[todos count], 200);
+    return CGPointMake(600 - 40*[todos count], 200);
 }
 
 

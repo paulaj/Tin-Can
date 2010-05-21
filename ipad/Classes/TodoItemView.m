@@ -42,6 +42,11 @@
 
 		[self setBackgroundColor:[UIColor clearColor]];
         
+        CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+        transform = CGAffineTransformScale(transform, 0.4, 0.4);        
+        [self setTransform:transform];
+        
+        self.alpha = 0.4;
 		self.todo = newTodo;
 		[self.todo retain];
         
@@ -50,7 +55,6 @@
         // Save our initial position so we can animate back to it if we're dropped on a non-participant.
         initialOrigin = point;
 
-        [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
 
 		[self setNeedsDisplay];
         
@@ -61,6 +65,12 @@
             CGRect newFrame = self.frame;
             newFrame.origin = point;
             self.frame = newFrame;
+            self.alpha = 1.0;
+            
+            CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+            transform = CGAffineTransformScale(transform, 1.0, 1.0);        
+            [self setTransform:transform];
+
             [UIView commitAnimations];
         }
         
@@ -154,6 +164,12 @@
     
     [UIView setAnimationDuration:1.0f];
     self.center = participant.view.center;
+    
+    self.alpha = 0.2;
+    
+    CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+    transform = CGAffineTransformScale(transform, 0.4, 0.4);        
+    [self setTransform:transform];
     
     // Now set the callback. 
     [UIView setAnimationDelegate:self];
