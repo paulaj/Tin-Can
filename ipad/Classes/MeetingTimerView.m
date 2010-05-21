@@ -27,7 +27,7 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     //Wipe the layer manually because clearsContext doesn't work.
-    CGContextSetRGBFillColor(ctx, 0, 0, 0, 0.0);
+    CGContextSetRGBFillColor(ctx, 0, 0, 0, 1.0);
     CGContextFillRect(ctx, CGRectMake(-200, -200, 500, 500));
 
     // Puts it in landscape mode, basically - so the top of the clock is to the right in portrait mode
@@ -48,16 +48,11 @@
     NSInteger minute = [dateComponents minute];
     NSInteger second = [dateComponents second];
     [gregorian release];
-    
-    NSLog(@"time: %d:%d", hour, minute);
-        
+            
     // Draw the hour hand.
     // Figure out what the rotation should be.
-    CGFloat hourRotation = ((hour%12)/12.0f) * (2*M_PI);
+    CGFloat hourRotation = ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
     CGFloat minRotation = ((minute*60 + second)/3600.0f) * (2*M_PI);
-
-    NSLog(@"time rots: %f:%f", hourRotation, minRotation);
-
     
     CGContextRotateCTM(ctx, hourRotation);
     CGContextMoveToPoint(ctx, 0, 0);
@@ -76,9 +71,15 @@
     
     // Now put a 12 on top.
     NSString *twelve = @"12";
+    NSString *six = @"6";
+    NSString *three = @"3";
+    NSString *nine = @"9";
 
     CGContextSetRGBFillColor(ctx, 0.3, 0.3, 0.3, 1.0);
     [twelve drawAtPoint:CGPointMake(-10, -140) withFont:[UIFont systemFontOfSize:18]];
+    [six drawAtPoint:CGPointMake(-10, 115) withFont:[UIFont systemFontOfSize:18]];
+    [three drawAtPoint:CGPointMake(125, -10) withFont:[UIFont systemFontOfSize:18]];
+    [nine drawAtPoint:CGPointMake(-135, -10) withFont:[UIFont systemFontOfSize:18]];
     
     
     
