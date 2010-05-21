@@ -46,7 +46,7 @@
 - (void) addTodo:(Todo *)todo;
 
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
-- (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
+- (bool) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 
 - (void) dispatchTodoCommandString:(NSString *)operation;
 

@@ -168,7 +168,7 @@
     [lastTodoDropTargets setValue:lastDropTarget forKey:todo];
 }
 
-- (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo {
+- (bool) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo {
     // Get the current target
     ParticipantView *curTargetView = [self participantAtTouch:touch withEvent:event];	
 
@@ -186,9 +186,11 @@
         [request setPostValue:[NSString stringWithFormat:@"ASSIGN_TODO %@ %@", todo.uuid, curTargetView.participant.uuid] forKey:@"tincan"];
         [request setDelegate:self];
         [request startAsynchronous];
+        
+        return true;
     }
     
-    
+    return false;
 }
 
 - (void) requestFinished:(ASIHTTPRequest *)request {

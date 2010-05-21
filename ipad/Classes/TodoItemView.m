@@ -36,7 +36,9 @@
         
         self.todo.parentView = self;
 
-        
+        // Save our initial position so we can animate back to it if we're dropped on a non-participant.
+        initialCenter = self.center;
+
         [self setTransform:CGAffineTransformMakeRotation(M_PI/2)];
 
 		[self setNeedsDisplay];
@@ -108,7 +110,18 @@
     
     touched = false;
     
-    [self.delegate todoDragEndedWithTouch:touch withEvent:event withTodo:self.todo];
+    
+    // If this returns false, it means we didn't land on top of something and should 
+    // animate back to our original position.
+    if (![self.delegate todoDragEndedWithTouch:touch withEvent:event withTodo:self.todo]) {
+        [UIView beginAnimations:@"snap_to_initial_position" context:nil];
+        
+        [UIView setAnimationDuration:1.0f];
+        self.center = initialCenter;
+        
+        [UIView commitAnimations];
+    }
+        
 	[self setNeedsDisplay];
 }
 

@@ -14,7 +14,11 @@
 
 @protocol TodoDragDelegate
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
-- (void) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
+
+// Returns true if the drag ended on a drop target, false otherwise.
+// (TODO should this actually return the target we dropped on instead of just true/false?)
+// (alternatively, should we have a generic drop target interface? Hmm.)
+- (bool) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 @end
 
 
@@ -23,6 +27,8 @@
 	Todo *todo;
     UIFont *f;
     id <TodoDragDelegate> delegate;
+    
+    CGPoint initialCenter;
 }
 
 - (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point;
