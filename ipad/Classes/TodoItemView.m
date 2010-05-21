@@ -67,6 +67,8 @@
             self.frame = newFrame;
             self.alpha = 1.0;
             
+            NSLog(@"animating into position: %f, %f", point.x, point.y);
+                
             CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
             transform = CGAffineTransformScale(transform, 1.0, 1.0);        
             [self setTransform:transform];
@@ -105,6 +107,8 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	touched = true;
 	
+    initialOrigin = self.frame.origin;
+    
 	[self setNeedsDisplay];
 }
 
@@ -135,7 +139,6 @@
 	[self bringSubviewToFront:self];
 }
 
-
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	
     UITouch *touch = [touches anyObject];
@@ -149,8 +152,12 @@
         [UIView beginAnimations:@"snap_to_initial_position" context:nil];
         
         [UIView setAnimationDuration:1.0f];
-        self.frame = CGRectMake(initialOrigin.x, initialOrigin.y, self.frame.size.width, self.frame.size.height);
         
+        CGRect newFrame = self.frame;
+        newFrame.origin = initialOrigin;
+        self.frame = newFrame;
+        NSLog(@"animating to initialOrigin: %f, %f", initialOrigin.x, initialOrigin.y);
+                
         [UIView commitAnimations];
     }
         

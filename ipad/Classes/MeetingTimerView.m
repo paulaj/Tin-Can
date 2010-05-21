@@ -90,13 +90,9 @@
     if(initialRot==-1) {
         initialRot = minRotation;
         NSLog(@"Setting initial rotation: %f", initialRot);
-    }
-    else {
+    } else {
         // Figure out the total number of elapsed seconds.
         int elapsedSeconds = abs([startTime timeIntervalSinceNow]);
-        
-        NSLog(@"elapsed seconds: %d", elapsedSeconds);
-        
         
         // Gameplan here is always draw a line from 0,0 straight up, then
         // arc around to the current rotation. Rotate the whole context by
@@ -114,8 +110,6 @@
         // TODO sort this out so it's not so hacky.
         CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
         
-        NSLog(@"making arc from 0 to %f", arcLength);
-
         CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
         CGContextAddLineToPoint(ctx, 0, 0);
         CGContextFillPath(ctx);

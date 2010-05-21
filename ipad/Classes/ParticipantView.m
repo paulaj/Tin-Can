@@ -8,6 +8,7 @@
 
 #import "ParticipantView.h"
 #import "Todo.h"
+#import "TodoItemView.h"
 #import "UIColor+Util.h"
 #import "Participant.h"
 #import <math.h>
@@ -22,7 +23,7 @@
 	
 	NSLog(@"initing participant view");
 	hover = false;
-	self.bounds = CGRectMake(-130, -130, 260, 260);
+	self.bounds = CGRectMake(-130, -330, 260, 660);
 	self.center = pos;
     
     // TODO figure out how to write the setter for self.color so
@@ -86,6 +87,39 @@
 }
 
 
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"touches began on participant: %@", self.participant.name);
+//}
+//
+//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"touches moved on participant: %@", self.participant.name);
+//}
+//
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//    // When a touch ends on the participant, we're going to pop up any todos associated with this person.
+//    // In practical terms, this is going to deassign the todos from here (so they stop showing
+//    // up as circles). A subsequent touch will reassign them to the participant.
+//    
+//    // Problem: we need to pass these todos up the chain to the main view controller. Or maybe we can get away
+//    // with them actually being subviews? We'll try making them local and see what happens. Most obvious issue
+//    // is with hit testing against the participant container, but maybe we can find a way around that being a problem.
+//    NSLog(@"got a touches ended on a participant view");
+//    
+//    NSSet *todos = [self.participant.assignedTodos copy];
+//    int i=0;
+//    for (Todo *todo in todos) {
+//        // For each todo, remove it from the participant and then create it.
+//        [self.participant.assignedTodos removeObject:todo];
+//    
+//        TodoItemView *todoView = [[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(0, 200-15*i) fromParticipant:participant];
+//        [self addSubview:todoView];
+//    }
+//    
+//    
+//    
+//}
+
+
 - (void) setHoverState:(bool)hoverState {
 	hover = hoverState;
 	[self setNeedsDisplay];
@@ -96,7 +130,7 @@
 	// if it's inside the circle part of the participant rendering.
 	CGFloat distance = sqrt(pow(point.x, 2) + pow(point.y, 2));
 	
-	// NSLog(@"distance=%f, radius=%f", distance, 40000.0);
+	NSLog(@"distance=%f, radius=%f", distance, 40000.0);
 	
 	if (distance <= 100.0f) {
 		return self;	

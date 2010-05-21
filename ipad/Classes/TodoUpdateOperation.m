@@ -39,6 +39,10 @@
     // NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
+    
+    // Set a really long timeout, because these requests will return data when it's available,
+    // even if it takes a long time.
+    [request setTimeOutSeconds:600];
     [request startSynchronous];
                                                               
     
