@@ -33,11 +33,19 @@
 			todo_text = document.getElementById("todo_text").value
 			participant = document.getElementById("participant").value
 			
-			todo_id = "t" + (new Date().getTime()) + "." Math.random():
+			todo_id = "t" + String(new Date().getTime()) + String(Math.floor(1000*Math.random()));
 			
-			alert(todo_id);
+			data = "NEW_TODO " + todo_id + " " + participant + " " + todo_text;
+			params = "tincan=" + escape(data);
+			// Construct the XMLHTTPRequest object now.
+			request = new XMLHttpRequest();
+			// request.onreadystatechange=callback;
+			request.open("POST","http://toqbot.com/db/?",true);
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			request.setRequestHeader("Content-length", params.length);
+			request.send(params);
 			
-		}
+			}
 	</script>
 </head>
 <body id="post_todo" onload="">
