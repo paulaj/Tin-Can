@@ -30,26 +30,38 @@
 	</style>
 
 	<script type="text/javascript" charset="utf-8">
-		function sendTodoRequest() {
+		function handleTodoSubmit() {
+			
 			todo_text = document.getElementById("todo_text").value
 			participant = document.getElementById("participant").value
-
-			todo_id = "t" + String(new Date().getTime()) + String(Math.floor(1000*Math.random()));
-
-			data = "NEW_TODO " + todo_id + " " + participant + " " + todo_text;
-			params = "tincan=" + escape(data);
-
-			// Construct the XMLHTTPRequest object now.
-			request = new XMLHttpRequest();
-			request.open("POST","http://toqbot.com/db/?",true);
-			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			request.setRequestHeader("Content-length", params.length);
-			request.send(params);
-
+			
+			sendTodoRequest(participant, todo_text);
+			
 			// Reset the form back to empty.
 			document.getElementById("todo_text").value = "";
 
 			return false;
+			}
+			
+			function sendTodoRequest(participant, text) {
+				
+				todo_id = "t" + String(new Date().getTime()) + String(Math.floor(1000*Math.random()));
+
+				data = "NEW_TODO " + todo_id + " " + participant + " " + text;
+				params = "tincan=" + escape(data);
+
+				// Construct the XMLHTTPRequest object now.
+				request = new XMLHttpRequest();
+				request.open("POST","http://toqbot.com/db/?",true);
+				request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				request.setRequestHeader("Content-length", params.length);
+				request.send(params);
+			}
+			
+			function createDemoTodos() {
+				sendTodoRequest("p1", "Update the figures in the presentation.");
+				sendTodoRequest("p4", "Schedule a meeting with the sales team.");
+				sendTodoRequest("p6", "Review the latest version of the document.");
 			}
 
 	</script>
@@ -80,7 +92,7 @@
 <tr><td>Task</td>
 	<td><input type="text" name="" value="" id="todo_text" size=50></td>
 </tr>
-<tr><td/><td><input type="button" value="Continue &rarr;" onclick="sendTodoRequest()"></td></tr>
+<tr><td/><td><input type="button" value="Continue &rarr;" onclick="sendTodoRequest()"><input type="button" value="Demo Todos" onclick="createDemoTodos();"></td></tr>
 </table>
 </form>
 </body>
