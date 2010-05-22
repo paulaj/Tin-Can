@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>post_todo</title>
+	<style type="text/css" media="screen">
+		#header
+		{
+			background-color: #555555;
+			color: white;
+			padding: 3px 3px 3px 10px;
+			
+			margin-bottom: 10px;
+			font-style: italic;
+		}
+		
+		body
+		{
+			margin: 0px;
+			padding: 0px;
+		}
+		
+		#form_table
+		{
+			margin-left: 10px;
+		}
+		
+	</style>
+	
+	<script type="text/javascript" charset="utf-8">
+		function sendTodoRequest() {
+			todo_text = document.getElementById("todo_text").value
+			participant = document.getElementById("participant").value
+			
+			todo_id = "t" + (new Date().getTime()) + "." Math.random():
+			
+			alert(todo_id);
+			
+		}
+	</script>
+</head>
+<body id="post_todo" onload="">
+
+
+<div id="header">tincan meeting system</div>
+<form action="" method="get" accept-charset="utf-8">
+
+<table border="0" cellspacing="0" cellpadding="3" id="form_table">
+<tr><td>Participant</td>
+	<td>
+		<select name="participant" id="participant" onchange="" size="1">
+			<option value="p1">Matt</option>
+			<option value="p2">Andrea</option>
+			<option value="p3">Jaewoo</option>
+			<option value="p4">Charlie</option>
+			<option value="p5">Chris</option>
+			<option value="p6">Drew</option>
+			<option value="p7">Ig-Jae</option>
+			<option value="p8">Trevor</option>
+			<option value="p9">Paulina</option>
+			<option value="p10">Dori</option>
+		</select>
+	</td>
+</tr>
+<tr><td>Task</td>
+	<td><input type="text" name="" value="" id="todo_text" size=50></td>
+</tr>
+<tr><td/><td><input type="submit" value="Continue &rarr;" onclick="sendTodoRequest()"></td></tr>
+</table>
+</form>
+</body>
+
+</html>
