@@ -34,14 +34,11 @@
     participantsContainer = [[UIView alloc] initWithFrame:self.view.frame];
     [participantsContainer retain];
     [self.view addSubview:participantsContainer];
-    
-    todosContainer = [[UIView alloc] initWithFrame:self.view.frame];
-    [todosContainer retain];
-    [self.view addSubview:todosContainer];
-    
+        
     [self initParticipantsView];
     [self initTodoViews];
 
+    [self.view bringSubviewToFront:participantsContainer];
     
     queue = [[[NSOperationQueue alloc] init] retain];
     
@@ -87,15 +84,14 @@
     
     [meetingTimerView release];
     meetingTimerView = nil;
-    
-    [todosContainer release];
-    todosContainer = nil;
 }
 
 
 - (void)dealloc {
     [super dealloc];
     [self.view release];
+    
+    [participantsContainer release];
     
     [participants release];
     [todos release];
@@ -353,7 +349,7 @@
 
     [todoViews addObject:view];
     [view setDelegate:self];
-    [todosContainer addSubview:view];
+    [self.view addSubview:view];
     [view setNeedsDisplay];
 }
 

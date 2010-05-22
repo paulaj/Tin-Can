@@ -32,6 +32,9 @@
         
 	rotation = rot;
     
+    
+    todosExpanded = false;
+    
     [self setBackgroundColor:[UIColor clearColor]];
 	
 	self.participant = newParticipant;
@@ -94,30 +97,48 @@
 //- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 //    NSLog(@"touches moved on participant: %@", self.participant.name);
 //}
-//
-//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-//    // When a touch ends on the participant, we're going to pop up any todos associated with this person.
-//    // In practical terms, this is going to deassign the todos from here (so they stop showing
-//    // up as circles). A subsequent touch will reassign them to the participant.
-//    
-//    // Problem: we need to pass these todos up the chain to the main view controller. Or maybe we can get away
-//    // with them actually being subviews? We'll try making them local and see what happens. Most obvious issue
-//    // is with hit testing against the participant container, but maybe we can find a way around that being a problem.
-//    NSLog(@"got a touches ended on a participant view");
-//    
-//    NSSet *todos = [self.participant.assignedTodos copy];
-//    int i=0;
-//    for (Todo *todo in todos) {
-//        // For each todo, remove it from the participant and then create it.
-//        [self.participant.assignedTodos removeObject:todo];
-//    
-//        TodoItemView *todoView = [[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(0, 200-15*i) fromParticipant:participant];
-//        [self addSubview:todoView];
-//    }
-//    
-//    
-//    
-//}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    // When a touch ends on the participant, we're going to pop up any todos associated with this person.
+    // In practical terms, this is going to deassign the todos from here (so they stop showing
+    // up as circles). A subsequent touch will reassign them to the participant.
+    
+    // Problem: we need to pass these todos up the chain to the main view controller. Or maybe we can get away
+    // with them actually being subviews? We'll try making them local and see what happens. Most obvious issue
+    // is with hit testing against the participant container, but maybe we can find a way around that being a problem.
+    NSLog(@"got a touches ended on a participant view");
+    NSSet *todos = [self.participant.assignedTodos copy];
+    
+    if(!todosExpanded) {
+        expandedTodoViews = [[NSMutableSet set] retain];
+        // Expand existing todos. Recreate TodoItemViews for each,
+        // attach them to the super view and animate them into position
+        // near the participant.
+        int i=0;
+        for (Todo *todo in todos) {
+            // For each todo, remove it from the participant and then create it.
+            [self.participant.assignedTodos removeObject:todo];
+            [self setNeedsDisplay];
+            
+            
+            TodoItemView *todoView = [[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(400, 200-15*i) fromParticipant:participant];
+            [expandedTodoViews addObject:todoView];
+            
+            [self.superview addSubview:todoView];
+        }
+        todosExpanded = true;
+    } else {
+        // Get all the todo item views associated with this 
+        for(TodoItemView *todoView in expandedTodoViews) {
+            // Reassign all of these views back to this participant.
+            [todoView animateToAssignedParticipant:self.participant];
+        }
+        
+        [expandedTodoViews release];
+        expandedTodoViews = nil;
+        todosExpanded = false;
+    }
+}
 
 
 - (void) setHoverState:(bool)hoverState {
@@ -129,9 +150,7 @@
 	// We want to do our hit test a little differently - just return true
 	// if it's inside the circle part of the participant rendering.
 	CGFloat distance = sqrt(pow(point.x, 2) + pow(point.y, 2));
-	
-	NSLog(@"distance=%f, radius=%f", distance, 40000.0);
-	
+		
 	if (distance <= 100.0f) {
 		return self;	
 	}

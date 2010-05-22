@@ -18,6 +18,11 @@
 	float rotation;
 	bool hover;
     
+    // Toggles when a participant is touched. If true, the todos assigned to this person
+    // spread out in front of them.
+    bool todosExpanded;
+    NSMutableSet *expandedTodoViews;
+    
     UIColor *color;
     
     Participant *participant;

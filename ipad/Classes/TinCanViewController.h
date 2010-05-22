@@ -11,12 +11,12 @@
 #import "TodoItemView.h"
 #import "ParticipantView.h"
 
-@interface TinCanViewController : UIViewController <TodoDragDelegate> {
+@interface TinCanViewController : UIViewController <TodoDragDelegate> {    
     UIView *participantsContainer;
-    UIView *todosContainer;
     
     NSMutableSet *todoViews;
 
+    
     NSMutableDictionary *participants;
     NSMutableDictionary *todos;
     
