@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -10,42 +11,48 @@
 			background-color: #555555;
 			color: white;
 			padding: 3px 3px 3px 10px;
-			
+
 			margin-bottom: 10px;
 			font-style: italic;
 		}
-		
+
 		body
 		{
 			margin: 0px;
 			padding: 0px;
 		}
-		
+
 		#form_table
 		{
 			margin-left: 10px;
 		}
-		
+
 	</style>
-	
+
 	<script type="text/javascript" charset="utf-8">
 		function sendTodoRequest() {
 			todo_text = document.getElementById("todo_text").value
 			participant = document.getElementById("participant").value
-			
+
 			todo_id = "t" + String(new Date().getTime()) + String(Math.floor(1000*Math.random()));
-			
+
 			data = "NEW_TODO " + todo_id + " " + participant + " " + todo_text;
 			params = "tincan=" + escape(data);
+
 			// Construct the XMLHTTPRequest object now.
 			request = new XMLHttpRequest();
-			// request.onreadystatechange=callback;
+			request.onreadystatechange=post_callback;
 			request.open("POST","http://toqbot.com/db/?",true);
 			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			request.setRequestHeader("Content-length", params.length);
 			request.send(params);
-			
+
+			// Reset the form back to empty.
+			document.getElementById("todo_text").value = "";
+
+			return false;
 			}
+
 	</script>
 </head>
 <body id="post_todo" onload="">
@@ -74,7 +81,7 @@
 <tr><td>Task</td>
 	<td><input type="text" name="" value="" id="todo_text" size=50></td>
 </tr>
-<tr><td/><td><input type="submit" value="Continue &rarr;" onclick="sendTodoRequest()"></td></tr>
+<tr><td/><td><input type="button" value="Continue &rarr;" onclick="sendTodoRequest()"></td></tr>
 </table>
 </form>
 </body>
