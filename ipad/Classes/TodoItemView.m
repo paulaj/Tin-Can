@@ -9,6 +9,7 @@
 #import "TodoItemView.h"
 #import "Todo.h"
 #import "ParticipantView.h"
+#import "DragManager.h"
 
 @implementation TodoItemView
 
@@ -55,9 +56,11 @@
         // Save our initial position so we can animate back to it if we're dropped on a non-participant.
         initialOrigin = point;
 
+        // Set the drag manager as our delegate.
+        [self setDelegate:[DragManager sharedInstance]];
 
 		[self setNeedsDisplay];
-        
+                
         // Animate to the destination point.
         if(!CGPointEqualToPoint(startingPoint, point)) {
             [UIView beginAnimations:@"initial_move_into_position" context:nil];

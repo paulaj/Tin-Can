@@ -123,7 +123,9 @@
             TodoItemView *todoView = [[[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(400, 200-15*i) fromParticipant:participant] retain];
             [expandedTodoViews addObject:todoView];
             
-            [self.superview addSubview:todoView];
+            // Go up two levels, because the next level up is the participants
+            // container, not the root view.
+            [self.superview.superview addSubview:todoView];
         }
         todosExpanded = true;
     } else {

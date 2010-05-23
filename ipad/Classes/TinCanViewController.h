@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MeetingTimerView.h"
-#import "TodoItemView.h"
 #import "ParticipantView.h"
 
-@interface TinCanViewController : UIViewController <TodoDragDelegate> {    
+@interface TinCanViewController : UIViewController {    
     UIView *participantsContainer;
     
     NSMutableSet *todoViews;
@@ -22,13 +21,7 @@
     
     MeetingTimerView *meetingTimerView;
     NSTimer *clock;
-    
-    NSMutableDictionary *lastTodoDropTargets;
-    
-    // This is going to have to turn into a dictionary in a sec, but
-    // for the one-touch-case, this will work.
-    ParticipantView *lastTargetParticipant;
-    
+        
     // Not sure if this should live here or in AppDelegate,
     // but we'll start with here for now.
     NSOperationQueue *queue;
@@ -42,13 +35,7 @@
 
 - (void) clk;
 
-
-- (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event;
-
 - (void) addTodo:(Todo *)todo;
-
-- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
-- (bool) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 
 - (void) dispatchTodoCommandString:(NSString *)operation fromRevision:(int)revision;
 

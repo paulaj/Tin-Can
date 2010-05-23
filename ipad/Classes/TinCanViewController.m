@@ -11,7 +11,8 @@
 #import "TodoUpdateOperation.h"
 #import "Todo.h"
 #import "Participant.h"
-#import "ASIFormDataRequest.h"
+#import "TodoItemView.h"
+#import "DragManager.h"
 
 #define INITIAL_REVISION_NUMBER 10000
 
@@ -39,6 +40,8 @@
         
     [self initParticipantsView];
     [self initTodoViews];
+    
+    [[DragManager sharedInstance] initWithRootView:self.view withParticipantsContainer:participantsContainer];
 
     [self.view bringSubviewToFront:participantsContainer];
     
@@ -56,10 +59,7 @@
     
     // Kick off the timer.
     clock = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clk) userInfo:nil repeats:YES];
-    [clock retain];
-
-    lastTodoDropTargets = [[NSMutableDictionary dictionary] retain];
-    
+    [clock retain];    
     
     // Push an update into the queue.
     [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self withRevisionNumber:INITIAL_REVISION_NUMBER]];
@@ -102,129 +102,15 @@
     
     [todoViews release];
     
-    [lastTodoDropTargets release];
-    
     [queue release];
     
     [clock invalidate];
 }
 
 
-#pragma mark TodoDragDelegate
-
-- (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo{
-    
-    // Get the last target
-    ParticipantView *lastDropTarget = [lastTodoDropTargets objectForKey:todo];
-    
-    // Now check and see if we're over a participant right now.
-	ParticipantView *curDropTarget = [self participantAtTouch:touch withEvent:event];
-        
-	// rethinking this...
-	// if cur and last are the same, do nothing.
-	// if they're different, release the old and retain the new and manage states.
-	// if cur is nothing and last is something, release and set false
-	// if cur is something and last is nothing, retain and set true
-	
-	if(curDropTarget != nil) {
-		if (lastDropTarget == nil) {
-			[curDropTarget setHoverState:true];
-			[curDropTarget retain];
-			lastDropTarget = curDropTarget;			
-		} else if(curDropTarget != lastDropTarget) {
-			// transition.
-			[lastDropTarget setHoverState:false];
-			[lastDropTarget release];
-            
-			// No matter what, we want to set the current one true
-			[curDropTarget setHoverState:true];
-			[curDropTarget retain];
-			lastDropTarget = curDropTarget;
-		}
-		
-		// If they're the same, do nothing - don't want to be sending the
-		// retain count through the roof.
-	} else {
-		// curTargetView IS nul.
-		if(lastDropTarget != nil) {
-			[lastDropTarget setHoverState:false];
-			[lastDropTarget release];		
-			lastDropTarget = nil;
-		}
-		
-		// If they're both nil, do nothing.
-	}
-	
-	
-	[lastDropTarget setHoverState:false];
-	[lastDropTarget release];
-	if(curDropTarget !=nil) {
-		[curDropTarget setHoverState:true];
-		lastDropTarget = curDropTarget;
-		[lastDropTarget retain];
-	}
-        
-    // Now push the current last into the dictionary.
-    [lastTodoDropTargets setValue:lastDropTarget forKey:todo];
-}
-
-- (bool) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo {
-    // Get the current target
-    ParticipantView *curTargetView = [self participantAtTouch:touch withEvent:event];	
-
-    // Assign the todo.
-    if(curTargetView != nil) {
-        // For now, disable this part - let it happen in the loopback through toqbot. 
-//        [curTargetView.participant assignTodo:todo];
-//        [curTargetView setHoverState:false];
-        
-        // Now, send a message back to toqbot about the assignment.
-        // TODO abstract this out into some nice communication singleton
-        
-        NSLog(@"about to try to post something.");
-        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/"]];
-        [request setPostValue:[NSString stringWithFormat:@"ASSIGN_TODO %@ %@", todo.uuid, curTargetView.participant.uuid] forKey:@"tincan"];
-        [request setDelegate:self];
-        [request startAsynchronous];
-        
-        return true;
-    }
-    
-    return false;
-}
-
-- (void) requestFinished:(ASIHTTPRequest *)request {
-    NSLog(@"request finished! %@", [request responseString]);
-}
-
-- (void) requestFailed:(ASIHTTPRequest *)request {
-    NSLog(@"request failed: %@", [request error]);
-}
 
 
 #pragma mark Internal Methods
-
-- (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
-    CGPoint point = [touch locationInView:self.view];
-    
-
-    UIView *returnedView = [participantsContainer hitTest:point withEvent:event];
-    
-    NSLog(@"checking participantAtTouch. point: %f, %f. returned view: %@", point.x, point.y, returnedView);
-
-    if(returnedView==nil) {
-        return nil;
-    }
-    
-    if([returnedView isKindOfClass:[ParticipantView class]]) {
-        return ((ParticipantView *) returnedView);
-    }
-    else {
-        return nil;
-    }
-    
-}
 
 - (void)clk {
     [meetingTimerView setNeedsDisplay];
@@ -358,7 +244,7 @@
     [todos setObject:todo forKey:todo.uuid];
 
     [todoViews addObject:view];
-    [view setDelegate:self];
+
     [self.view addSubview:view];
     [view setNeedsDisplay];
 }
