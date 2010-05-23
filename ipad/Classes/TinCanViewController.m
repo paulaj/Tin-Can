@@ -234,7 +234,7 @@
 // do right now. TODO refactor this later.
 - (void)addTodo:(Todo *)todo {
      
-    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition] isOriginPoint:true fromParticipant:[participants objectForKey:todo.creatorUUID] useParticipantRotation:false];
+    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition] isOriginPoint:true fromParticipant:[participants objectForKey:todo.creatorUUID] useParticipantRotation:false withColor:[UIColor whiteColor]];
 
     [todos setObject:todo forKey:todo.uuid];
 

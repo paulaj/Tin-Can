@@ -46,12 +46,8 @@
 - (void) drawRect:(CGRect)rect {
 	
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-//	CGContextRotateCTM(ctx, rotation);
 	
 	if(ctx != nil) {
-
-        //CGContextSetFillColorWithColor(ctx, hoverColor.CGColor);
-
         
 		if(hover)
             CGContextSetFillColorWithColor(ctx, [self.color colorDarkenedByPercent:0.3].CGColor);
@@ -127,7 +123,7 @@
             
             CGPoint globalTodoPosition = [self convertPoint:localTodoPosition toView:self.superview];
             
-            TodoItemView *todoView = [[[TodoItemView alloc] initWithTodo:todo atPoint:globalTodoPosition isOriginPoint:false fromParticipant:participant useParticipantRotation:true] retain];
+            TodoItemView *todoView = [[[TodoItemView alloc] initWithTodo:todo atPoint:globalTodoPosition isOriginPoint:false fromParticipant:participant useParticipantRotation:true withColor:self.color] retain];
             [expandedTodoViews addObject:todoView];
             
             // Go up two levels, because the next level up is the participants

@@ -29,9 +29,10 @@
     id <TodoDragDelegate> delegate;
     
     CGPoint initialOrigin;
+    UIColor *color;
 }
 
-- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation;
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation withColor:(UIColor *)c;
 - (void) deassign;
 
 - (void) animateToAssignedParticipant:(Participant *)participant;

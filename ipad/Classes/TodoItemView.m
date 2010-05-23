@@ -10,13 +10,14 @@
 #import "Todo.h"
 #import "ParticipantView.h"
 #import "DragManager.h"
+#import "UIColor+Util.h"
 
 @implementation TodoItemView
 
 @synthesize todo;
 @synthesize delegate;
 
-- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation{
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation withColor:(UIColor *)c{
 	
     // Decide how big to be by looking at the text itself.
     f = [UIFont systemFontOfSize:18];
@@ -36,14 +37,13 @@
         startingPoint = point;
     }
     
-//    if(isOrigin)
     CGRect initialFrame = CGRectMake(startingPoint.x, startingPoint.y, totalSize.width, totalSize.height);
-//    else 
-//        initialFrame = CGRectMake(startingPoint.x - (totalSize.width/2), startingPoint.y - (totalSize.height/2), totalSize.width, totalSize.height);
     
 	if(self = [super initWithFrame:initialFrame]) {
+            
+        color = c;
 		touched = false;
-		
+        
 		self.bounds = CGRectMake(-20, -20, totalSize.width, totalSize.height);
 
 		[self setBackgroundColor:[UIColor clearColor]];
@@ -112,9 +112,9 @@
 
  		// at 0,0, draw a circle to represent this todo object.
 		if(touched) {
-			CGContextSetRGBFillColor(ctx, 1.0, 0.1, 0.1, 1.0);
+			CGContextSetFillColorWithColor(ctx, color.CGColor);
 		} else {
-			CGContextSetRGBFillColor(ctx, 0.8, 0.1, 0.1, 1.0);
+			CGContextSetFillColorWithColor(ctx, [color colorDarkenedByPercent:0.3].CGColor);
 		}
 		
 		CGContextFillEllipseInRect(ctx, CGRectMake(-15, -15, 30, 30));
@@ -192,7 +192,7 @@
     // delegated callback do the actual assignment.
     [UIView beginAnimations:@"move_to_assigned_participant" context:participant];
     
-    [UIView setAnimationDuration:1.0f];
+    [UIView setAnimationDuration:0.5f];
     self.center = participant.view.center;
     
     self.alpha = 0.2;
