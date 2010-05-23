@@ -201,8 +201,14 @@
 #pragma mark Internal Methods
 
 - (ParticipantView *) participantAtTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    
     CGPoint point = [touch locationInView:self.view];
+    
+
     UIView *returnedView = [participantsContainer hitTest:point withEvent:event];
+    
+    NSLog(@"checking participantAtTouch. point: %f, %f. returned view: %@", point.x, point.y, returnedView);
+
     if(returnedView==nil) {
         return nil;
     }

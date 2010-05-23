@@ -120,8 +120,7 @@
             [self.participant.assignedTodos removeObject:todo];
             [self setNeedsDisplay];
             
-            
-            TodoItemView *todoView = [[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(400, 200-15*i) fromParticipant:participant];
+            TodoItemView *todoView = [[[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(400, 200-15*i) fromParticipant:participant] retain];
             [expandedTodoViews addObject:todoView];
             
             [self.superview addSubview:todoView];
@@ -131,7 +130,10 @@
         // Get all the todo item views associated with this 
         for(TodoItemView *todoView in expandedTodoViews) {
             // Reassign all of these views back to this participant.
-            [todoView animateToAssignedParticipant:self.participant];
+            
+            // First check and see if we still own all the todos.
+            if(todoView.todo.participantOwner == self.participant)
+                [todoView animateToAssignedParticipant:self.participant];
         }
         
         [expandedTodoViews release];

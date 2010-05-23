@@ -18,6 +18,8 @@
     
 	NSString *creatorUUID;
 	
+    Participant *participantOwner;
+    
     UIView *view;
 	// Some sort of history thing here?
 }
@@ -34,5 +36,6 @@
 @property (nonatomic, retain) NSString *creatorUUID;
 @property (nonatomic, retain) UIView *view;
 @property (nonatomic, retain) NSString *uuid;
+@property (nonatomic, retain) Participant *participantOwner;
 
 @end

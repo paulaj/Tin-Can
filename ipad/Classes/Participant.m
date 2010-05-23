@@ -49,6 +49,7 @@
     // rendered as a child of this this participant's view, so
     // this is kind of vestigal. 
     todo.view = self.view;
+    todo.participantOwner = self;
     
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
     [self.view setHoverState:false];

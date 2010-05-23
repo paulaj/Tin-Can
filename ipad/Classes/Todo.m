@@ -18,8 +18,7 @@
 @synthesize created;
 @synthesize creatorUUID;
 @synthesize view;
-
-
+@synthesize participantOwner;
 
 // Syntactic sugar for auto-generating an internal UUID. Not sure we're actually
 // ever going to do this - in the sponsor week demo, at least, all UUIDs are
