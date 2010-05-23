@@ -121,23 +121,23 @@
     participants = [[NSMutableDictionary dictionary] retain];
         
     // Make a set of names.
-    NSMutableSet *nameSet = [NSMutableSet set];
-    [nameSet addObject:@"Matt"];
-    [nameSet addObject:@"Andrea"];
-    [nameSet addObject:@"Jaewoo"];
-    [nameSet addObject:@"Charlie"];
-    [nameSet addObject:@"Chris"];
-    [nameSet addObject:@"Drew"];
-    [nameSet addObject:@"Ig-Jae"];
-    [nameSet addObject:@"Trevor"];
-    [nameSet addObject:@"Paulina"];
-    [nameSet addObject:@"Dori"];
+    NSMutableArray *names = [NSMutableArray arrayWithCapacity:10];
+    [names addObject:@"Matt"];
+    [names addObject:@"Andrea"];
+    [names addObject:@"Jaewoo"];
+    [names addObject:@"Charlie"];
+    [names addObject:@"Chris"];
+    [names addObject:@"Drew"];
+    [names addObject:@"Ig-Jae"];
+    [names addObject:@"Trevor"];
+    [names addObject:@"Paulina"];
+    [names addObject:@"Dori"];
     
     
     
     // Now loop through that set.
     int i = 0;
-    for (NSString *name in [nameSet allObjects]) {
+    for (NSString *name in names) {
         // This is going to get really ugly for now, since we don't
         // have a nice participant layout manager. Just hardcode
         // positions.
@@ -233,12 +233,7 @@
 // but since there's that initWithText sugar, they're equally easy to 
 // do right now. TODO refactor this later.
 - (void)addTodo:(Todo *)todo {
- 
-    NSLog(@"todo: %@; dictionary: %@", todo.uuid, todos);
-    
-    
-    NSLog(@"Added todo to dictionary: %@ -> %@", todo, todos);
-    
+     
     TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition] fromParticipant:[participants objectForKey:todo.creatorUUID]];
 
     [todos setObject:todo forKey:todo.uuid];

@@ -23,7 +23,7 @@
 	
 	NSLog(@"initing participant view");
 	hover = false;
-	self.bounds = CGRectMake(-130, -330, 260, 660);
+	self.bounds = CGRectMake(-130, -130, 260, 260);
 	self.center = pos;
     
     // TODO figure out how to write the setter for self.color so

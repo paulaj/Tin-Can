@@ -30,14 +30,14 @@
     CGPoint startingPoint;
     if(participant != nil) {
         startingPoint = participant.view.frame.origin;
+        NSLog(@"starting point: %f,%f", startingPoint.x, startingPoint.y);
+        NSLog(@"from participant: %@", participant.name);
     } else {
         startingPoint = point;
     }
     
 	if(self = [super initWithFrame:CGRectMake(startingPoint.x, startingPoint.y, totalSize.width, totalSize.height)]) {
 		touched = false;
-
-		// figure out how big this is going to need to be.
 		
 		self.bounds = CGRectMake(-20, -20, totalSize.width, totalSize.height);
 

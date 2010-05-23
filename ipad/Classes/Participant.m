@@ -56,6 +56,11 @@
 	[self.view setNeedsDisplay];
 }
 
+- (NSString *)description {
+    
+    return [NSString stringWithFormat:@"<Participant name=%@, uuid=%@, numTodos=%d>", self.name, self.uuid, [self.assignedTodos count]];
+}
+
 - (void) dealloc {
     [assignedTodos release];
     [super dealloc];
