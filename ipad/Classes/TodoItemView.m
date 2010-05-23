@@ -65,17 +65,19 @@
         if(!CGPointEqualToPoint(startingPoint, point)) {
             [UIView beginAnimations:@"initial_move_into_position" context:nil];
             [UIView setAnimationDuration:2.0];
+                            
+            CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+            transform = CGAffineTransformScale(transform, 1.0, 1.0);        
+            [self setTransform:transform];
+
+            // This needs to happen after the transform, because when it's done
+            // before the transform, it's setting the location of the 0.4 scaled
+            // version of the view, not the 1.0 scaled. Tricksy.
             CGRect newFrame = self.frame;
             newFrame.origin = point;
             self.frame = newFrame;
             self.alpha = 1.0;
             
-            NSLog(@"animating into position: %f, %f", point.x, point.y);
-                
-            CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
-            transform = CGAffineTransformScale(transform, 1.0, 1.0);        
-            [self setTransform:transform];
-
             [UIView commitAnimations];
         }
         
