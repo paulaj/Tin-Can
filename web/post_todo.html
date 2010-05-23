@@ -4,8 +4,18 @@
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=300" />
+	<!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+	<!-- <meta name="apple-mobile-web-app-status-bar-style" content="black" /> -->
+	
 	<title>post_todo</title>
 	<style type="text/css" media="screen">
+		#container
+		{
+			width: 300px;
+			
+		}
+
 		#header
 		{
 			background-color: #555555;
@@ -13,7 +23,8 @@
 			padding: 3px 3px 3px 10px;
 
 			margin-bottom: 10px;
-			font-style: italic;
+			font-weight: bold;
+			font-family: Helvetica, Arial, sans-serif;
 		}
 
 		body
@@ -26,15 +37,32 @@
 		{
 			margin-left: 10px;
 		}
+		
+		.label
+		{
+			text-align: right;
+			font-family: Helvetica, Arial, sans-serif;
+			font-size: 12pt;
+		}
+		
+		#button_cell
+		{
+			text-align:right;
+		}
+		
+		#todo_text
+		{
+			width: 190px;
+		}
 
 	</style>
 
 	<script type="text/javascript" charset="utf-8">
 		function handleTodoSubmit() {
 			
-			todo_text = document.getElementById("todo_text").value
-			participant = document.getElementById("participant").value
-			
+			var todo_text = document.getElementById("todo_text").value
+			var participant = document.getElementById("participant").value
+
 			sendTodoRequest(participant, todo_text);
 			
 			// Reset the form back to empty.
@@ -45,16 +73,16 @@
 			
 			function sendTodoRequest(participant, text) {
 				
-				todo_id = "t" + String(new Date().getTime()) + String(Math.floor(1000*Math.random()));
+				var todo_id = "t" + String(new Date().getTime()) + String(Math.floor(1000*Math.random()));
 
-				data = "NEW_TODO " + todo_id + " " + participant + " " + text;
-				params = "tincan=" + escape(data);
+				var data = "NEW_TODO " + todo_id + " " + participant + " " + text;
+				var params = "tincan=" + escape(data);
 
 				// Construct the XMLHTTPRequest object now.
 				request = new XMLHttpRequest();
 				request.open("POST","http://toqbot.com/db/?",true);
 				request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				request.setRequestHeader("Content-length", params.length);
+				// request.setRequestHeader("Content-length", params.length);
 				request.send(params);
 			}
 			
@@ -64,16 +92,20 @@
 				sendTodoRequest("p6", "Review the latest version of the document.");
 			}
 
+			.label
+			{
+				text-align: right;
+			}
 	</script>
 </head>
 <body id="post_todo" onload="">
 
-
+<div id="container">
 <div id="header">tincan meeting system</div>
 <form action="" method="get" accept-charset="utf-8">
 
 <table border="0" cellspacing="0" cellpadding="3" id="form_table">
-<tr><td>Participant</td>
+<tr><td class="label">Participant</td>
 	<td>
 		<select name="participant" id="participant" onchange="" size="1">
 			<option value="p1">Matt</option>
@@ -89,12 +121,14 @@
 		</select>
 	</td>
 </tr>
-<tr><td>Task</td>
-	<td><input type="text" name="" value="" id="todo_text" size=50></td>
+<tr><td class="label">Task</td>
+	<td><textarea type="text" name="" value="" id="todo_text"></textarea></td>
 </tr>
-<tr><td/><td><input type="button" value="Continue &rarr;" onclick="sendTodoRequest()"><input type="button" value="Demo Todos" onclick="createDemoTodos();"></td></tr>
+<tr><td/><td id="button_cell"><input type="button" value="Demo" onclick="createDemoTodos();"><input type="button" value="Add Todo &rarr;" onclick="handleTodoSubmit()"></td></tr>
 </table>
 </form>
+</div>
+
 </body>
 
 </html>
