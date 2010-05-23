@@ -31,7 +31,7 @@
     CGPoint initialOrigin;
 }
 
-- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point fromParticipant:(Participant *)participant;
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation;
 - (void) deassign;
 
 - (void) animateToAssignedParticipant:(Participant *)participant;

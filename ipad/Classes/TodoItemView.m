@@ -16,7 +16,7 @@
 @synthesize todo;
 @synthesize delegate;
 
-- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point fromParticipant:(Participant *)participant{
+- (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation{
 	
     // Decide how big to be by looking at the text itself.
     f = [UIFont systemFontOfSize:18];
@@ -36,14 +36,20 @@
         startingPoint = point;
     }
     
-	if(self = [super initWithFrame:CGRectMake(startingPoint.x, startingPoint.y, totalSize.width, totalSize.height)]) {
+//    if(isOrigin)
+    CGRect initialFrame = CGRectMake(startingPoint.x, startingPoint.y, totalSize.width, totalSize.height);
+//    else 
+//        initialFrame = CGRectMake(startingPoint.x - (totalSize.width/2), startingPoint.y - (totalSize.height/2), totalSize.width, totalSize.height);
+    
+	if(self = [super initWithFrame:initialFrame]) {
 		touched = false;
 		
 		self.bounds = CGRectMake(-20, -20, totalSize.width, totalSize.height);
 
 		[self setBackgroundColor:[UIColor clearColor]];
         
-        CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+//        CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+        CGAffineTransform transform = participant.view.transform;
         transform = CGAffineTransformScale(transform, 0.4, 0.4);        
         [self setTransform:transform];
         
@@ -65,17 +71,28 @@
         if(!CGPointEqualToPoint(startingPoint, point)) {
             [UIView beginAnimations:@"initial_move_into_position" context:nil];
             [UIView setAnimationDuration:2.0];
-                            
-            CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+            
+            CGAffineTransform transform;
+
+            if(useParticipantRotation)
+                transform = participant.view.transform;
+            else
+                transform = CGAffineTransformMakeRotation(M_PI/2);
+
             transform = CGAffineTransformScale(transform, 1.0, 1.0);        
             [self setTransform:transform];
 
             // This needs to happen after the transform, because when it's done
             // before the transform, it's setting the location of the 0.4 scaled
             // version of the view, not the 1.0 scaled. Tricksy.
-            CGRect newFrame = self.frame;
-            newFrame.origin = point;
-            self.frame = newFrame;
+            
+            if(isOrigin) {
+                CGRect newFrame = self.frame;
+                newFrame.origin = point;
+                self.frame = newFrame;
+            } else {
+                self.center = point;
+            }
             self.alpha = 1.0;
             
             [UIView commitAnimations];
@@ -84,6 +101,7 @@
 	}
 	return self;
 }
+
 
 - (void) drawRect:(CGRect)rect {
 	
@@ -179,8 +197,9 @@
     
     self.alpha = 0.2;
     
-    CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
-    transform = CGAffineTransformScale(transform, 0.4, 0.4);        
+//    CGAffineTransform transform = CGAffineTransformMakeRotation(M_PI/2);
+    CGAffineTransform transform = participant.view.transform;
+    transform = CGAffineTransformScale(transform, 0.4, 0.4);
     [self setTransform:transform];
     
     // Now set the callback. 

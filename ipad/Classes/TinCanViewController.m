@@ -234,7 +234,7 @@
 // do right now. TODO refactor this later.
 - (void)addTodo:(Todo *)todo {
      
-    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition] fromParticipant:[participants objectForKey:todo.creatorUUID]];
+    TodoItemView *view = [[TodoItemView alloc] initWithTodo:todo atPoint:[self getNextTodoPosition] isOriginPoint:true fromParticipant:[participants objectForKey:todo.creatorUUID] useParticipantRotation:false];
 
     [todos setObject:todo forKey:todo.uuid];
 
@@ -248,7 +248,7 @@
 - (CGPoint) getNextTodoPosition {
     // Place todos in a column on the left side of the display, and move down
     // the list as todos are added. 
-    return CGPointMake(600 - 40*[todos count], 200);
+    return CGPointMake(600 - 40*[todos count], 115);
 }
 
 
@@ -297,9 +297,7 @@
         return;        
     }
     
-    
     NSLog(@"ASSIGN TODO participant retain count: %d", [participants retainCount]);
-
     
     NSString *todoId = [args objectAtIndex:1];
     NSString *assignedUserId = [args objectAtIndex:2];

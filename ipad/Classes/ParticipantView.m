@@ -30,7 +30,7 @@
     // we can update hoverColor when self.color gets updated.
     self.color = [c colorDarkenedByPercent:0.3];
         
-	rotation = rot;
+    [self setTransform:CGAffineTransformMakeRotation(rot)];
     
     
     todosExpanded = false;
@@ -46,7 +46,7 @@
 - (void) drawRect:(CGRect)rect {
 	
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	CGContextRotateCTM(ctx, rotation);
+//	CGContextRotateCTM(ctx, rotation);
 	
 	if(ctx != nil) {
 
@@ -108,6 +108,7 @@
     // is with hit testing against the participant container, but maybe we can find a way around that being a problem.
     NSLog(@"got a touches ended on a participant view");
     NSSet *todos = [self.participant.assignedTodos copy];
+    int numTodos = [todos count];
     
     if(!todosExpanded) {
         expandedTodoViews = [[NSMutableSet set] retain];
@@ -120,12 +121,19 @@
             [self.participant.assignedTodos removeObject:todo];
             [self setNeedsDisplay];
             
-            TodoItemView *todoView = [[[TodoItemView alloc] initWithTodo:todo atPoint:CGPointMake(400, 200-15*i) fromParticipant:participant] retain];
+            
+            // Figure out what point to go to. We want a point above the participant.
+            CGPoint localTodoPosition = CGPointMake(0, -140-numTodos*30 + 30*i);
+            
+            CGPoint globalTodoPosition = [self convertPoint:localTodoPosition toView:self.superview];
+            
+            TodoItemView *todoView = [[[TodoItemView alloc] initWithTodo:todo atPoint:globalTodoPosition isOriginPoint:false fromParticipant:participant useParticipantRotation:true] retain];
             [expandedTodoViews addObject:todoView];
             
             // Go up two levels, because the next level up is the participants
             // container, not the root view.
             [self.superview.superview addSubview:todoView];
+            i++;
         }
         todosExpanded = true;
     } else {

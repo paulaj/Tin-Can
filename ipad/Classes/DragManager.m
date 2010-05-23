@@ -37,7 +37,7 @@ static DragManager *sharedInstance = nil;
     
     UIView *returnedView = [self.participantsContainer hitTest:point withEvent:event];
     
-    NSLog(@"checking participantAtTouch. point: %f, %f. returned view: %@", point.x, point.y, returnedView);
+//    NSLog(@"checking participantAtTouch. point: %f, %f. returned view: %@", point.x, point.y, returnedView);
     
     if(returnedView==nil) {
         return nil;
