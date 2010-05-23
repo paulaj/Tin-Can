@@ -15,12 +15,12 @@
 
 @synthesize viewController;
 
-- (id)initWithViewController:(TinCanViewController *)vC {
+- (id)initWithViewController:(TinCanViewController *)vC withRevisionNumber:(int)nextRev{
     
     if (![super init]) return nil;
     
     [self setViewController:vC];
-    
+    rev = nextRev;
     return self;
 }
 
@@ -38,7 +38,7 @@
     // Request the latest event from toqbot.
     // NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
     
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://toqbot.com/db/?tincan=100000"]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://toqbot.com/db/?tincan=%d", rev]]];
     
     // Set a really long timeout, because these requests will return data when it's available,
     // even if it takes a long time.
@@ -64,10 +64,10 @@
     
     if(entry != nil)
         // TODO change this to a callSelectorOnMainThread call.
-        [viewController dispatchTodoCommandString:[entry objectForKey:@"data"]];
+        [viewController dispatchTodoCommandString:[entry objectForKey:@"data"] fromRevision:[[entry objectForKey:@"rev"] intValue]];
     else {
         NSLog(@"got a null dictionary from the JSON parser - almost certainly a timeout.");
-        [viewController dispatchTodoCommandString:nil];        
+        [viewController dispatchTodoCommandString:nil fromRevision:-1];        
     }
 
 }

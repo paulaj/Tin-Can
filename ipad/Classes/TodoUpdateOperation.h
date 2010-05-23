@@ -15,9 +15,10 @@
 
 @interface TodoUpdateOperation : NSOperation {
     TinCanViewController *viewController;
+    int rev;
 }
 
-- (id)initWithViewController:(TinCanViewController *)vC;
+- (id)initWithViewController:(TinCanViewController *)vC withRevisionNumber:(int)nextRev;
 
 @property(retain) TinCanViewController *viewController;
 

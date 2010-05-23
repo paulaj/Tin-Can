@@ -13,6 +13,8 @@
 #import "Participant.h"
 #import "ASIFormDataRequest.h"
 
+#define INITIAL_REVISION_NUMBER 10000
+
 @implementation TinCanViewController
 
 #pragma mark Application Events
@@ -41,6 +43,8 @@
     [self.view bringSubviewToFront:participantsContainer];
     
     queue = [[[NSOperationQueue alloc] init] retain];
+
+    lastRevision = INITIAL_REVISION_NUMBER;
     
     NSLog(@"Done loading view.");
 }
@@ -58,7 +62,7 @@
     
     
     // Push an update into the queue.
-    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self]];
+    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self withRevisionNumber:INITIAL_REVISION_NUMBER]];
     
     NSLog(@"viewDidLoad");
 }
@@ -429,16 +433,37 @@
 }
 
 
-- (void)dispatchTodoCommandString:(NSString *)operation {
-    // Trying to do this at the top - hopefuly this doesn't clog
+- (void)dispatchTodoCommandString:(NSString *)operation fromRevision:(int)revision{
+
+    // First, grab the revision number.
+    // If no revision is set (ie the previous request timed out and didn't return one)
+    // grab the saved revision number and use that for the next operation.
+    // Otherwise, we got good data and should save the revision number.
+    if(revision==-1) {
+        revision = lastRevision;
+    }
+    // This covers the case when the very first query times out. Just keep
+    // the revision number at the initial value to wait for the first message
+    // from the server.
+    else if (revision == -1 && lastRevision == INITIAL_REVISION_NUMBER) {
+        revision = INITIAL_REVISION_NUMBER;
+    }
+    else {
+        lastRevision = revision;
+    }
+
+    NSLog(@"returned revision number: %d", revision);
+            
+    // Trying to do this at the top - hopefully this doesn't clog
     // the queue or anything? But it needs to be before any exception
     // handling, so exceptions don't break the update cycle like they
     // were when I had it at the end.
-    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self]];
+    [queue addOperation:[[TodoUpdateOperation alloc] initWithViewController:self withRevisionNumber:(revision+1)]];
     if (operation == nil) {
         return;
     }
-    
+
+
     // Do a little dispatch / handling here where we look for the command
     // code and then parse the arguments appropriately.
     

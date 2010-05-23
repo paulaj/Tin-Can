@@ -32,6 +32,8 @@
     // Not sure if this should live here or in AppDelegate,
     // but we'll start with here for now.
     NSOperationQueue *queue;
+    
+    int lastRevision;
 }
 
 
@@ -48,7 +50,7 @@
 - (void) todoDragMovedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 - (bool) todoDragEndedWithTouch:(UITouch *)touch withEvent:(UIEvent *)event withTodo:(Todo *)todo;
 
-- (void) dispatchTodoCommandString:(NSString *)operation;
+- (void) dispatchTodoCommandString:(NSString *)operation fromRevision:(int)revision;
 
 - (void) handleNewTodoWithArguments:(NSArray *)args;
 - (void) handleAssignTodoWithArguments:(NSArray *)args;
