@@ -30,12 +30,18 @@
     // it in its final position and leave it there.
     CGPoint startingPoint;
     if(participant != nil) {
-        startingPoint = participant.view.frame.origin;
+        
+        // Get the center of the participant (which is in participant-local coordinates) and convert
+        // it to global coordinates (ie the todo's superview)
+        startingPoint = participant.view.center;
+        //startingPoint = participant.view.frame.origin;
+        //startingPoint = CGPointMake(participant.view.frame.origin.x - participant.view.frame.size.width/2,participant.view.frame.origin.y - participant.view.frame.size.height/2);
         NSLog(@"starting point: %f,%f", startingPoint.x, startingPoint.y);
-        NSLog(@"from participant: %@", participant.name);
+                         
     } else {
         startingPoint = point;
     }
+    
     
     CGRect initialFrame = CGRectMake(startingPoint.x, startingPoint.y, totalSize.width, totalSize.height);
     
@@ -52,6 +58,10 @@
         CGAffineTransform transform = participant.view.transform;
         transform = CGAffineTransformScale(transform, 0.4, 0.4);        
         [self setTransform:transform];
+        
+        
+        if(participant != nil)
+            self.center = participant.view.center;
         
         self.alpha = 0.4;
 		self.todo = newTodo;
@@ -70,7 +80,17 @@
         // Animate to the destination point.
         if(!CGPointEqualToPoint(startingPoint, point)) {
             [UIView beginAnimations:@"initial_move_into_position" context:nil];
-            [UIView setAnimationDuration:2.0];
+            
+            
+            // THIS IS CHEATING. I'm assuming that "isOriginPoint" is just saying
+            // whether this is an initial placement or expansion of claimed
+            // todos from a participant. This is dirty and hacky and the argument
+            // should be changed to something more descriptive.
+            if(isOrigin)
+                [UIView setAnimationDuration:2.0];
+            else
+                [UIView setAnimationDuration:0.5];
+
             
             CGAffineTransform transform;
 

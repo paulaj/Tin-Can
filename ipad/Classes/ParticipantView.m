@@ -119,7 +119,7 @@
             
             
             // Figure out what point to go to. We want a point above the participant.
-            CGPoint localTodoPosition = CGPointMake(0, -140-numTodos*30 + 30*i);
+            CGPoint localTodoPosition = CGPointMake(0, -100-numTodos*35 + 35*i);
             
             CGPoint globalTodoPosition = [self convertPoint:localTodoPosition toView:self.superview];
             
