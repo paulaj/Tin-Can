@@ -16,6 +16,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* TinCanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* TinCanViewController.m */; };
 		3AA06B7411A9C1DA00C3D279 /* DragManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA06B7311A9C1DA00C3D279 /* DragManager.m */; };
+		3AA06D1411AAD1C500C3D279 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3AA06D1311AAD1C500C3D279 /* Icon.png */; };
 		3AB0BC3811A5D73C003A91EB /* MeetingTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB0BC3711A5D73C003A91EB /* MeetingTimerView.m */; };
 		3AC2B9191198715A0071F912 /* ParticipantView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B9181198715A0071F912 /* ParticipantView.m */; };
 		3AC2B91C119871670071F912 /* Todo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2B91B119871670071F912 /* Todo.m */; };
@@ -57,6 +58,7 @@
 		32CA4F630368D1EE00C91783 /* TinCan_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TinCan_Prefix.pch; sourceTree = "<group>"; };
 		3AA06B7211A9C1DA00C3D279 /* DragManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragManager.h; sourceTree = "<group>"; };
 		3AA06B7311A9C1DA00C3D279 /* DragManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DragManager.m; sourceTree = "<group>"; };
+		3AA06D1311AAD1C500C3D279 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		3AB0BC3611A5D73C003A91EB /* MeetingTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeetingTimerView.h; sourceTree = "<group>"; };
 		3AB0BC3711A5D73C003A91EB /* MeetingTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeetingTimerView.m; sourceTree = "<group>"; };
 		3AC2B9171198715A0071F912 /* ParticipantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticipantView.h; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3AA06D1311AAD1C500C3D279 /* Icon.png */,
 				2899E5210DE3E06400AC0155 /* TinCanViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* TinCan-Info.plist */,
@@ -296,6 +299,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* TinCanViewController.xib in Resources */,
+				3AA06D1411AAD1C500C3D279 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
