@@ -31,6 +31,7 @@
 - (id) initWithName:(NSString *)participantName withUUID:(NSString *)pUUID;
 
 - (void) assignTodo:(Todo *)todo;
+- (void) removeTodo:(Todo *)todo;
 
 
 

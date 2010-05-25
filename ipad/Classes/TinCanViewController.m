@@ -308,7 +308,7 @@
     Todo *todo = [todos objectForKey:todoId];
     Participant *participant = [participants objectForKey:assignedUserId];
     
-    [todo startAssignment:participant];
+    [todo startAssignment:participant withViewController:self];
 }
 
 

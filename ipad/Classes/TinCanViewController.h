@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MeetingTimerView.h"
 #import "ParticipantView.h"
+#import "Todo.h"
+
+@class Todo;
 
 @interface TinCanViewController : UIViewController {    
     UIView *participantsContainer;

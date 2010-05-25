@@ -44,6 +44,7 @@
     NSLog(@"todo view? %@", todo.view);
     
     [todo.view removeFromSuperview];
+    [todo.view release];
     
     // This is kind of pointless, but okay. It's not actually being
     // rendered as a child of this this participant's view, so
@@ -55,6 +56,16 @@
     [self.view setHoverState:false];
 	[self.view setNeedsDisplay];
 }
+
+- (void) removeTodo:(Todo *)todo {
+    
+    [self.assignedTodos removeObject:todo];
+    todo.view = nil;
+    todo.participantOwner = nil;
+    
+    [self.view setNeedsDisplay];
+}
+
 
 - (NSString *)description {
     
