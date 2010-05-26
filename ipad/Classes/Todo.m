@@ -51,16 +51,15 @@
     
     // Check and see if we're owned by a participant right now AND we don't currently have a view (ie we're
     // in minimized mode inside a participant object.)
-    if(participantOwner != nil && [self.view isKindOfClass:[ParticipantView class]]) {
-        NSLog(@"Handling the case when we get an assign event on a todo item that currently has an owner.");
+    if(participantOwner != nil && [self.view isKindOfClass:[ParticipantView class]]) {        
+        // We're going to need to construct a new TodoItemView now.        
+        TodoItemView *newTodoView = [[[TodoItemView alloc] initWithTodo:self atPoint:self.participantOwner.view.center isOriginPoint:false fromParticipant:self.participantOwner useParticipantRotation:true withColor:[UIColor whiteColor]] retain];
         
         // We're going to need to deassign from them first,
         // then start the assignment process.
         // We're also going to need to make sure we START from that position.
         [participantOwner removeTodo:self];
         
-        // We're going to need to construct a new TodoItemView now.
-        TodoItemView *newTodoView = [[[TodoItemView alloc] initWithTodo:self atPoint:participantOwner.view.center isOriginPoint:false fromParticipant:self.participantOwner useParticipantRotation:true withColor:[UIColor whiteColor]] retain];
         [viewController.view addSubview:newTodoView];
         [viewController.view setNeedsDisplay];
         [newTodoView animateToAssignedParticipant:participant];
@@ -71,8 +70,6 @@
             NSLog(@"Got message to start assignment, but todo's parent view is not a TodoItemView: %@", self.view);
         }
     }
-
-    
 }
 
 @end

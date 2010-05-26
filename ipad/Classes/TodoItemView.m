@@ -19,6 +19,7 @@
 
 - (id) initWithTodo:(Todo *)newTodo atPoint:(CGPoint)point isOriginPoint:(bool)isOrigin fromParticipant:(Participant *)participant useParticipantRotation:(bool)useParticipantRotation withColor:(UIColor *)c{
 	
+    NSLog(@"about to initTodo");
     // Decide how big to be by looking at the text itself.
     f = [UIFont systemFontOfSize:18];
     CGSize fontSize = [newTodo.text sizeWithFont:f];
@@ -34,11 +35,10 @@
         // Get the center of the participant (which is in participant-local coordinates) and convert
         // it to global coordinates (ie the todo's superview)
         startingPoint = participant.view.center;
-        //startingPoint = participant.view.frame.origin;
-        //startingPoint = CGPointMake(participant.view.frame.origin.x - participant.view.frame.size.width/2,participant.view.frame.origin.y - participant.view.frame.size.height/2);
         NSLog(@"starting point: %f,%f", startingPoint.x, startingPoint.y);
                          
     } else {
+        NSLog(@"participant was nil, so setting initial point manually");
         startingPoint = point;
     }
     
@@ -212,7 +212,7 @@
     // delegated callback do the actual assignment.
     [UIView beginAnimations:@"move_to_assigned_participant" context:participant];
     
-    [UIView setAnimationDuration:0.5f];
+    [UIView setAnimationDuration:1.0f];
     self.center = participant.view.center;
     
     self.alpha = 0.2;

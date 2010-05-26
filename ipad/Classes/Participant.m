@@ -51,6 +51,8 @@
     // this is kind of vestigal. 
     todo.view = self.view;
     todo.participantOwner = self;
+
+    NSLog(@"Just set newly assigned todo (%@) view to %@ and participantOwner to %@", todo.uuid, todo.view, todo.participantOwner);
     
 	NSLog(@"Received new todo: %@, total now %d", todo.text, [assignedTodos count]);
     [self.view setHoverState:false];
