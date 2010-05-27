@@ -19,11 +19,11 @@
 @synthesize participant;
 
 - (id) initWithParticipant:(Participant *)newParticipant withPosition:(CGPoint)pos withRotation:(CGFloat)rot withColor:(UIColor *)c {
-	self = [super initWithFrame:CGRectMake(0,0, 260, 260)];
+	self = [super initWithFrame:CGRectMake(0,0, 280, 280)];
 	
 	NSLog(@"initing participant view");
 	hover = false;
-	self.bounds = CGRectMake(-130, -130, 260, 260);
+	self.bounds = CGRectMake(-140, -140, 280, 280);
 	self.center = pos;
     
     // TODO figure out how to write the setter for self.color so
@@ -84,15 +84,6 @@
 		}
 	}
 }
-
-
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    NSLog(@"touches began on participant: %@", self.participant.name);
-//}
-//
-//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-//    NSLog(@"touches moved on participant: %@", self.participant.name);
-//}
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     // When a touch ends on the participant, we're going to pop up any todos associated with this person.
@@ -159,7 +150,7 @@
 	// if it's inside the circle part of the participant rendering.
 	CGFloat distance = sqrt(pow(point.x, 2) + pow(point.y, 2));
 		
-	if (distance <= 100.0f) {
+	if (distance <= 130.0f) {
 		return self;	
 	}
 	else {
