@@ -5,6 +5,12 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<title>Tin Can</title>
 	<style type="text/css" media="screen">
+	
+		body
+		{
+			font-family: Helvetica, sans-serif;
+		}
+	
 		#container 
 		{
 			margin:10px auto 10px auto;
@@ -14,10 +20,12 @@
 		
 		#main-image 
 		{
-			width: 700px;
+			width: 825px;
 			height: 400px;
 			background-color: blue;
 			float: left;
+			
+			border-radius: 8px;
 		}
 		
 		#gallery
@@ -70,9 +78,40 @@
 			margin-top: 248px;
 		}
 		
+		#credits a
+		{
+			color: #CCCCCC;
+			text-decoration: none;
+		}
+		
+		a
+		{
+			text-decoration: none;
+		}
+		
+		a:hover, #credits a:hover
+		{
+			text-decoration: underline;
+		}
+		
+		#gallery .thumbnail
+		{
+			width: 75px;
+			height: 75px;
+			border-radius: 5px;
+		}
+		
 		br.clear
 		{
 			clear: both;
+		}
+		
+		#gallery li
+		{
+			list-style:none;
+			width: 75px;
+			height: 75px;
+			background-color: red;
 		}
 		
 	</style>
@@ -92,8 +131,12 @@
 			</div>
 			
 		</div>
-		<div id="gallery">
-		</div>
+		<ul id="gallery">
+			<li class="thumbnail"></li>
+			<li class="thumbnail"></li>
+			<li class="thumbnail"></li>
+			<li class="thumbnail"></li>
+		</ul>
 		<br class="clear"/>
 	</div>
 </body>
