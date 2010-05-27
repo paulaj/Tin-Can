@@ -12,7 +12,57 @@
 			border: 1px solid black;
 		}
 		
+		#main-image 
+		{
+			width: 700px;
+			height: 300px;
+			background-color: blue;
+			float: left;
+		}
 		
+		#gallery
+		{
+			width: 150px;
+			height: 100%;
+			background-color: red;
+		}
+		
+		#title
+		{
+			margin-top: 40px;
+			padding-left: 20px;
+			padding-bottom: 10px;
+			font-family: Helvetica, sans-serif;
+			font-weight: bold;
+			color: white;
+			background-color: rgba(0, 0, 0, 0.5);
+			width: 350px;
+			
+			-moz-border-radius-topright: 8px;
+			-moz-border-radius-bottomright: 8px;
+			-webkit-border-bottom-right-radius:8px;
+			-webkit-border-top-right-radius:8px;
+			
+		}
+		
+		#title h1
+		{
+			opacity: 1.0;
+			font-size: 36pt;
+			margin-bottom: 5px;
+		}
+		
+		#title h2 
+		{
+			margin-top: 5px;
+			margin-bottom: 0px;
+			font-size: 14pt;
+		}
+		
+		br.clear
+		{
+			clear: both;
+		}
 	</style>
 </head>
 <body id="" onload="">
@@ -20,10 +70,14 @@
 		
 		
 		<div id="main-image">
+			<div id="title">
+				<h1>TIN CAN</h1>
+				<h2>Meeting Backchannels Made Visible
+			</div>
 		</div>
 		<div id="gallery">
 		</div>
-		
+		<br class="clear"/>
 	</div>
 </body>
 </html>
