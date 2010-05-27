@@ -15,7 +15,6 @@
 		{
 			margin:10px auto 10px auto;
 			width: 950px;
-			border: 1px solid black;
 		}
 		
 		#main-image 
@@ -25,7 +24,8 @@
 			background-color: blue;
 			float: left;
 			
-			border-radius: 8px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
 		}
 		
 		
@@ -40,11 +40,11 @@
 			background-color: rgba(0, 0, 0, 0.5);
 			width: 350px;
 			
-			-moz-border-radius-topright: 8px;
-			-moz-border-radius-bottomright: 8px;
-			-webkit-border-bottom-right-radius:8px;
-			-webkit-border-top-right-radius:8px;
+			-moz-border-radius-topright: 5px;
+			-webkit-border-top-right-radius: 5px;
 			
+			-moz-border-radius-bottomright: 5px;
+			-webkit-border-bottom-right-radius: 5px;
 		}
 		
 		#title h1
@@ -70,6 +70,13 @@
 			padding: 3px;
 			padding-left: 8px;
 			margin-top: 248px;
+			
+			-moz-border-radius-bottomleft: 5px;
+			-webkit-border-bottom-left-radius: 5px;
+			
+			-moz-border-radius-bottomright: 5px;
+			-webkit-border-bottom-right-radius: 5px;
+			
 		}
 		
 		#credits a
@@ -95,9 +102,10 @@
 		
 		#gallery ul
 		{
-			margin: 0;
+			margin: 0px;
 			padding: 0;
 			border: none;
+			float: left;
 		}
 		
 		#gallery li
@@ -105,10 +113,21 @@
 			list-style:none;
 /*			width: 25px;*/
 			margin-left: 10px;
-			margin-top: 10px;
-			height: 90px;
-			background-color: red;
+			margin-top: px;
+			margin-bottom: 10px;
+			height: 93px;
+			border-radius: 5px;
 		}
+		
+		#gallery .thumbnail>img
+		{
+			width: 90px;
+			height: 90px;
+			
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+		}
+		
 		
 	</style>
 </head>
@@ -129,10 +148,10 @@
 		</div>
 		<div id="gallery">
 			<ul>
-			<li class="thumbnail">HELLO</li>
-			<li class="thumbnail">WORLD</li>
-			<li class="thumbnail">BLAH</li>
-			<li class="thumbnail">FOO</li>
+			<li class="thumbnail"><img src="img/top-down.jpg"></li>
+			<li class="thumbnail"><img src="img/top-down.jpg"></li>
+			<li class="thumbnail"><img src="img/top-down.jpg"></li>
+			<li class="thumbnail"><img src="img/top-down.jpg"></li>
 			</ul>
 		</div>
 		<br class="clear"/>
