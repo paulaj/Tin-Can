@@ -1,4 +1,4 @@
 Tin Can - a backchannel tool for distributed meetings
 =====================================================
 
-Plcaeholder for now.
+Placeholder for now.
