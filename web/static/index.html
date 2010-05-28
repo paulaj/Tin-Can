@@ -9,6 +9,7 @@
 		body
 		{
 			font-family: Helvetica, sans-serif;
+			color: #333333;
 		}
 	
 		#container 
@@ -48,6 +49,7 @@
 		
 		#title h1
 		{
+			padding-top: 12px;
 			opacity: 1.0;
 			font-size: 36pt;
 			margin-bottom: 5px;
@@ -68,7 +70,7 @@
 			background-color: rgba(0, 0, 0, 0.5);
 			padding: 3px;
 			padding-left: 8px;
-			margin-top: 248px;
+			margin-top: 236px;
 			
 			-moz-border-radius-bottomleft: 5px;
 			-webkit-border-bottom-left-radius: 5px;
@@ -167,20 +169,24 @@
 			padding-top: 0px;
 		}
 		
+		#content
+		{
+			margin-top: 20px;
+		}
+		
 		.left-column
 		{
-			width: 420px;
+			width: 390px;
 			float:left;
 			margin-right: 20px;
-			margin-left: 20px;
+/*			margin-left: 20px;*/
 		}
 		.right-column
 		{
-			width: 420px;
+			width: 390px;
 			float: left;
 			padding-left: 20px;
 			border-left: 1px solid #777777;
-			margin-right: 20px;
 		}
 		
 		#content h1
@@ -190,18 +196,20 @@
 			font-size: 1.5em;
 		}
 		
-		#content p
+		#content p, #features p
 		{
 			margin-top: 5px;
+			font-size: 0.9em;
+			line-height: 1.3em;
 		}
 		
 		div.feature
 		{
 			margin-top: 10px;
 			
-			margin-left: 20px;
-			margin-right: 20px;
-			width: 420px;
+/*			margin-left: 20px;*/
+			margin-right: 40px;
+			width: 390px;
 			float: left;
 		}
 		
@@ -224,6 +232,14 @@
 		}
 		
 	</style>
+	
+	<script type="text/javascript" charset="utf-8">
+		function changeBackground(path)
+		{
+		    var container = document.getElementById('main-image');
+		    container.style.backgroundImage = "url(" + path + ")";
+		}
+	</script>
 </head>
 <body id="" onload="">
 	<div id="container">
@@ -234,15 +250,15 @@
 			</div>
 			
 			<div id="credits">
-				A <a href="http://web.media.mit.edu/speech">Speech + Mobility</a> / <a href="http://media.mit.edu/">MIT Media Lab</a> project by <a href="http://web.media.mit.edu/~dharry/">Drew Harry</a>, <a href="http://mattdonahoe.com/">Matt Donahoe</a>, and <a href="http://web.media.mit.edu/~geek/">Chris Schmandt</a>, 2010.
+				A <a href="http://web.media.mit.edu/speech">Speech + Mobility</a> / <a href="http://media.mit.edu/">MIT Media Lab</a> project by <a href="http://web.media.mit.edu/~dharry/">Drew Harry</a>, <a href="http://mattdonahoe.com/">Matt Donahoe</a>, and <a href="http://web.media.mit.edu/~geek/">Chris Schmandt</a>.
 			</div>
 			
 		</div>
 		<div id="gallery">
-			<ul>
-			<li class="thumbnail"><img src="img/top-down-thumbnail.png"></li>
-			<li class="thumbnail"><img src="img/iphone-web-thumbnail.png"></li>
-			<li class="thumbnail"><img src="img/app-screenshot-thumbnail.png"></li>
+			<ul>	
+			<li class="thumbnail" onclick="changeBackground('img/top-down.png');"><img src="img/top-down-thumbnail.png"></li>
+			<li class="thumbnail" onclick="changeBackground('img/iphone-web.png');"><img src="img/iphone-web-thumbnail.png"></li>
+			<li class="thumbnail" onclick="changeBackground('img/app-screenshot.png');"><img src="img/app-screenshot-thumbnail.png"></li>
 			</ul>
 		</div>
 		<br class="clear"/>
