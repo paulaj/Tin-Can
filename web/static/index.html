@@ -110,12 +110,45 @@
 		#gallery li
 		{
 			list-style:none;
-/*			width: 25px;*/
 			margin-left: 10px;
 			margin-top: px;
 			margin-bottom: 10px;
 			height: 93px;
 			border-radius: 5px;
+		}
+		
+		#status
+		{
+			background-color: #cccccc;
+			padding: 1px 1px 1px 1px;
+			margin-top: 10px;
+			margin-bottom: 5px;
+		
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+		}
+		
+		#status-label
+		{
+			float: left;
+			font-weight: bold;
+			-webkit-transform: rotate(-90deg); 
+			-moz-transform: rotate(-90deg);
+		}
+		
+		#status ul
+		{
+			list-style:none;
+		}
+		
+		#status .date
+		{
+			float: left;
+			height: 2em;
+			width: 75px;
+			font-weight: bold;
+			text-align: right;
+			padding-right: 5px;
 		}
 		
 		.thumbnail>img, img.thumbnail
@@ -229,6 +262,17 @@
 			</div>
 		</div>
 		<br class="clear"/>
+		
+		<div id="status">
+			<div id="status-label">
+				STATUS
+			</div>
+			<ul>
+				<li><div class="date">5/27/10</div> Finished a prototype of the system featuring the task system described below and collected feedback during the Media Lab's spring sponsor meeting. A team of undergrads is starting over the next few weeks to do a full implementation.</li>
+			</ul>
+		</div>
+		
+		
 		<div id="features">
 			<div class="feature">
 				<img class="thumbnail" src="img/top-down.jpg"/>
