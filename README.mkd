@@ -1,4 +1,10 @@
-Tin Can - a backchannel tool for distributed meetings
+Tin Can - meeting backchannels made visible
 =====================================================
 
-Placeholder for now.
+Distributed meetings present a set of interesting challenges to staying engaged and involved. Because one person speaks at a time, it is easy (particularly for remote participants) to disengage form the meeting undetected. Meetings aren't just people talking, though. Participants have to remember future topics they want to discuss, tasks they promised to complete all while trying to judge the engagement of remote participants. By making these cognitive processes collaborative and visual, we can help manage the challenges of holding meetings with remote participants. Furthermore, there are a number of common challenges, like sharing whiteboard drawings, links, or documents that can make distributed meetings frustrating experiences.
+
+Tin Can connects remote meeting participants and gives everyone a better sense of what's happening in the meeting beyond just who's talking. The system collects and visualizes background tasks like taking notes, managing the agenda, sharing relevant content, tracking to-dos, and managing meeting process in a distributed interface.
+
+The system uses meeting participants' phones and laptops as input devices and represents the meeting on an iPad in the center of the table in each meeting location. By publicly representing these background processes, we provide meeting attendees with new ways to participate without clogging up the audio channel.
+
+Read more: http://web.media.mit.edu/~dharry/tincan/
