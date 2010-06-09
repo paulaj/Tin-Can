@@ -28,17 +28,17 @@ db = {}
 class BaseType(object):
     """Identify object with a UUID and register it with the store."""
     
-    # TODO add a way to hard code the UUID. This will be important for
-    # situations where we're loading from disk, and need to have UUIDs
-    # match their historical values. 
     def __init__(self):
-        self.uuid = uuid.uuid4()
+        # If one of the subclasses has already set this, move on. If it was
+        # left as None, then we'll generate a new UUID for it. 
+        if(self.uuid==None):
+            self.uuid = uuid.uuid4()
         
         # Register the new object with the main object store.
         db[self.uuid] = self
         
     def getDict(self):
-        return {"uuid":uuid}
+        return {"uuid":str(self.uuid)}
     
     def getJSON(self):
         """Return a JSON representation of the type."""
@@ -50,21 +50,24 @@ class BaseType(object):
 class Room(BaseType):
     """Store the room-related information."""
 
-    def __init__(self, name):
+    def __init__(self, name, roomUUID=None):
+        self.uuid = roomUUID
         BaseType.__init__(self)
+        
         self.name = name
         self.currentMeeting = None
     
     def getDict(self):
         d = BaseType.getDict(self)
-        d["name"] = name
-        d["currentMeeting"] = currentMeeting
+        d["name"] = self.name
+        d["currentMeeting"] = self.currentMeeting
         return d
         
 class Meeting(BaseType):
     """Store meeting-related information."""
 
-    def __init__(self, roomUUID, title=None, startedAt=None):
+    def __init__(self, meetingUUID=None, roomUUID=None, title=None, startedAt=None):
+        self.uuid = meetingUUID
         BaseType.__init__(self)
         self.room = roomUUID
         self.title = title
@@ -78,20 +81,23 @@ class Meeting(BaseType):
         self.isLive = False
         self.allParticipants = []
         self.currentParticipants = []
+        
     
     def getDict(self):
         d = BaseType.getDict(self)
-        d["endedAt"] = endedAt
-        d["isLive"] = isLive
-        d["allParticipants"] = allParticipants
-        d["currentParticipants"] = currentParticipants
+        d["endedAt"] = self.endedAt
+        d["isLive"] = self.isLive
+        d["allParticipants"] = self.allParticipants
+        d["currentParticipants"] = self.currentParticipants
         return d
     
 
 class User(BaseType):
     """Store meeting-related information."""
     
-    def __init__(self, name):
+    def __init__(self, name, userUUID=None):
+        self.uuid = userUUID
+        
         BaseType.__init__(self)
         
         self.name = name
@@ -101,14 +107,14 @@ class User(BaseType):
         
     def getDict(self):
         d = BaseType.getDict(self)
-        d["name"] = name
-        d["inMeeting"] = inMeeting
-        d["loggedIn"] = loggedIn
-        d["status"] = status
+        d["name"] = self.name
+        d["inMeeting"] = self.inMeeting
+        d["loggedIn"] = self.loggedIn
+        d["status"] = self.status
         return d
 
 
-class MeetingObjectTypeectType(BaseType):
+class MeetingObjectType(BaseType):
     """Defines some basic properties that are shared by meeting objects."""
 
     def __init__(self, creatorUUID, meetingUUID):
@@ -125,28 +131,33 @@ class MeetingObjectTypeectType(BaseType):
     
     def getDict(self):
         d = BaseType.getDict(self)
-        d["createdBy"] = createdBy
-        d["createdat"] = createdAt
-        d["meeting"] = meeting
+        d["createdBy"] = self.createdBy
+        d["createdat"] = self.createdAt
+        d["meeting"] = self.meeting
         return d
 
 class Task(MeetingObjectType):
     """Store information about a task."""
     
     def __init__(self, meetingUUID, creatorUUID, text):
+        self.uuid=None
+
         MeetingObjectType.__init__(self, creatorUUID, meetingUUID)
         self.text = text
         self.ownedBy = None
         
     def getDict(self):
         d = MeetingObjectType.getDict(self)
-        d["text"] = text
-        d["ownedBy"] = ownedBy
+        d["text"] = self.text
+        d["ownedBy"] = self.ownedBy
+        return d
 
 class Topic(MeetingObjectType):
     """Store information about a topic."""
 
     def __init__(self, meetingUUID, creatorUUID, text, timeStarted=None, timeEnded=None):
+        self.uuid=None
+
         MeetingObjectType.__init__(self, creatorUUID, meetingUUID)
         self.text = text
         self.timeStarted = timeStarted
@@ -154,9 +165,9 @@ class Topic(MeetingObjectType):
 
     def getDict(self):
         d = MeetingObjectType.getDict(self)
-        d["text"] = text
-        d["timeStarted"] = timeStarted
-        d["timeEnded"] = timeEnded
+        d["text"] = self.text
+        d["timeStarted"] = self.timeStarted
+        d["timeEnded"] = self.timeEnded
         return d
 
 if __name__ == "__main__":
@@ -165,6 +176,7 @@ if __name__ == "__main__":
     room2 = Room("Orange and Green")
     
     print "room 1: " + str(room1)
+    print "room 1 json: " + str(room1.getJSON())
     print "obj store: " + str(db)
     
     
