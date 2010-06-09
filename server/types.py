@@ -19,7 +19,11 @@ import time
 import simplejson as json
 
 
-obj = {}
+# This dictionary stores all known major types. This is used primarily so 
+# we can cheaply bridge UUIDs into objects. When any of these major types
+# is created, it's automatically registered here (via the BaseType
+# constructor). 
+db = {}
 
 class BaseType(object):
     """Identify object with a UUID and register it with the store."""
@@ -31,7 +35,7 @@ class BaseType(object):
         self.uuid = uuid.uuid4()
         
         # Register the new object with the main object store.
-        obj[self.uuid] = self
+        db[self.uuid] = self
         
     def getDict(self):
         return {"uuid":uuid}
@@ -39,6 +43,9 @@ class BaseType(object):
     def getJSON(self):
         """Return a JSON representation of the type."""
         return json.dumps(self.getDict())
+        
+    # TODO do we ever need to del these things? if so, overload that operator
+    # here and make sure to pull the object out of obj. 
 
 class Room(BaseType):
     """Store the room-related information."""
@@ -101,7 +108,7 @@ class User(BaseType):
         return d
 
 
-class MeetingObjectType(BaseType):
+class MeetingObjectTypeectType(BaseType):
     """Defines some basic properties that are shared by meeting objects."""
 
     def __init__(self, creatorUUID, meetingUUID):
@@ -158,6 +165,6 @@ if __name__ == "__main__":
     room2 = Room("Orange and Green")
     
     print "room 1: " + str(room1)
-    print "obj store: " + str(obj)
+    print "obj store: " + str(db)
     
     
