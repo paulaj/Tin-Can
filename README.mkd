@@ -8,3 +8,23 @@ Tin Can connects remote meeting participants and gives everyone a better sense o
 The system uses meeting participants' phones and laptops as input devices and represents the meeting on an iPad in the center of the table in each meeting location. By publicly representing these background processes, we provide meeting attendees with new ways to participate without clogging up the audio channel.
 
 Read more: http://web.media.mit.edu/~dharry/tincan/
+
+Dependencies
+------------
+
+Tin Can builds on a bunch of existing libraries.
+
+### iPad
+
+These dependencies are checked into the repository for easy building, but included here for convenience.
+ * ASIHTTPRequest - http://allseeing-i.com/ASIHTTPRequest/
+ * JSON-Framework - http://code.google.com/p/json-framework/
+
+### Web
+
+These dependencies are NOT checked in, and you'll need to install them separately to run the web server component.
+
+ * Tornado v0.2 - http://www.tornadoweb.org/
+  * pycurl
+  * simplejson
+
