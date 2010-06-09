@@ -17,6 +17,7 @@ Tin Can builds on a bunch of existing libraries.
 ### iPad
 
 These dependencies are checked into the repository for easy building, but included here for convenience.
+
  * ASIHTTPRequest - http://allseeing-i.com/ASIHTTPRequest/
  * JSON-Framework - http://code.google.com/p/json-framework/
 
@@ -25,6 +26,6 @@ These dependencies are checked into the repository for easy building, but includ
 These dependencies are NOT checked in, and you'll need to install them separately to run the web server component.
 
  * Tornado v0.2 - http://www.tornadoweb.org/
-  * pycurl
-  * simplejson
+   * pycurl
+   * simplejson
 
