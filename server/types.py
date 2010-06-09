@@ -19,9 +19,7 @@ import time
 import simplejson as json
 
 
-class ObjectManager():
-    """Store all the primary objects in the system by UUID. Singleton."""
-    pass
+obj = {}
 
 class BaseType(object):
     """Identify object with a UUID and register it with the store."""
@@ -32,8 +30,8 @@ class BaseType(object):
     def __init__(self):
         self.uuid = uuid.uuid4()
         
-        # When we have the object store up and running, register this new
-        # object with it.
+        # Register the new object with the main object store.
+        obj[self.uuid] = self
         
     def getDict(self):
         return {"uuid":uuid}
@@ -154,3 +152,12 @@ class Topic(MeetingObjectType):
         d["timeEnded"] = timeEnded
         return d
 
+if __name__ == "__main__":
+    # try making some new things and spitting them back out again.
+    room1 = Room("Garden")
+    room2 = Room("Orange and Green")
+    
+    print "room 1: " + str(room1)
+    print "obj store: " + str(obj)
+    
+    
