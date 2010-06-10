@@ -16,6 +16,8 @@ import tornado.ioloop
 import tornado.web
 import simplejson as json
 
+import types
+
 
 class RoomsHandler(tornado.web.RequestHandler):
     def get(self):
@@ -26,9 +28,25 @@ class UsersHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("Users.")
 
-
 class ConnectionHandler(tornado.web.RequestHandler):
+    """Manage the persistent connections that all clients have."""
+    
     def get(self):
+        # We're going to treat this pretty much like the toqbot
+        # infrastructure -- a client will open a connection to this url and
+        # we'll hold on to it until we have something to send to that client.
+        #
+        # We'll use per-user message queues. Those queues
+        # are owned by the user objects, and whenever someone connects we
+        # empty the message queue into the connection and finish it, 
+        # or we hold that connection open.
+        #
+        # We're going to need userUUIDs and meetingUUIDs.
+        # I'm concerned with having to send this stuff around all the time,
+        # these UUIDs are so huge that it gets a bit ugly looking. But
+        # I guess it's mostly in the background? We'll roll with it for now.
+        # Most of this will get pushed into cookies anyway, I think? We'll
+        # have to figure out the multiple-connections-at-once case later. 
         self.write("Connection.")
 
 # Set up the routing tables for the application.
