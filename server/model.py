@@ -32,13 +32,13 @@ class YarnBaseType(object):
         # If one of the subclasses has already set this, move on. If it was
         # left as None, then we'll generate a new UUID for it. 
         if(self.uuid==None):
-            self.uuid = uuid.uuid4()
+            self.uuid = str(uuid.uuid4())
         
         # Register the new object with the main object store.
         db[self.uuid] = self
         
     def getDict(self):
-        return {"uuid":str(self.uuid)}
+        return {"uuid":self.uuid}
     
     def getJSON(self):
         """Return a JSON representation of the type."""
@@ -50,17 +50,19 @@ class YarnBaseType(object):
 class Room(YarnBaseType):
     """Store the room-related information."""
 
-    def __init__(self, name, roomUUID=None):
+    def __init__(self, name, roomUUID=None, currentMeeting=None):
         self.uuid = roomUUID
         YarnBaseType.__init__(self)
         
         self.name = name
-        self.currentMeeting = None
+        
+        if(currentMeeting != None)
+            self.currentMeeting = obj[  currentMeeting]
     
     def getDict(self):
         d = YarnBaseType.getDict(self)
         d["name"] = self.name
-        d["currentMeeting"] = self.currentMeeting
+        d["currentMeeting"] = self.currentMeeting.uuid
         return d
         
 class Meeting(YarnBaseType):
@@ -131,9 +133,9 @@ class MeetingObjectType(YarnBaseType):
     
     def getDict(self):
         d = YarnBaseType.getDict(self)
-        d["createdBy"] = self.createdBy
+        d["createdBy"] = self.createdBy.uuid
         d["createdat"] = self.createdAt
-        d["meeting"] = self.meeting
+        d["meeting"] = self.meeting.uuid
         return d
 
 class Task(MeetingObjectType):
@@ -149,7 +151,7 @@ class Task(MeetingObjectType):
     def getDict(self):
         d = MeetingObjectType.getDict(self)
         d["text"] = self.text
-        d["ownedBy"] = self.ownedBy
+        d["ownedBy"] = self.ownedBy.uuid
         return d
 
 class Topic(MeetingObjectType):
