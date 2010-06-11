@@ -21,15 +21,18 @@
         
         initialRot = -1;
         startTime = [[NSDate date] retain];
-		viewHasBeenTouched=false;
 		
-		//pointToSetTimeTo=CGPointMake(0,0);
-		rotationOfTouchedTime= 0.0;
+		viewHasBeenTouched=false;
+		selectedTimes=[[NSMutableArray array] retain];
+		//rotationOfTouchedTime= 0.0;
     }
     return self;
 }
 
-//-(void)getRotationWithDate:(NSDate)date{
+//-(void)getMinRotationWithDate:(NSDate)date{
+	
+
+//-(void)getHourRotationWithDate:(NSDate)date{ 
 	
 - (void)drawRect:(CGRect)rect {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -69,12 +72,14 @@
     CGFloat minRotation = ((minute*60 + second)/3600.0f) * (2*M_PI);
 	
 	if (viewHasBeenTouched==true) {
-		CGContextRotateCTM(ctx, rotationOfTouchedTime);
-		CGContextMoveToPoint(ctx, 0, 0);
-		CGContextAddLineToPoint(ctx, 0,-130);
-		CGContextStrokePath(ctx);
-		CGContextRestoreGState(ctx);
-		CGContextSaveGState(ctx);
+		for (int c=0; c< [selectedTimes count]; c++){
+			CGContextRotateCTM(ctx, [[selectedTimes objectAtIndex:c]floatValue]);
+			CGContextMoveToPoint(ctx, 0, 0);
+			CGContextAddLineToPoint(ctx, 0,-130);
+			CGContextStrokePath(ctx);
+			CGContextRestoreGState(ctx);
+			CGContextSaveGState(ctx);
+		}
 	}
 	 
     CGContextRotateCTM(ctx, hourRotation);
@@ -135,17 +140,17 @@
 
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-	//UITouch *touch=[[event allTouches] anyObject];
-	//pointToSetTimeTo=[ touch locationInView:self];
+	
 	NSDate *timeToSetTimeTo = [[NSDate date]retain];
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:timeToSetTimeTo];
 	NSInteger minute = [dateComponents minute];
 	NSInteger second = [dateComponents second];
-	rotationOfTouchedTime=((minute*60 + second)/3600.0f) * (2*M_PI);
-	NSLog(@"End");
+	
+	CGFloat rotationOfTouchedTime=((minute*60 + second)/3600.0f) * (2*M_PI);
 	viewHasBeenTouched=true;
-	//NSLog(@" pos= %f,%f,", pointToSetTimeTo.x, pointToSetTimeTo.y); 
+	[selectedTimes addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
+	NSLog(@"End");
 	
 	
 }

@@ -12,9 +12,11 @@
 @interface MeetingTimerView : UIView {
     CGFloat initialRot;
     NSDate *startTime;
-	//CGPoint pointToSetTimeTo;
-	CGFloat rotationOfTouchedTime;
+	
+	//CGFloat rotationOfTouchedTime;
 	bool viewHasBeenTouched;
+	NSMutableArray *selectedTimes;
+	
 }
 
 @end
