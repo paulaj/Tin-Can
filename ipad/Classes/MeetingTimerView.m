@@ -21,11 +21,14 @@
         
         initialRot = -1;
         startTime = [[NSDate date] retain];
+		
+		pointToSetTimeTo=CGPointMake(0,0);
     }
     return self;
 }
 
-
+//-(void)getRotationWithDate:(NSDate)date{
+	
 - (void)drawRect:(CGRect)rect {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
@@ -33,6 +36,8 @@
     CGContextSetRGBFillColor(ctx, 0, 0, 0, 1.0);
     CGContextFillRect(ctx, CGRectMake(-200, -200, 500, 500));
 
+	
+	
     // Puts it in landscape mode, basically - so the top of the clock is to the right in portrait mode
     CGContextRotateCTM(ctx, M_PI/2);
     // Draw the outline of the clock.
@@ -51,7 +56,8 @@
     NSInteger minute = [dateComponents minute];
     NSInteger second = [dateComponents second];
     [gregorian release];
-            
+    
+	
     // Draw the hour hand.
     // Figure out what the rotation should be.
     // This is a bit tricksy - basically all rotations are modeled
@@ -59,7 +65,15 @@
     // on a per-second basis.
     CGFloat hourRotation = ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
     CGFloat minRotation = ((minute*60 + second)/3600.0f) * (2*M_PI);
-    
+	
+    CGContextRotateCTM(ctx, (1.5)*M_PI);
+	CGContextMoveToPoint(ctx, 0, 0);
+    CGContextAddLineToPoint(ctx, pointToSetTimeTo.x, pointToSetTimeTo.y);
+	CGContextStrokePath(ctx);
+	CGContextRestoreGState(ctx);
+    CGContextSaveGState(ctx);
+	
+	 
     CGContextRotateCTM(ctx, hourRotation);
     CGContextMoveToPoint(ctx, 0, 0);
     CGContextAddLineToPoint(ctx, 0, -90);
@@ -69,8 +83,8 @@
     CGContextSaveGState(ctx);
     
     CGContextRotateCTM(ctx, minRotation);
-    CGContextMoveToPoint(ctx, 0, 0);
-    CGContextAddLineToPoint(ctx, 0, -130);
+	CGContextMoveToPoint(ctx, 0, 0);
+	CGContextAddLineToPoint(ctx, 0, -130);
     CGContextStrokePath(ctx);
 
     CGContextRestoreGState(ctx);
@@ -114,6 +128,22 @@
         CGContextAddLineToPoint(ctx, 0, 0);
         CGContextFillPath(ctx);
     }
+}
+
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+	UITouch *touch=[[event allTouches] anyObject];
+	pointToSetTimeTo=[ touch locationInView:self];
+	//timeToSetTimeTo = [[NSDate date] retain];
+	//NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    //NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:timeToSetTimeTo];
+	//NSInteger minute = [dateComponents minute];
+   //NSInteger second = [dateComponents second];
+	
+	NSLog(@"End");
+	NSLog(@" pos= %f,%f,", pointToSetTimeTo.x, pointToSetTimeTo.y); 
+	
+	
 }
 
 - (void)dealloc {

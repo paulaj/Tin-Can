@@ -12,6 +12,7 @@
 @interface MeetingTimerView : UIView {
     CGFloat initialRot;
     NSDate *startTime;
+	CGPoint pointToSetTimeTo;
 }
 
 @end
