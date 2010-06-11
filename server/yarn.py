@@ -17,11 +17,13 @@ import tornado.web
 import simplejson as json
 
 import types
-
+import state
+import model
 
 class RoomsHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Rooms.")
+        """Returns a list of current rooms."""
+        self.write(json.dumps(state.rooms, cls=model.YarnModelJSONEncoder))
 
 
 class UsersHandler(tornado.web.RequestHandler):
@@ -59,6 +61,7 @@ application = tornado.web.Application([
 (r"/connect/", ConnectionHandler)])
 
 if __name__ == '__main__':
+    state.init_test()
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(8888)
     tornado.ioloop.IOLoop.instance().start()

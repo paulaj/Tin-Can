@@ -21,11 +21,11 @@ import simplejson as json
 
 # This dictionary stores all known major types. This is used primarily so 
 # we can cheaply bridge UUIDs into objects. When any of these major types
-# is created, it's automatically registered here (via the BaseType
+# is created, it's automatically registered here (via the YarnBaseType
 # constructor). 
 db = {}
 
-class BaseType(object):
+class YarnBaseType(object):
     """Identify object with a UUID and register it with the store."""
     
     def __init__(self):
@@ -47,28 +47,28 @@ class BaseType(object):
     # TODO do we ever need to del these things? if so, overload that operator
     # here and make sure to pull the object out of obj. 
 
-class Room(BaseType):
+class Room(YarnBaseType):
     """Store the room-related information."""
 
     def __init__(self, name, roomUUID=None):
         self.uuid = roomUUID
-        BaseType.__init__(self)
+        YarnBaseType.__init__(self)
         
         self.name = name
         self.currentMeeting = None
     
     def getDict(self):
-        d = BaseType.getDict(self)
+        d = YarnBaseType.getDict(self)
         d["name"] = self.name
         d["currentMeeting"] = self.currentMeeting
         return d
         
-class Meeting(BaseType):
+class Meeting(YarnBaseType):
     """Store meeting-related information."""
 
     def __init__(self, meetingUUID=None, roomUUID=None, title=None, startedAt=None):
         self.uuid = meetingUUID
-        BaseType.__init__(self)
+        YarnBaseType.__init__(self)
         self.room = roomUUID
         self.title = title
         
@@ -84,7 +84,7 @@ class Meeting(BaseType):
         
     
     def getDict(self):
-        d = BaseType.getDict(self)
+        d = YarnBaseType.getDict(self)
         d["endedAt"] = self.endedAt
         d["isLive"] = self.isLive
         d["allParticipants"] = self.allParticipants
@@ -92,13 +92,13 @@ class Meeting(BaseType):
         return d
     
 
-class User(BaseType):
+class User(YarnBaseType):
     """Store meeting-related information."""
     
     def __init__(self, name, userUUID=None):
         self.uuid = userUUID
         
-        BaseType.__init__(self)
+        YarnBaseType.__init__(self)
         
         self.name = name
         self.inMeeting = None
@@ -106,7 +106,7 @@ class User(BaseType):
         self.status = None
         
     def getDict(self):
-        d = BaseType.getDict(self)
+        d = YarnBaseType.getDict(self)
         d["name"] = self.name
         d["inMeeting"] = self.inMeeting
         d["loggedIn"] = self.loggedIn
@@ -114,11 +114,11 @@ class User(BaseType):
         return d
 
 
-class MeetingObjectType(BaseType):
+class MeetingObjectType(YarnBaseType):
     """Defines some basic properties that are shared by meeting objects."""
 
     def __init__(self, creatorUUID, meetingUUID):
-        BaseType.__init__(self)
+        YarnBaseType.__init__(self)
 
         # TODO we almost certainly want to unswizzle these UUIDS
         # to their actual objects. When we do that, we'll need to
@@ -130,7 +130,7 @@ class MeetingObjectType(BaseType):
         self.meeting = meetingUUID
     
     def getDict(self):
-        d = BaseType.getDict(self)
+        d = YarnBaseType.getDict(self)
         d["createdBy"] = self.createdBy
         d["createdat"] = self.createdAt
         d["meeting"] = self.meeting
@@ -169,6 +169,16 @@ class Topic(MeetingObjectType):
         d["timeStarted"] = self.timeStarted
         d["timeEnded"] = self.timeEnded
         return d
+
+
+class YarnModelJSONEncoder(json.JSONEncoder):
+    """JSON Encoder for Yarn model objects."""
+    def default(self, obj):
+        if isinstance(obj, YarnBaseType):
+            # use the getDict method for model objects, since we can't
+            # encode python objects to JSON directly.
+            return obj.getDict()
+        return json.JSONEncoder.default(self, obj)
 
 if __name__ == "__main__":
     # try making some new things and spitting them back out again.

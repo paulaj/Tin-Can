@@ -29,6 +29,8 @@ build/
 .svn
 CVS
 
+# python bytecode caches
+*.pyc
 
 # automatic backup files
 *~.nib

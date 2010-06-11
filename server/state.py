@@ -33,7 +33,7 @@ def get_logged_out_users():
     """Returns only users that are not currently logged in."""
     pass
     
-def get_logged_in_users()::
+def get_logged_in_users():
     """Returns only users that are currently logged in."""
     pass
 
