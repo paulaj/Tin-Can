@@ -29,10 +29,33 @@
     return self;
 }
 
-//-(void)getMinRotationWithDate:(NSDate)date{
-	
 
-//-(void)getHourRotationWithDate:(NSDate)date{ 
+
+
+
+-(CGFloat)getMinRotationWithDate:(NSDate *)date{
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:date];
+    NSInteger minute = [dateComponents minute];
+    NSInteger second = [dateComponents second];
+    [gregorian release];
+	return ((minute*60 + second)/3600.0f) * (2*M_PI);
+}
+
+-(CGFloat)getHourRotation{ 
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
+    NSInteger hour = [dateComponents hour];
+    NSInteger minute = [dateComponents minute];
+    NSInteger second = [dateComponents second];
+    [gregorian release];
+	return  ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
+}
+
+
+
+
+
 	
 - (void)drawRect:(CGRect)rect {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -50,38 +73,24 @@
     CGContextSetLineWidth(ctx, 3.0);
     
     CGContextSaveGState(ctx);
-
-    
     CGContextStrokeEllipseInRect(ctx, CGRectMake(-140, -140, 280, 280));
     
-    
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
-    NSInteger hour = [dateComponents hour];
-    NSInteger minute = [dateComponents minute];
-    NSInteger second = [dateComponents second];
-    [gregorian release];
-    
-	
-    // Draw the hour hand.
-    // Figure out what the rotation should be.
-    // This is a bit tricksy - basically all rotations are modeled
-    // at the second-level so we get smooth updating of both hands
-    // on a per-second basis.
-    CGFloat hourRotation = ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
-    CGFloat minRotation = ((minute*60 + second)/3600.0f) * (2*M_PI);
-	
+
+	//Getting rotations and drawing times	
 	if (viewHasBeenTouched==true) {
 		for (int c=0; c< [selectedTimes count]; c++){
 			CGContextRotateCTM(ctx, [[selectedTimes objectAtIndex:c]floatValue]);
 			CGContextMoveToPoint(ctx, 0, 0);
-			CGContextAddLineToPoint(ctx, 0,-130);
+			CGContextAddLineToPoint(ctx, 0,-150);
 			CGContextStrokePath(ctx);
 			CGContextRestoreGState(ctx);
 			CGContextSaveGState(ctx);
 		}
 	}
-	 
+	
+	CGFloat hourRotation= [self getHourRotation];
+	CGFloat minRotation= [self getMinRotationWithDate:[NSDate date]];
+	
     CGContextRotateCTM(ctx, hourRotation);
     CGContextMoveToPoint(ctx, 0, 0);
     CGContextAddLineToPoint(ctx, 0, -90);
@@ -142,12 +151,8 @@
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 	
 	NSDate *timeToSetTimeTo = [[NSDate date]retain];
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:timeToSetTimeTo];
-	NSInteger minute = [dateComponents minute];
-	NSInteger second = [dateComponents second];
+	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
 	
-	CGFloat rotationOfTouchedTime=((minute*60 + second)/3600.0f) * (2*M_PI);
 	viewHasBeenTouched=true;
 	[selectedTimes addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
 	NSLog(@"End");

@@ -19,4 +19,7 @@
 	
 }
 
+-(CGFloat)getMinRotationWithDate:(NSDate *)date;
+-(CGFloat)getHourRotation; 
+
 @end
