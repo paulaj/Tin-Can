@@ -24,7 +24,6 @@
 		
 		viewHasBeenTouched=false;
 		selectedTimes=[[NSMutableArray array] retain];
-		//rotationOfTouchedTime= 0.0;
     }
     return self;
 }
@@ -78,13 +77,36 @@
 
 	//Getting rotations and drawing times	
 	if (viewHasBeenTouched==true) {
-		for (int c=0; c< [selectedTimes count]; c++){
-			CGContextRotateCTM(ctx, [[selectedTimes objectAtIndex:c]floatValue]);
+		int i=0;
+		while(i< [selectedTimes count]){
+			CGContextRotateCTM(ctx, [[[selectedTimes objectAtIndex:i] objectAtIndex:0]floatValue]);
 			CGContextMoveToPoint(ctx, 0, 0);
 			CGContextAddLineToPoint(ctx, 0,-150);
 			CGContextStrokePath(ctx);
+			
+			if (i>0){
+				NSDate *tempStartTime=[[selectedTimes objectAtIndex:i-1] objectAtIndex:1];
+				NSDate *tempEndTime=[[selectedTimes objectAtIndex:i] objectAtIndex:1];
+				int elapsedSeconds = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
+				CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+				CGContextMoveToPoint(ctx, 0, 0); 
+				CGContextAddArc(ctx, 0, 0, 130, -M_PI/2-arcLength, -M_PI/2, 0);
+				CGContextSetRGBFillColor(ctx, 0, 0.1*i, 0, 1.0);
+				CGContextFillPath(ctx);
+			}
+			else if(i==0) {
+				NSDate *tempEndTime=[[selectedTimes objectAtIndex:i] objectAtIndex:1];
+				int elapsedSeconds = abs([startTime timeIntervalSinceDate:tempEndTime]);
+				CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+				CGContextMoveToPoint(ctx, 0, 0);
+				CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
+				CGContextSetRGBFillColor(ctx, 0, 0.1*i, 0, 1.0);
+				CGContextFillPath(ctx);
+			}
 			CGContextRestoreGState(ctx);
 			CGContextSaveGState(ctx);
+			i++;
+
 		}
 	}
 	
@@ -130,20 +152,20 @@
         // initialRot to put it in the right place.
         //
         // Defer wrap-around detection, for now. We'll figure that out later. 
-        CGContextRotateCTM(ctx, initialRot);
-        CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 0.5);
-
-        
-        CGContextMoveToPoint(ctx, 0.0, 0.0);
-        
-        // Not sure about the PI/2 term yet - why is it always off by 90 deg? Shouldn't
-        // the CTM rotation fix this? Or maybe this is on top of the earlier rotation?
-        // TODO sort this out so it's not so hacky.
-        CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
-        
-        CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
-        CGContextAddLineToPoint(ctx, 0, 0);
-        CGContextFillPath(ctx);
+        //CGContextRotateCTM(ctx, initialRot);
+//        CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 0.5);
+//
+//        
+//        CGContextMoveToPoint(ctx, 0.0, 0.0);
+//        
+//        // Not sure about the PI/2 term yet - why is it always off by 90 deg? Shouldn't
+//        // the CTM rotation fix this? Or maybe this is on top of the earlier rotation?
+//        // TODO sort this out so it's not so hacky.
+//        CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+//        
+//        CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
+//        CGContextAddLineToPoint(ctx, 0, 0);
+//        CGContextFillPath(ctx);
     }
 }
 
@@ -154,7 +176,9 @@
 	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
 	
 	viewHasBeenTouched=true;
-	[selectedTimes addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
+	[selectedTimes addObject:[[NSMutableArray alloc] initWithCapacity:2]];
+	[[selectedTimes lastObject] addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
+	[[selectedTimes lastObject] addObject:timeToSetTimeTo];
 	NSLog(@"End");
 	
 	

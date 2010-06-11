@@ -13,7 +13,7 @@
     CGFloat initialRot;
     NSDate *startTime;
 	
-	//CGFloat rotationOfTouchedTime;
+	
 	bool viewHasBeenTouched;
 	NSMutableArray *selectedTimes;
 	
