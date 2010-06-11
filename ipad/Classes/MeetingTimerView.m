@@ -21,8 +21,10 @@
         
         initialRot = -1;
         startTime = [[NSDate date] retain];
+		viewHasBeenTouched=false;
 		
-		pointToSetTimeTo=CGPointMake(0,0);
+		//pointToSetTimeTo=CGPointMake(0,0);
+		rotationOfTouchedTime= 0.0;
     }
     return self;
 }
@@ -66,13 +68,14 @@
     CGFloat hourRotation = ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
     CGFloat minRotation = ((minute*60 + second)/3600.0f) * (2*M_PI);
 	
-    CGContextRotateCTM(ctx, (1.5)*M_PI);
-	CGContextMoveToPoint(ctx, 0, 0);
-    CGContextAddLineToPoint(ctx, pointToSetTimeTo.x, pointToSetTimeTo.y);
-	CGContextStrokePath(ctx);
-	CGContextRestoreGState(ctx);
-    CGContextSaveGState(ctx);
-	
+	if (viewHasBeenTouched==true) {
+		CGContextRotateCTM(ctx, rotationOfTouchedTime);
+		CGContextMoveToPoint(ctx, 0, 0);
+		CGContextAddLineToPoint(ctx, 0,-130);
+		CGContextStrokePath(ctx);
+		CGContextRestoreGState(ctx);
+		CGContextSaveGState(ctx);
+	}
 	 
     CGContextRotateCTM(ctx, hourRotation);
     CGContextMoveToPoint(ctx, 0, 0);
@@ -132,16 +135,17 @@
 
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-	UITouch *touch=[[event allTouches] anyObject];
-	pointToSetTimeTo=[ touch locationInView:self];
-	//timeToSetTimeTo = [[NSDate date] retain];
-	//NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    //NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:timeToSetTimeTo];
-	//NSInteger minute = [dateComponents minute];
-   //NSInteger second = [dateComponents second];
-	
+	//UITouch *touch=[[event allTouches] anyObject];
+	//pointToSetTimeTo=[ touch locationInView:self];
+	NSDate *timeToSetTimeTo = [[NSDate date]retain];
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:timeToSetTimeTo];
+	NSInteger minute = [dateComponents minute];
+	NSInteger second = [dateComponents second];
+	rotationOfTouchedTime=((minute*60 + second)/3600.0f) * (2*M_PI);
 	NSLog(@"End");
-	NSLog(@" pos= %f,%f,", pointToSetTimeTo.x, pointToSetTimeTo.y); 
+	viewHasBeenTouched=true;
+	//NSLog(@" pos= %f,%f,", pointToSetTimeTo.x, pointToSetTimeTo.y); 
 	
 	
 }
