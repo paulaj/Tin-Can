@@ -14,7 +14,6 @@
     NSDate *startTime;
 	NSDate *newDate;
 	UIColor *currentTimerColor;
-	bool viewHasBeenTouched;
 	NSMutableArray *selectedTimes;
 	int elapsedSeconds;
 	
