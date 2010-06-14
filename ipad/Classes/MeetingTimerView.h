@@ -16,7 +16,7 @@
 	UIColor *currentTimerColor;
 	bool viewHasBeenTouched;
 	NSMutableArray *selectedTimes;
-	NSArray *colorWheel;
+	//NSArray *colorWheel;
 
 	
 }

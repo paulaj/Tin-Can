@@ -21,8 +21,8 @@
         
         initialRot = -1;
         startTime = [[NSDate date] retain];
-		currentTimerColor=[UIColor blueColor];
-		colorWheel= [NSArray arrayWithObjects: [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor], [UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil];
+		currentTimerColor=[[UIColor blueColor] retain];
+		//colorWheel= [NSArray arrayWithObjects: [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor], [UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil];
 		viewHasBeenTouched=false;
 		selectedTimes=[[NSMutableArray array] retain];
     }
@@ -86,7 +86,7 @@
 		while(i< [selectedTimes count]){
 			CGContextRotateCTM(ctx, [[[selectedTimes objectAtIndex:i] objectAtIndex:0]floatValue]);
 			CGContextMoveToPoint(ctx, 0, 0);
-			CGContextAddLineToPoint(ctx, 0,-150);
+			//CGContextAddLineToPoint(ctx, 0,-150);
 			CGContextStrokePath(ctx);
 			
 			if (i>0){
@@ -96,7 +96,11 @@
 				CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
 				CGContextMoveToPoint(ctx, 0, 0); 
 				CGContextAddArc(ctx, 0, 0, 130, -M_PI/2-arcLength, -M_PI/2, 0);
-				CGContextSetRGBFillColor(ctx, 0, 0.1*i, 0, 1.0);
+				
+				UIColor *colorRetrieved=[[selectedTimes objectAtIndex:i] objectAtIndex:2];
+				CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
+
+
 				CGContextFillPath(ctx);
 			}
 			else if(i==0) {
@@ -105,7 +109,17 @@
 				CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
 				CGContextMoveToPoint(ctx, 0, 0);
 				CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
-				CGContextSetRGBFillColor(ctx, 0, 0.1*i, 0, 1.0);
+				
+				//currentTimerColor=[[selectedTimes objectAtIndex:i] objectAtIndex:2];
+				//CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
+				
+				//NSLog(@"Array %@", [selectedTimes objectAtIndex:i]);
+				UIColor *colorRetrieved=[[selectedTimes objectAtIndex:i] objectAtIndex:2];
+				//NSLog(@"Color: %@", colorRetrieved);
+				CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
+
+				//NSLog(@"Index: %d", i);
+//				NSLog(@"Color: %@", currentTimerColor);
 				CGContextFillPath(ctx);
 			}
 			CGContextRestoreGState(ctx);
@@ -148,10 +162,10 @@
     
     if(initialRot==-1) {
         initialRot = minRotation;
-        NSLog(@"Setting initial rotation: %f", initialRot);
+        //NSLog(@"Setting initial rotation: %f", initialRot);
     } else {
         // Figure out the total number of elapsed seconds.
-        int elapsedSeconds = abs([[[selectedTimes lastObject] lastObject] timeIntervalSinceNow]);
+        int elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceNow]);
         
         // Gameplan here is always draw a line from 0,0 straight up, then
         // arc around to the current rotation. Rotate the whole context by
@@ -159,6 +173,7 @@
         //
         // Defer wrap-around detection, for now. We'll figure that out later. 
 		CGContextRotateCTM(ctx, [[[selectedTimes lastObject] objectAtIndex:0]floatValue]);
+		NSLog(@"Color: %@", currentTimerColor);
         CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
 
         
@@ -179,23 +194,29 @@
 	
 	NSDate *timeToSetTimeTo = [[NSDate date]retain];
 	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
-	//UIColor storedColor=[UIColor colorWithRed:0/255.f
-//							green:0/255.f
-//							 blue:/255.f    
-//							alpha:a/255.f];
-	viewHasBeenTouched=true;
 	[selectedTimes addObject:[[NSMutableArray alloc] initWithCapacity:2]];
 	[[selectedTimes lastObject] addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
 	[[selectedTimes lastObject] addObject:timeToSetTimeTo];
-	//[[selectedTimes lastObject] addObject: 
-	NSLog(@"End");
+	
+	//getting color
+	NSMutableArray *tempObject= [selectedTimes lastObject];
+	int currentIndex=[selectedTimes indexOfObject:tempObject];
+	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.1 alpha:1];
+	viewHasBeenTouched=true;
+	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.1 alpha:1];
+	[[selectedTimes lastObject] addObject: colorToStore];
+	//NSLog(@"End");
 	
 	
 }
 
 - (void)dealloc {
+	[currentTimerColor release];
     [startTime release];
+	[selectedTimes release];
     [super dealloc];
+	[UIColor release];
+	
 }
 
 
