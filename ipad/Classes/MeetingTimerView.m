@@ -21,7 +21,7 @@
         
         initialRot = -1;
         startTime = [[NSDate date] retain];
-		currentTimerColor=[[UIColor blueColor] retain];
+		currentTimerColor=[[[UIColor alloc] initWithRed:0 green:0 blue:0.2 alpha:1] retain];
 		viewHasBeenTouched=false;
 		selectedTimes=[[NSMutableArray array] retain];
     }
@@ -31,7 +31,7 @@
 
 
 
-
+//calculates Rotation for things tracked by minutes (ie:minute hand)
 -(CGFloat)getMinRotationWithDate:(NSDate *)date{
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:date];
@@ -40,7 +40,7 @@
     [gregorian release];
 	return ((minute*60 + second)/3600.0f) * (2*M_PI);
 }
-
+//calculates Rotation for hour hand
 -(CGFloat)getHourRotation{ 
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
@@ -51,6 +51,7 @@
 	return  ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
 }
 
+// Stores the important info to be used in the creation of a Time Arc
 -(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color{
 	
 	NSDate *timeToSetTimeTo = [[NSDate date]retain];
@@ -63,40 +64,32 @@
 	return newlyStoredTime;
 }
 
+//Creates a Time Arc from an Array of Time Arc information and the current index
 -(void)drawArcWithTimes:(NSMutableArray *)timelist withIndex:(int) index withContext:(CGContextRef) context{
 	NSMutableArray *times= timelist;
 	int i=index;
 	CGContextRef ctx=context;
 	CGContextRotateCTM(ctx, [[[selectedTimes objectAtIndex:i] objectAtIndex:0]floatValue]);
 	CGContextMoveToPoint(ctx, 0, 0);
-	if (i==0){
+	if (i==0){ //The Start Case
 		NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
 		int elapsedSeconds = abs([startTime timeIntervalSinceDate:tempEndTime]);
 		CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
 		CGContextMoveToPoint(ctx, 0, 0);
 		CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
-		
-		UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];
-		
-		CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
-		
-		CGContextFillPath(ctx);
 	}
-	else {
-	NSDate *tempStartTime=[[times objectAtIndex:i-1] objectAtIndex:1];
-	NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
-	int elapsedSeconds = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
-	CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
-	CGContextMoveToPoint(ctx, 0, 0); 
-	CGContextAddArc(ctx, 0, 0, 130, -M_PI/2-arcLength, -M_PI/2, 0);
-	
-	UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];
+	else { 
+		NSDate *tempStartTime=[[times objectAtIndex:i-1] objectAtIndex:1];
+		NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
+		int elapsedSeconds = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
+		CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+		CGContextMoveToPoint(ctx, 0, 0);
+		CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
+	}
+	// Let's Color!
+	UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];	
 	CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
-	
-	
 	CGContextFillPath(ctx);
-	}
-	
 }
 
 	
