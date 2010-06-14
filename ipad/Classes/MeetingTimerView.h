@@ -13,13 +13,15 @@
     CGFloat initialRot;
     NSDate *startTime;
 	
-	
+	UIColor *currentTimerColor;
 	bool viewHasBeenTouched;
 	NSMutableArray *selectedTimes;
+	NSArray *colorWheel;
+
 	
 }
 
 -(CGFloat)getMinRotationWithDate:(NSDate *)date;
 -(CGFloat)getHourRotation; 
-
+//-(UIColor*)getColorWithInt:(NSUInteger)i;
 @end
