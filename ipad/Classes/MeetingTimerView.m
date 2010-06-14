@@ -24,6 +24,7 @@
 		currentTimerColor=[[[UIColor alloc] initWithRed:0 green:0 blue:0.2 alpha:1] retain];
 		viewHasBeenTouched=false;
 		selectedTimes=[[NSMutableArray array] retain];
+		elapsedSeconds=0.0;
     }
     return self;
 }
@@ -41,7 +42,7 @@
 	return ((minute*60 + second)/3600.0f) * (2*M_PI);
 }
 //calculates Rotation for hour hand
--(CGFloat)getHourRotation{ 
+-(CGFloat)getHourRotationWithDate: (NSDate *)date{ 
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
     NSInteger hour = [dateComponents hour];
@@ -73,16 +74,16 @@
 	CGContextMoveToPoint(ctx, 0, 0);
 	if (i==0){ //The Start Case
 		NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
-		int elapsedSeconds = abs([startTime timeIntervalSinceDate:tempEndTime]);
-		CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+		int elapsedTime = abs([startTime timeIntervalSinceDate:tempEndTime]);
+		CGFloat arcLength = elapsedTime/3600.0f * (2*M_PI);
 		CGContextMoveToPoint(ctx, 0, 0);
 		CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
 	}
 	else { 
 		NSDate *tempStartTime=[[times objectAtIndex:i-1] objectAtIndex:1];
 		NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
-		int elapsedSeconds = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
-		CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+		int elapsedTime = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
+		CGFloat arcLength = elapsedTime/3600.0f * (2*M_PI);
 		CGContextMoveToPoint(ctx, 0, 0);
 		CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
 	}
@@ -94,6 +95,7 @@
 
 	
 - (void)drawRect:(CGRect)rect {
+	
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     //Wipe the layer manually because clearsContext doesn't work.
@@ -104,8 +106,8 @@
     // Puts it in landscape mode, basically - so the top of the clock is to the right in portrait mode
     CGContextRotateCTM(ctx, M_PI/2);
     // Draw the outline of the clock.
-    CGContextSetRGBStrokeColor(ctx, 0.5, 0.5, 0.5, 1.0);
-    CGContextSetLineWidth(ctx, 3.0);
+    CGContextSetRGBStrokeColor(ctx, 1, 1, 1, 1.0);
+    CGContextSetLineWidth(ctx, 2.0);
     CGContextSaveGState(ctx);
     CGContextStrokeEllipseInRect(ctx, CGRectMake(-140, -140, 280, 280));
 	
@@ -116,12 +118,11 @@
 			[self drawArcWithTimes:selectedTimes withIndex:i  withContext:ctx];
 			CGContextRestoreGState(ctx);
 			CGContextSaveGState(ctx);
-			[self setNeedsDisplay];
 			i++;
 		}
 	}
 	
-	CGFloat hourRotation= [self getHourRotation];
+	CGFloat hourRotation= [self getHourRotationWithDate:[NSDate date]];
 	CGFloat minRotation= [self getMinRotationWithDate:[NSDate date]];
 	
     CGContextRotateCTM(ctx, hourRotation);
@@ -153,16 +154,32 @@
     
     if(initialRot==-1) {
         initialRot = minRotation;
+		NSLog(@"initial rotation: %f", initialRot);
+		
     } 
 	else {
-        int elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceNow]);
-        
+		NSLog(@"selectedTime:%@", selectedTimes);
+		NSLog(@"selectedTime:%d", [selectedTimes count]);
+		
+		float rotation;		
+		if([selectedTimes count] == 0) {
+			elapsedSeconds = abs([startTime timeIntervalSinceNow]);
+			rotation = initialRot;
+		}
+		else {
+	 		elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceNow]);
+			rotation = [[[selectedTimes lastObject] objectAtIndex:0]floatValue];
+		}   
+		
+		NSLog(@"elapsedSeconds: %d, rotation: %f", elapsedSeconds, rotation);
+		
         // Gameplan here is always draw a line from 0,0 straight up, then
         // arc around to the current rotation. Rotate the whole context by
         // initialRot to put it in the right place.
         //
-        // Defer wrap-around detection, for now. We'll figure that out later. 
-		CGContextRotateCTM(ctx, [[[selectedTimes lastObject] objectAtIndex:0]floatValue]);
+        // Defer wrap-around detection, for now. We'll figure that out later.
+		
+		CGContextRotateCTM(ctx, rotation);
         CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
         CGContextMoveToPoint(ctx, 0.0, 0.0);
         
@@ -173,14 +190,15 @@
         CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
         CGContextAddLineToPoint(ctx, 0, 0);
         CGContextFillPath(ctx);
-    }
+	}
 }
 
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+	NSLog(@"Touched");
 	//getting current index in color creation (for testing only)
-	NSMutableArray *tempObject= [selectedTimes lastObject];
-	int currentIndex=[selectedTimes indexOfObject:tempObject];
+	
+	int currentIndex=[selectedTimes count];
 	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.2 alpha:1];
 	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.2 alpha:1];
 	

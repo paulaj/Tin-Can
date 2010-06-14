@@ -128,7 +128,7 @@
     [names addObject:@"Jaewoo"];
     [names addObject:@"Charlie"];
     [names addObject:@"Chris"];
-    [names addObject:@"Drew"];
+    [names addObject:@"Paula"];
     [names addObject:@"Ig-Jae"];
     [names addObject:@"Trevor"];
     [names addObject:@"Paulina"];

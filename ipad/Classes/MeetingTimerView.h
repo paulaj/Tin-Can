@@ -12,16 +12,17 @@
 @interface MeetingTimerView : UIView {
     CGFloat initialRot;
     NSDate *startTime;
-	
+	NSDate *newDate;
 	UIColor *currentTimerColor;
 	bool viewHasBeenTouched;
 	NSMutableArray *selectedTimes;
-
+	int elapsedSeconds;
+	
 	
 }
 
 -(CGFloat)getMinRotationWithDate:(NSDate *)date;
--(CGFloat)getHourRotation; 
+-(CGFloat)getHourRotationWithDate: (NSDate *)date; 
 -(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color;
 -(void)drawArcWithTimes:(NSMutableArray *)times withIndex:(int) index  withContext:(CGContextRef) context;
 @end
