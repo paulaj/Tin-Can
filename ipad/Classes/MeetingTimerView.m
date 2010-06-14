@@ -22,7 +22,6 @@
         initialRot = -1;
         startTime = [[NSDate date] retain];
 		currentTimerColor=[[UIColor blueColor] retain];
-		//colorWheel= [NSArray arrayWithObjects: [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor], [UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil];
 		viewHasBeenTouched=false;
 		selectedTimes=[[NSMutableArray array] retain];
     }
@@ -52,15 +51,53 @@
 	return  ((hour%12)*3600 + minute*60 + second)/(43200.0f) * (2*M_PI);
 }
 
-//-(UIColor *)getColorWithInt:(NSUInteger)i{
-//	if ((i<[colorWheel count]-1) & (i>0)) {
-//		return[colorWheel objectAtIndex:i];
-//	}
-//	else{		
-//		return [colorWheel objectAtIndex: i-3];
-//
-//	}
-//}
+-(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color{
+	
+	NSDate *timeToSetTimeTo = [[NSDate date]retain];
+	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
+	UIColor *colorToStore=color;
+	NSMutableArray *newlyStoredTime=[[NSMutableArray alloc] initWithCapacity:3];
+	[newlyStoredTime addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
+	[newlyStoredTime addObject:timeToSetTimeTo];
+	[newlyStoredTime addObject: colorToStore];
+	return newlyStoredTime;
+}
+
+-(void)drawArcWithTimes:(NSMutableArray *)timelist withIndex:(int) index withContext:(CGContextRef) context{
+	NSMutableArray *times= timelist;
+	int i=index;
+	CGContextRef ctx=context;
+	CGContextRotateCTM(ctx, [[[selectedTimes objectAtIndex:i] objectAtIndex:0]floatValue]);
+	CGContextMoveToPoint(ctx, 0, 0);
+	if (i==0){
+		NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
+		int elapsedSeconds = abs([startTime timeIntervalSinceDate:tempEndTime]);
+		CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+		CGContextMoveToPoint(ctx, 0, 0);
+		CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
+		
+		UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];
+		
+		CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
+		
+		CGContextFillPath(ctx);
+	}
+	else {
+	NSDate *tempStartTime=[[times objectAtIndex:i-1] objectAtIndex:1];
+	NSDate *tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
+	int elapsedSeconds = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
+	CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+	CGContextMoveToPoint(ctx, 0, 0); 
+	CGContextAddArc(ctx, 0, 0, 130, -M_PI/2-arcLength, -M_PI/2, 0);
+	
+	UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];
+	CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
+	
+	
+	CGContextFillPath(ctx);
+	}
+	
+}
 
 	
 - (void)drawRect:(CGRect)rect {
@@ -71,64 +108,25 @@
     CGContextFillRect(ctx, CGRectMake(-200, -200, 500, 500));
 
 	
-	
     // Puts it in landscape mode, basically - so the top of the clock is to the right in portrait mode
     CGContextRotateCTM(ctx, M_PI/2);
     // Draw the outline of the clock.
     CGContextSetRGBStrokeColor(ctx, 0.5, 0.5, 0.5, 1.0);
     CGContextSetLineWidth(ctx, 3.0);
-    
     CGContextSaveGState(ctx);
     CGContextStrokeEllipseInRect(ctx, CGRectMake(-140, -140, 280, 280));
-
+	
+	// colors in time span per touch
 	if (viewHasBeenTouched==true) {
 		int i=0;
 		while(i< [selectedTimes count]){
-			CGContextRotateCTM(ctx, [[[selectedTimes objectAtIndex:i] objectAtIndex:0]floatValue]);
-			CGContextMoveToPoint(ctx, 0, 0);
-			//CGContextAddLineToPoint(ctx, 0,-150);
-			CGContextStrokePath(ctx);
-			
-			if (i>0){
-				NSDate *tempStartTime=[[selectedTimes objectAtIndex:i-1] objectAtIndex:1];
-				NSDate *tempEndTime=[[selectedTimes objectAtIndex:i] objectAtIndex:1];
-				int elapsedSeconds = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
-				CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
-				CGContextMoveToPoint(ctx, 0, 0); 
-				CGContextAddArc(ctx, 0, 0, 130, -M_PI/2-arcLength, -M_PI/2, 0);
-				
-				UIColor *colorRetrieved=[[selectedTimes objectAtIndex:i] objectAtIndex:2];
-				CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
-
-
-				CGContextFillPath(ctx);
-			}
-			else if(i==0) {
-				NSDate *tempEndTime=[[selectedTimes objectAtIndex:i] objectAtIndex:1];
-				int elapsedSeconds = abs([startTime timeIntervalSinceDate:tempEndTime]);
-				CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
-				CGContextMoveToPoint(ctx, 0, 0);
-				CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0);
-				
-				//currentTimerColor=[[selectedTimes objectAtIndex:i] objectAtIndex:2];
-				//CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
-				
-				//NSLog(@"Array %@", [selectedTimes objectAtIndex:i]);
-				UIColor *colorRetrieved=[[selectedTimes objectAtIndex:i] objectAtIndex:2];
-				//NSLog(@"Color: %@", colorRetrieved);
-				CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
-
-				//NSLog(@"Index: %d", i);
-//				NSLog(@"Color: %@", currentTimerColor);
-				CGContextFillPath(ctx);
-			}
+			[self drawArcWithTimes:selectedTimes withIndex:i  withContext:ctx];
 			CGContextRestoreGState(ctx);
 			CGContextSaveGState(ctx);
+			[self setNeedsDisplay];
 			i++;
-			
 		}
 	}
-	
 	
 	CGFloat hourRotation= [self getHourRotation];
 	CGFloat minRotation= [self getMinRotationWithDate:[NSDate date]];
@@ -148,7 +146,7 @@
 
     CGContextRestoreGState(ctx);
     
-    // Now put a 12 on top.
+    // Now put numbers on the face of the clock
     NSString *twelve = @"12";
     NSString *six = @"6";
     NSString *three = @"3";
@@ -162,9 +160,8 @@
     
     if(initialRot==-1) {
         initialRot = minRotation;
-        //NSLog(@"Setting initial rotation: %f", initialRot);
-    } else {
-        // Figure out the total number of elapsed seconds.
+    } 
+	else {
         int elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceNow]);
         
         // Gameplan here is always draw a line from 0,0 straight up, then
@@ -173,10 +170,7 @@
         //
         // Defer wrap-around detection, for now. We'll figure that out later. 
 		CGContextRotateCTM(ctx, [[[selectedTimes lastObject] objectAtIndex:0]floatValue]);
-		NSLog(@"Color: %@", currentTimerColor);
         CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
-
-        
         CGContextMoveToPoint(ctx, 0.0, 0.0);
         
         // Not sure about the PI/2 term yet - why is it always off by 90 deg? Shouldn't
@@ -191,24 +185,18 @@
 
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-	
-	NSDate *timeToSetTimeTo = [[NSDate date]retain];
-	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
-	[selectedTimes addObject:[[NSMutableArray alloc] initWithCapacity:2]];
-	[[selectedTimes lastObject] addObject:[NSNumber numberWithFloat: rotationOfTouchedTime]];
-	[[selectedTimes lastObject] addObject:timeToSetTimeTo];
-	
-	//getting color
+	//getting current index in color creation (for testing only)
 	NSMutableArray *tempObject= [selectedTimes lastObject];
 	int currentIndex=[selectedTimes indexOfObject:tempObject];
-	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.1 alpha:1];
+	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.2 alpha:1];
+	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.2 alpha:1];
+	
+	//notes Touches and stores important time info per touch
 	viewHasBeenTouched=true;
-	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.1 alpha:1];
-	[[selectedTimes lastObject] addObject: colorToStore];
-	//NSLog(@"End");
-	
-	
+	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore]];	
 }
+
+
 
 - (void)dealloc {
 	[currentTimerColor release];

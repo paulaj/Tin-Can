@@ -16,12 +16,12 @@
 	UIColor *currentTimerColor;
 	bool viewHasBeenTouched;
 	NSMutableArray *selectedTimes;
-	//NSArray *colorWheel;
 
 	
 }
 
 -(CGFloat)getMinRotationWithDate:(NSDate *)date;
 -(CGFloat)getHourRotation; 
-//-(UIColor*)getColorWithInt:(NSUInteger)i;
+-(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color;
+-(void)drawArcWithTimes:(NSMutableArray *)times withIndex:(int) index  withContext:(CGContextRef) context;
 @end
