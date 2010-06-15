@@ -17,12 +17,13 @@
         self.bounds = CGRectMake(-150, -150, 300, 300);
         self.center = CGPointMake(384, 512);
         self.clearsContextBeforeDrawing = YES;
-        
+        //hourCounter
         initialRot = -1;
         startTime = [[NSDate date] retain];
 		currentTimerColor=[[[UIColor alloc] initWithRed:0 green:0 blue:0.2 alpha:1] retain];
 		selectedTimes=[[NSMutableArray array] retain];
 		elapsedSeconds=0.0;
+		testDate= [[NSDate date] retain];
     }
     return self;
 }
@@ -58,7 +59,7 @@
 //calculates Rotation for hour hand
 -(CGFloat)getHourRotationWithDate: (NSDate *)date{ 
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
+    NSDateComponents *dateComponents = [gregorian components:(NSHourCalendarUnit  | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:date];
     NSInteger hour = [dateComponents hour];
     NSInteger minute = [dateComponents minute];
     NSInteger second = [dateComponents second];
@@ -70,9 +71,9 @@
 
 
 // Stores the important info to be used in the creation of a Time Arc
--(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color{
+-(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color withTime: (NSDate *)time{
 	
-	NSDate *timeToSetTimeTo = [[NSDate date]retain];
+	NSDate *timeToSetTimeTo = time;
 	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
 	UIColor *colorToStore=color;
 	NSMutableArray *newlyStoredTime=[[NSMutableArray alloc] initWithCapacity:3];
@@ -128,16 +129,25 @@
 
 
 - (void)drawRect:(CGRect)rect {
-	NSDate *dateToSetTimeTo= [NSDate dateWithTimeIntervalSinceNow: 1800];
-	[self setStartTimeWithTime:dateToSetTimeTo];
+	
+	// for testing
+	
+	NSLog(@"Time: %@", testDate);
+	testDate= [[ testDate addTimeInterval:5] retain];
+	NSLog(@"Time: %@", testDate);
+	//NSDate *dateToSetTimeTo= [NSDate dateWithTimeIntervalSinceNow: 600];
+	//[self setStartTimeWithTime:dateToSetTimeTo];
+	NSLog(@"is a NSDate:%d", [testDate isKindOfClass:[NSDate class]] );
+	
 	// Drawing our Clock!
+	
 	
 	
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
 	//Let's set our Rotations early on.
-	CGFloat hourRotation= [self getHourRotationWithDate:[NSDate date]];
-	CGFloat minRotation= [self getMinRotationWithDate:[NSDate date]];
+	CGFloat hourRotation= [self getHourRotationWithDate:testDate];
+	CGFloat minRotation= [self getMinRotationWithDate:testDate];
 	
 	
     //Wipe the layer manually because clearsContext doesn't work.
@@ -183,19 +193,22 @@
 			CGContextSaveGState(ctx);
 			i++;
 		}
-	
-	
+		
 	
 	
 	
 	//Drawing the Updating TIME ARC!
 
 	float rotation;	
+	if(initialRot==-1) {
+		initialRot = minRotation;
+	}
 	//for the initial case where selectedTimes is empty:
 	//we want the updating TIME ARC to be between the start and now,
 	//starting with the intial Rotation
 	if([selectedTimes count] == 0) {
-			elapsedSeconds = abs([startTime timeIntervalSinceNow]);
+		elapsedSeconds = abs([startTime timeIntervalSinceDate:testDate]);
+			NSLog(@"elapsedseconds: %d", elapsedSeconds);
 			rotation = initialRot;
 		}
 	// Now that we are starting from the last TIMEARC,
@@ -203,7 +216,7 @@
 	// the last TIMEARC.
 	// elapsedSeconds is similarly updated.
 	else {
-	 		elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceNow]);
+		elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceDate:testDate]);
 			rotation = [[[selectedTimes lastObject] objectAtIndex:0]floatValue];
 		}   
 		
@@ -211,7 +224,7 @@
 	CGContextRotateCTM(ctx, rotation);
 	CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
 	CGContextMoveToPoint(ctx, 0.0, 0.0);
-        
+	NSLog(@"rotation: %d", rotation);
 	// Now that we have elapsed seconds, lets draw our updating TIME ARC!
 	CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
 	CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
@@ -250,7 +263,7 @@
 	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.2 alpha:1];
 	
 	//Stores important time info per touch
-	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore]];	
+	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate]];	
 }
 
 
@@ -261,6 +274,7 @@
 	[selectedTimes release];
     [super dealloc];
 	[UIColor release];
+	[testDate release];
 	
 }
 
