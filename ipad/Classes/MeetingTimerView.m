@@ -28,6 +28,18 @@
 }
 
 
+// Setter and Getter for startTime
+-(void)setStartTimeWithTime:(NSDate *) date{
+	startTime= date;
+	initialRot=[self getMinRotationWithDate:startTime];
+}
+
+-(NSDate *)getStartTime{
+	return startTime;
+}
+
+
+
 
 
 //calculates Rotation for things tracked by minutes (ie:minute hand)
@@ -116,6 +128,8 @@
 
 
 - (void)drawRect:(CGRect)rect {
+	NSDate *dateToSetTimeTo= [NSDate dateWithTimeIntervalSinceNow: 1800];
+	[self setStartTimeWithTime:dateToSetTimeTo];
 	// Drawing our Clock!
 	
 	
@@ -175,45 +189,37 @@
 	
 	
 	//Drawing the Updating TIME ARC!
-	
-	
-	
-	//start case
-    if(initialRot==-1) {
-        initialRot = minRotation;
-    }
-	//every other case
-	else {
-		float rotation;	
-		//for the initial case where selectedTimes is empty:
-		//we want the updating TIME ARC to be between the start and now,
-		//starting with the intial Rotation
-		if([selectedTimes count] == 0) {
+
+	float rotation;	
+	//for the initial case where selectedTimes is empty:
+	//we want the updating TIME ARC to be between the start and now,
+	//starting with the intial Rotation
+	if([selectedTimes count] == 0) {
 			elapsedSeconds = abs([startTime timeIntervalSinceNow]);
 			rotation = initialRot;
 		}
-		// Now that we are starting from the last TIMEARC,
-		// we can't use the intial rotation, so we use the stored rotation of 
-		// the last TIMEARC.
-		// elapsedSeconds is similarly updated.
-		else {
+	// Now that we are starting from the last TIMEARC,
+	// we can't use the intial rotation, so we use the stored rotation of 
+	// the last TIMEARC.
+	// elapsedSeconds is similarly updated.
+	else {
 	 		elapsedSeconds = abs([[[selectedTimes lastObject] objectAtIndex:1] timeIntervalSinceNow]);
 			rotation = [[[selectedTimes lastObject] objectAtIndex:0]floatValue];
 		}   
 		
-		// We want the updating TIME ARC to have the color of the next saved TIME ARC and the proper rotation
-		CGContextRotateCTM(ctx, rotation);
-        CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
-        CGContextMoveToPoint(ctx, 0.0, 0.0);
+	// We want the updating TIME ARC to have the color of the next saved TIME ARC and the proper rotation
+	CGContextRotateCTM(ctx, rotation);
+	CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
+	CGContextMoveToPoint(ctx, 0.0, 0.0);
         
-		// Now that we have elapsed seconds, lets draw our updating TIME ARC!
-		CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
-        CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
-        CGContextAddLineToPoint(ctx, 0, 0);
-        CGContextFillPath(ctx);
-		CGContextRestoreGState(ctx);
-		CGContextSaveGState(ctx);
-	}	
+	// Now that we have elapsed seconds, lets draw our updating TIME ARC!
+	CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
+	CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
+	CGContextAddLineToPoint(ctx, 0, 0);
+	CGContextFillPath(ctx);
+	CGContextRestoreGState(ctx);
+	CGContextSaveGState(ctx);
+		
 	
 	
 	

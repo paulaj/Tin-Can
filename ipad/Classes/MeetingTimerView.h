@@ -24,4 +24,6 @@
 -(CGFloat)getHourRotationWithDate: (NSDate *)date; 
 -(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color;
 -(void)drawArcWithTimes:(NSMutableArray *)times withIndex:(int) index  withContext:(CGContextRef) context;
+-(void)setStartTimeWithTime:(NSDate *) date;
+-(NSDate *)getStartTime;
 @end
