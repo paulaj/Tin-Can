@@ -15,6 +15,8 @@
 	NSDate *newDate;
 	UIColor *currentTimerColor;
 	NSMutableArray *selectedTimes;
+	NSMutableArray *colorWheel;
+	int indexForColorWheel;
 	int elapsedSeconds;
 	NSDate *testDate;
 	float hourCounter;

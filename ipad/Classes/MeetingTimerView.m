@@ -21,10 +21,12 @@
 		timeToCompare=3600;
         initialRot = -1;
         startTime = [time retain];
-		currentTimerColor=[[[UIColor alloc] initWithRed:0 green:0 blue:0.2 alpha:1] retain];
 		selectedTimes=[[NSMutableArray array] retain];
 		elapsedSeconds=0.0;
 		testDate= [[NSDate date] retain];
+		colorWheel= [[NSMutableArray arrayWithObjects: [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor], [UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil] retain];
+		indexForColorWheel=0;
+		currentTimerColor=[colorWheel objectAtIndex: indexForColorWheel];
     }
     return self;
 }
@@ -120,7 +122,6 @@
 - (void)drawRect:(CGRect)rect {
 	// for testing
 	testDate= [[ testDate addTimeInterval:60] retain];
-	NSLog(@"Time: %@", testDate);
 	
 
 	
@@ -194,7 +195,7 @@
 	//starting with the intial Rotation
 	if([selectedTimes count] == 0) {
 		elapsedSeconds = abs([startTime timeIntervalSinceDate:testDate]);
-		NSLog(@"elapsedseconds: %d", elapsedSeconds);
+		
 		rotation = initialRot;
 	}
 	// Now that we are starting from the last TIMEARC,
@@ -210,7 +211,7 @@
 	CGContextRotateCTM(ctx, rotation);
 	CGContextSetFillColorWithColor(ctx, currentTimerColor.CGColor);
 	CGContextMoveToPoint(ctx, 0.0, 0.0);
-	NSLog(@"rotation: %d", rotation);
+	
 	// Now that we have elapsed seconds, lets draw our updating TIME ARC!
 	CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
 	CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), -M_PI/2, -M_PI/2 + arcLength, 0);
@@ -222,9 +223,15 @@
 	if (timeToCompare <= abs([startTime timeIntervalSinceDate:testDate])) {
 		
 		timeToCompare= timeToCompare + 3600;
-		int currentIndex=[selectedTimes count];
-		UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.1 alpha:1];
-		currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.1 alpha:1];
+		indexForColorWheel= indexForColorWheel +1;
+		
+		if (indexForColorWheel >= ([colorWheel count]-1)){
+			indexForColorWheel=0;
+		}
+		//NSLog(@"index: %d", indexForColorWheel);
+		UIColor *colorToStore=currentTimerColor;
+		currentTimerColor= [colorWheel objectAtIndex: indexForColorWheel];
+		
 		
 		//Stores important time info per touch
 		[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter]];
@@ -255,9 +262,14 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 	//Getting current index in color creation (for testing only)
-	int currentIndex=[selectedTimes count];
-	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.1 alpha:1];
-	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.1 alpha:1];
+	indexForColorWheel= indexForColorWheel +1;
+	
+	if (indexForColorWheel >= ([colorWheel count]-1)){
+		indexForColorWheel=0;
+	}
+	//NSLog(@"index: %d", indexForColorWheel);
+	UIColor *colorToStore=currentTimerColor;
+	currentTimerColor= [colorWheel objectAtIndex: indexForColorWheel];
 	
 	//Stores important time info per touch
 	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter]];	
