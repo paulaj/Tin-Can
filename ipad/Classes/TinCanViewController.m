@@ -32,7 +32,7 @@
     
     NSDate *startingTime = [NSDate date];
     NSLog(@"starting time in seconds: %f", [startingTime timeIntervalSince1970]);
-    NSTimeInterval startingTimeInSeconds = [startingTime timeIntervalSince1970]-600;
+    NSTimeInterval startingTimeInSeconds = [startingTime timeIntervalSince1970]-1800;
     
     meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 400, 400) withStartTime:[NSDate dateWithTimeIntervalSince1970:startingTimeInSeconds]];
     [meetingTimerView retain];

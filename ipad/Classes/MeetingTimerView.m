@@ -27,6 +27,7 @@
 		colorWheel= [[NSMutableArray arrayWithObjects: [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor cyanColor], [UIColor yellowColor], [UIColor magentaColor],[UIColor orangeColor],[UIColor purpleColor], nil] retain];
 		indexForColorWheel=0;
 		currentTimerColor=[colorWheel objectAtIndex: indexForColorWheel];
+		hourCheck=0;
     }
     return self;
 }
@@ -64,7 +65,7 @@
 
 
 // Stores the important info to be used in the creation of a Time Arc
--(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color withTime: (NSDate *)time withHour:(float) hour{
+-(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color withTime: (NSDate *)time withHour:(float) hour withType:(NSString *)type{
 	
 	NSDate *timeToSetTimeTo = time;
 	CGFloat rotationOfTouchedTime= [self getMinRotationWithDate:timeToSetTimeTo];
@@ -75,6 +76,7 @@
 	[newlyStoredTime addObject:timeToSetTimeTo];
 	[newlyStoredTime addObject: colorToStore];
 	[newlyStoredTime addObject: [NSNumber numberWithFloat:currentHour]];
+	[newlyStoredTime addObject: type];
 	return newlyStoredTime;
 }
 
@@ -89,16 +91,27 @@
 	//Let's find out 'when' we are drawing
 	NSDate *tempEndTime;
 	NSDate *tempStartTime;
+	CGContextRef ctx =context;
+	float currentHour=[[[times objectAtIndex:i] objectAtIndex:3]floatValue];
 	if (i==0){ 
 		tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
 		tempStartTime=startTime;
+		hourCheck=1;
 	}
 	else { 
 		tempStartTime=[[times objectAtIndex:i-1] objectAtIndex:1];
 		tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
 	}
+	//if (([times count] > i+1)){
+	if ((currentHour==hourCounter)&(hourCheck==1)){
+			CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+			CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
+			CGContextFillPath(ctx);
+			hourCheck=0;
+		//}
+	}
+	
 	//Let's set up 'where' we are drawing
-	CGContextRef ctx=context;
 	CGContextRotateCTM(ctx, [[[times objectAtIndex:i] objectAtIndex:0]floatValue]);
 	CGContextMoveToPoint(ctx, 0, 0);
 	
@@ -107,7 +120,7 @@
 	float elapsedTime = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
 	CGFloat arcLength = elapsedTime/3600.0f * (2*M_PI);
 	CGContextMoveToPoint(ctx, 0, 0);
-	float currentHour=[[[times objectAtIndex:i] objectAtIndex:3]floatValue];
+	
 	CGContextAddArc(ctx, 0, 0, 130-(currentHour*5), -M_PI/2 - arcLength, -M_PI/2 , 0); 
 	
 	
@@ -115,6 +128,16 @@
 	UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];	
 	CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
 	CGContextFillPath(ctx);
+	//setting up blackspace
+	if ((i==[times count]-1)&([[times objectAtIndex:i] objectAtIndex:4]==@"Hour")){
+		CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+		CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
+		CGContextFillPath(ctx);
+		hourCheck=0;
+		//}
+	}
+	
+	
 }
 
 
@@ -167,6 +190,9 @@
 	
 	//Drawing our past TIME ARCS!
 	
+	CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+	CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
+	CGContextFillPath(ctx);
 	
 	
 	
@@ -230,12 +256,16 @@
 		}
 		//NSLog(@"index: %d", indexForColorWheel);
 		UIColor *colorToStore=currentTimerColor;
-		currentTimerColor= [colorWheel objectAtIndex: indexForColorWheel];
+		//currentTimerColor= [colorWheel objectAtIndex: indexForColorWheel];
 		
 		
 		//Stores important time info per touch
-		[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter]];
+		[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter withType:@"Hour"]];
 		hourCounter ++;
+		CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+		CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
+		CGContextFillPath(ctx);
+		
 		
 	}
 	
@@ -272,7 +302,7 @@
 	currentTimerColor= [colorWheel objectAtIndex: indexForColorWheel];
 	
 	//Stores important time info per touch
-	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter]];	
+	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter withType:@"Touch"]];	
 }
 
 
