@@ -173,18 +173,7 @@
     CGContextSaveGState(ctx);
     CGContextStrokeEllipseInRect(ctx, CGRectMake(-140, -140, 280, 280));
 	
-    // Now put numbers on the face of the clock
-    NSString *twelve = @"12";
-    NSString *six = @"6";
-    NSString *three = @"3";
-    NSString *nine = @"9";
-
-    CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
-    [twelve drawAtPoint:CGPointMake(-10, -140) withFont:[UIFont boldSystemFontOfSize:18]];
-    [six drawAtPoint:CGPointMake(-10, 115) withFont:[UIFont boldSystemFontOfSize:18]];
-    [three drawAtPoint:CGPointMake(125, -10) withFont:[UIFont boldSystemFontOfSize:18]];
-    [nine drawAtPoint:CGPointMake(-135, -10) withFont:[UIFont boldSystemFontOfSize:18]];
-    
+        
 	
 	
 	
@@ -285,7 +274,19 @@
 	CGContextStrokePath(ctx);
 		
 	CGContextRestoreGState(ctx);
-		
+    
+    // Now put numbers on the face of the clock
+    NSString *twelve = @"12";
+    NSString *six = @"6";
+    NSString *three = @"3";
+    NSString *nine = @"9";
+    
+    CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
+    [twelve drawAtPoint:CGPointMake(-10, -140) withFont:[UIFont boldSystemFontOfSize:18]];
+    [six drawAtPoint:CGPointMake(-10, 115) withFont:[UIFont boldSystemFontOfSize:18]];
+    [three drawAtPoint:CGPointMake(125, -10) withFont:[UIFont boldSystemFontOfSize:18]];
+    [nine drawAtPoint:CGPointMake(-135, -10) withFont:[UIFont boldSystemFontOfSize:18]];
+    		
 	}
 
 
