@@ -110,11 +110,10 @@
 	
 	//lets draw our TIME ARC!
 	float elapsedTime = abs([ tempStartTime  timeIntervalSinceDate:tempEndTime ]);
-	//float elapsedTotalTime = abs([startTime timeIntervalSinceDate:tempEndTime]);
 	CGFloat arcLength = elapsedTime/3600.0f * (2*M_PI);
 	CGContextMoveToPoint(ctx, 0, 0);
-	//float currentHour=[[[times objectAtIndex:i] objectAtIndex:3]floatValue];
-	CGContextAddArc(ctx, 0, 0, 130, -M_PI/2 - arcLength, -M_PI/2 , 0); //(hourCounter*10)
+	float currentHour=[[[times objectAtIndex:i] objectAtIndex:3]floatValue];
+	CGContextAddArc(ctx, 0, 0, 130-(currentHour*5), -M_PI/2 - arcLength, -M_PI/2 , 0); 
 	
 	
 	// Let's Color!
@@ -130,7 +129,7 @@
 	// for testing
 	
 	NSLog(@"Time: %@", testDate);
-	testDate= [[ testDate addTimeInterval:20] retain];
+	testDate= [[ testDate addTimeInterval:60] retain];
 	NSLog(@"Time: %@", testDate);
 
 	
@@ -224,18 +223,26 @@
 	NSLog(@"rotation: %d", rotation);
 	// Now that we have elapsed seconds, lets draw our updating TIME ARC!
 	CGFloat arcLength = elapsedSeconds/3600.0f * (2*M_PI);
-	CGContextAddArc(ctx, 0, 0, 130, -M_PI/2, -M_PI/2 + arcLength, 0);
+	CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), -M_PI/2, -M_PI/2 + arcLength, 0);
 	CGContextAddLineToPoint(ctx, 0, 0);
 	CGContextFillPath(ctx);
 	CGContextRestoreGState(ctx);
 	CGContextSaveGState(ctx);
 	
-	//if (timeToCompare >= abs([startTime timeIntervalSinceDate:testDate])) {
-//		hourCounter ++;
-//		timeToCompare= timeToCompare + 3600;
-//	}
+	if (timeToCompare <= abs([startTime timeIntervalSinceDate:testDate])) {
+		
+		timeToCompare= timeToCompare + 3600;
+		int currentIndex=[selectedTimes count];
+		UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.1 alpha:1];
+		currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.1 alpha:1];
+		
+		//Stores important time info per touch
+		[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter]];
+		hourCounter ++;
+		
+	}
 	
-	
+
 	//Drawing Hour and Minute hand! (Drawn here so that the hands aren't colored over)
 	CGContextRotateCTM(ctx, hourRotation);
 	CGContextMoveToPoint(ctx, 0, 0);
@@ -259,8 +266,8 @@
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 	//Getting current index in color creation (for testing only)
 	int currentIndex=[selectedTimes count];
-	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.2 alpha:1];
-	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.2 alpha:1];
+	UIColor *colorToStore=[UIColor colorWithRed:0 green:0 blue:(currentIndex +1)*.1 alpha:1];
+	currentTimerColor= [[UIColor alloc] initWithRed:0 green:0 blue:(currentIndex +2)*.1 alpha:1];
 	
 	//Stores important time info per touch
 	[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter]];	

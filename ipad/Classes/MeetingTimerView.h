@@ -15,7 +15,7 @@
 	NSDate *newDate;
 	UIColor *currentTimerColor;
 	NSMutableArray *selectedTimes;
-	float elapsedSeconds;
+	int elapsedSeconds;
 	NSDate *testDate;
 	float hourCounter;
 	float timeToCompare;
