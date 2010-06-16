@@ -15,16 +15,19 @@
 	NSDate *newDate;
 	UIColor *currentTimerColor;
 	NSMutableArray *selectedTimes;
-	int elapsedSeconds;
+	float elapsedSeconds;
 	NSDate *testDate;
+	float hourCounter;
+	float timeToCompare;
 	
 	
 }
+
+- (id)initWithFrame:(CGRect)frame withStartTime:(NSDate *)time;
 
 -(CGFloat)getMinRotationWithDate:(NSDate *)date;
 -(CGFloat)getHourRotationWithDate: (NSDate *)date; 
 -(NSMutableArray *)storeNewTimeWithColor:(UIColor *)color withTime: (NSDate *)time;
 	-(void)drawArcWithTimes:(NSMutableArray *)times withIndex:(int) index  withContext:(CGContextRef) context;
 -(void)setStartTimeWithTime:(NSDate *) date;
--(NSDate *)getStartTime;
 @end
