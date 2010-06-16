@@ -30,13 +30,6 @@
 }
 
 
-// Setter and Getter for startTime
--(void)setStartTimeWithTime:(NSDate *) date{
-	startTime= date;
-	initialRot=[self getMinRotationWithDate:startTime];
-}
-
-
 
 
 
@@ -127,14 +120,13 @@
 
 - (void)drawRect:(CGRect)rect {
 	
-	// for testing
-	
-	NSLog(@"Time: %@", testDate);
-	testDate= [[ testDate addTimeInterval:20] retain];
-	NSLog(@"Time: %@", testDate);
+	// Used for time acceleration.
+	testDate= [[testDate addTimeInterval:5] retain];
+    
+    // Uncomment this to return to real time.
+ //   testDate = [NSDate date];
+	NSLog(@"current time: %@", testDate);
 
-	
-	NSLog(@"is a NSDate:%d", [testDate isKindOfClass:[NSDate class]] );
 	
 	// Drawing our Clock!
 	
@@ -192,13 +184,14 @@
 		}
 		
 	
-	
-	
 	//Drawing the Updating TIME ARC!
 
 	float rotation;	
 	if(initialRot==-1) {
-		initialRot = minRotation;
+        // This was where the bug was. The initial rotation was coming from the CURRENT time when we first drew things. 
+        // This wasn't true once we split off startTime as a thing we could set in the constructor. Instead, we needed
+        // to re-calculate the rotation based on the startTime, not just reuse the minRotation. 
+		initialRot = [self getMinRotationWithDate:startTime];
 	}
 	//for the initial case where selectedTimes is empty:
 	//we want the updating TIME ARC to be between the start and now,
