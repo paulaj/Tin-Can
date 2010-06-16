@@ -29,7 +29,12 @@
 
     // Now, drop the MeetingTimer in the middle of the screen.
     // Add the timer first, so it's underneath everything.
-    meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 400, 400) withStartTime:[[NSDate date]retain]];
+    
+    NSDate *startingTime = [NSDate date];
+    NSLog(@"starting time in seconds: %f", [startingTime timeIntervalSince1970]);
+    NSTimeInterval startingTimeInSeconds = [startingTime timeIntervalSince1970]-600;
+    
+    meetingTimerView = [[MeetingTimerView alloc] initWithFrame:CGRectMake(200, 200, 400, 400) withStartTime:[NSDate dateWithTimeIntervalSince1970:startingTimeInSeconds]];
     [meetingTimerView retain];
     [self.view addSubview:meetingTimerView];
     
