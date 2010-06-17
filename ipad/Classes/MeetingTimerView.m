@@ -14,7 +14,7 @@
 
 - (id)initWithFrame:(CGRect)frame withStartTime:(NSDate *)time{
     if ((self = [super initWithFrame:frame])) {
-        self.bounds = CGRectMake(-150, -150, 300, 300);
+        self.bounds = CGRectMake(-165, -165, 325, 325);
         self.center = CGPointMake(384, 512);
         self.clearsContextBeforeDrawing = YES;
         hourCounter=0;
@@ -102,15 +102,22 @@
 		tempStartTime=[[times objectAtIndex:i-1] objectAtIndex:1];
 		tempEndTime=[[times objectAtIndex:i] objectAtIndex:1];
 	}
-	//if (([times count] > i+1)){
+	
+	//for creating black space
 	if ((currentHour==hourCounter)&(hourCheck==1)){
 			CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
-			CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
+			CGContextAddArc(ctx, 0, 0, 132-(hourCounter*5), 0, 2*M_PI , 0); 
 			CGContextFillPath(ctx);
 			hourCheck=0;
-		//}
 	}
-	
+	if (i!=0){
+	float lastHour=[[[times objectAtIndex:i-1] objectAtIndex:3]floatValue];
+		if (currentHour!=lastHour){
+			CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
+			CGContextAddArc(ctx, 0, 0, 132-(currentHour*5), 0, 2*M_PI , 0); 
+			CGContextFillPath(ctx);
+		}	
+	}	
 	//Let's set up 'where' we are drawing
 	CGContextRotateCTM(ctx, [[[times objectAtIndex:i] objectAtIndex:0]floatValue]);
 	CGContextMoveToPoint(ctx, 0, 0);
@@ -128,10 +135,11 @@
 	UIColor *colorRetrieved=[[times objectAtIndex:i] objectAtIndex:2];	
 	CGContextSetFillColorWithColor(ctx, colorRetrieved.CGColor);
 	CGContextFillPath(ctx);
-	//setting up blackspace
+		
+	//setting up blackspace on hour change
 	if ((i==[times count]-1)&([[times objectAtIndex:i] objectAtIndex:4]==@"Hour")){
 		CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
-		CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
+		CGContextAddArc(ctx, 0, 0, 132-(hourCounter*5), 0, 2*M_PI , 0); 
 		CGContextFillPath(ctx);
 		hourCheck=0;
 		//}
@@ -144,7 +152,7 @@
 
 - (void)drawRect:(CGRect)rect {
 	// for testing
-	testDate= [[ testDate addTimeInterval:60] retain];
+	testDate= [[ testDate addTimeInterval:120] retain];
 	
 
 	
@@ -171,7 +179,7 @@
     CGContextSetRGBStrokeColor(ctx, 1, 1, 1, 1.0);
     CGContextSetLineWidth(ctx, 2.0);
     CGContextSaveGState(ctx);
-    CGContextStrokeEllipseInRect(ctx, CGRectMake(-140, -140, 280, 280));
+    CGContextStrokeEllipseInRect(ctx, CGRectMake(-160, -155, 315, 315));
 	
         
 	
@@ -251,10 +259,6 @@
 		//Stores important time info per touch
 		[selectedTimes addObject:[self storeNewTimeWithColor: colorToStore withTime:testDate withHour: hourCounter withType:@"Hour"]];
 		hourCounter ++;
-		CGContextSetFillColorWithColor(ctx, [UIColor blackColor].CGColor);
-		CGContextAddArc(ctx, 0, 0, 130-(hourCounter*5), 0, 2*M_PI , 0); 
-		CGContextFillPath(ctx);
-		
 		
 	}
 	
@@ -281,11 +285,11 @@
     NSString *three = @"3";
     NSString *nine = @"9";
     
-    CGContextSetRGBFillColor(ctx, 0.5, 0.5, 0.5, 1.0);
-    [twelve drawAtPoint:CGPointMake(-10, -140) withFont:[UIFont boldSystemFontOfSize:18]];
-    [six drawAtPoint:CGPointMake(-10, 115) withFont:[UIFont boldSystemFontOfSize:18]];
-    [three drawAtPoint:CGPointMake(125, -10) withFont:[UIFont boldSystemFontOfSize:18]];
-    [nine drawAtPoint:CGPointMake(-135, -10) withFont:[UIFont boldSystemFontOfSize:18]];
+    CGContextSetRGBFillColor(ctx, 1, 1, 1, 1.0);
+    [twelve drawAtPoint:CGPointMake(-10, -153) withFont:[UIFont boldSystemFontOfSize:18]];
+    [six drawAtPoint:CGPointMake(-10, 133) withFont:[UIFont boldSystemFontOfSize:18]];
+    [three drawAtPoint:CGPointMake(135, -7) withFont:[UIFont boldSystemFontOfSize:18]];
+    [nine drawAtPoint:CGPointMake(-145, -7) withFont:[UIFont boldSystemFontOfSize:18]];
     		
 	}
 
